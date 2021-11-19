@@ -10,6 +10,10 @@ RUN go build -o /cored cmd/cored/main.go
 
 FROM alpine:3.14
 
+ENV CHAINID "obadatestnet"
+ENV DAEMON_HOME "/home/cored/cored"
+ENV PATH "/home/cored:${PATH}"
+
 RUN apk add ca-certificates --no-cache && adduser -D cored
 
 USER cored
@@ -20,6 +24,6 @@ COPY --from=builder --chown=cored /cored /home/cored
 
 COPY --chown=cored ./docker/entrypoint.sh /home/cored/
 
-ENTRYPOINT ["/home/cored/entrypoint.sh"]
+CMD ["/home/cored/entrypoint.sh"]
 
 
