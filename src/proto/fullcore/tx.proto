@@ -1,0 +1,13 @@
+syntax = "proto3";
+package obadafoundation.fullcore.fullcore;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/obada-foundation/fullcore/x/fullcore/types";
+
+// Msg defines the Msg service.
+service Msg {
+    // this line is used by starport scaffolding # proto/tx/rpc
+}
+
+// this line is used by starport scaffolding # proto/tx/message

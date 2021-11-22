@@ -2,27 +2,27 @@ FROM alpine:edge AS builder
 
 RUN apk update && apk upgrade && apk add go
 
-COPY ./src /core
+COPY ./src /fullcore
 
-WORKDIR core
+WORKDIR fullcore
 
-RUN go build -o /cored cmd/cored/main.go
+RUN go build -o /fullcored cmd/fullcored/main.go
 
 FROM alpine:3.14
 
 ENV CHAINID "obadatestnet"
-ENV DAEMON_HOME "/home/cored/cored"
-ENV PATH "/home/cored:${PATH}"
+ENV DAEMON_HOME "/home/obada/fullcored"
+ENV PATH "/home/obada:${PATH}"
 
-RUN apk add ca-certificates --no-cache && adduser -D cored
+RUN apk add ca-certificates --no-cache && adduser -D obada
 
-USER cored
+USER obada
 
-WORKDIR /home/cored
+WORKDIR /home/obada
 
-COPY --from=builder --chown=cored /cored /home/cored
+COPY --from=builder --chown=obada /fullcored /home/obada
 
-COPY --chown=cored ./docker/entrypoint.sh /home/cored/
+COPY --chown=obada ./docker/entrypoint.sh /home/obada/
 
 CMD ["/home/cored/entrypoint.sh"]
 

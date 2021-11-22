@@ -86,20 +86,17 @@ import (
 	"github.com/tendermint/spm/cosmoscmd"
 	"github.com/tendermint/spm/openapiconsole"
 
-	"github.com/obada-foundation/core/docs"
+	"github.com/obada-foundation/fullcore/docs"
 
-	coremodule "github.com/obada-foundation/core/x/core"
-	coremodulekeeper "github.com/obada-foundation/core/x/core/keeper"
-	coremoduletypes "github.com/obada-foundation/core/x/core/types"
-	obitmodule "github.com/obada-foundation/core/x/obit"
-	obitmodulekeeper "github.com/obada-foundation/core/x/obit/keeper"
-	obitmoduletypes "github.com/obada-foundation/core/x/obit/types"
+	fullcoremodule "github.com/obada-foundation/fullcore/x/fullcore"
+	fullcoremodulekeeper "github.com/obada-foundation/fullcore/x/fullcore/keeper"
+	fullcoremoduletypes "github.com/obada-foundation/fullcore/x/fullcore/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
 const (
 	AccountAddressPrefix = "obada"
-	Name                 = "core"
+	Name                 = "fullcore"
 )
 
 // this line is used by starport scaffolding # stargate/wasm/app/enabledProposals
@@ -144,9 +141,7 @@ var (
 		evidence.AppModuleBasic{},
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
-		coremodule.AppModuleBasic{},
-		obitmodule.AppModuleBasic{},
-		obitmodule.AppModuleBasic{},
+		fullcoremodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -215,11 +210,7 @@ type App struct {
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 
-	CoreKeeper coremodulekeeper.Keeper
-
-	ObitKeeper obitmodulekeeper.Keeper
-
-	ObitKeeper obitmodulekeeper.Keeper
+	CoreKeeper fullcoremodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// the module manager
@@ -253,9 +244,7 @@ func New(
 		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
-		coremoduletypes.StoreKey,
-		obitmoduletypes.StoreKey,
-		obitmoduletypes.StoreKey,
+		fullcoremoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -354,27 +343,12 @@ func New(
 		&stakingKeeper, govRouter,
 	)
 
-	app.CoreKeeper = *coremodulekeeper.NewKeeper(
+	app.CoreKeeper = *fullcoremodulekeeper.NewKeeper(
 		appCodec,
-		keys[coremoduletypes.StoreKey],
-		keys[coremoduletypes.MemStoreKey],
+		keys[fullcoremoduletypes.StoreKey],
+		keys[fullcoremoduletypes.MemStoreKey],
 	)
-	coreModule := coremodule.NewAppModule(appCodec, app.CoreKeeper)
-
-	app.ObitKeeper = *obitmodulekeeper.NewKeeper(
-		appCodec,
-		keys[obitmoduletypes.StoreKey],
-		keys[obitmoduletypes.MemStoreKey],
-	)
-	obitModule := obitmodule.NewAppModule(appCodec, app.ObitKeeper)
-
-	app.ObitKeeper = *obitmodulekeeper.NewKeeper(
-		appCodec,
-		keys[obitmoduletypes.StoreKey],
-		keys[obitmoduletypes.MemStoreKey],
-	)
-	obitModule := obitmodule.NewAppModule(appCodec, app.ObitKeeper)
-
+	fullcoreModule := fullcoremodule.NewAppModule(appCodec, app.CoreKeeper)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it
@@ -413,9 +387,7 @@ func New(
 		ibc.NewAppModule(app.IBCKeeper),
 		params.NewAppModule(app.ParamsKeeper),
 		transferModule,
-		coreModule,
-		obitModule,
-		obitModule,
+		fullcoreModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -450,9 +422,7 @@ func New(
 		genutiltypes.ModuleName,
 		evidencetypes.ModuleName,
 		ibctransfertypes.ModuleName,
-		coremoduletypes.ModuleName,
-		obitmoduletypes.ModuleName,
-		obitmoduletypes.ModuleName,
+		fullcoremoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -640,9 +610,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(crisistypes.ModuleName)
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
-	paramsKeeper.Subspace(coremoduletypes.ModuleName)
-	paramsKeeper.Subspace(obitmoduletypes.ModuleName)
-	paramsKeeper.Subspace(obitmoduletypes.ModuleName)
+	paramsKeeper.Subspace(fullcoremoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
