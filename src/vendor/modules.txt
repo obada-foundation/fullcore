@@ -351,6 +351,13 @@ github.com/go-kit/kit/metrics/internal/lv
 github.com/go-kit/kit/metrics/prometheus
 # github.com/go-logfmt/logfmt v0.5.0
 github.com/go-logfmt/logfmt
+# github.com/go-playground/locales v0.13.0
+github.com/go-playground/locales
+github.com/go-playground/locales/currency
+# github.com/go-playground/universal-translator v0.17.0
+github.com/go-playground/universal-translator
+# github.com/go-playground/validator/v10 v10.6.1
+github.com/go-playground/validator/v10
 # github.com/godbus/dbus v0.0.0-20190726142602-4481cbc300e2
 github.com/godbus/dbus
 # github.com/gogo/gateway v1.1.0
@@ -400,8 +407,6 @@ github.com/grpc-ecosystem/go-grpc-middleware/recovery
 github.com/grpc-ecosystem/grpc-gateway/internal
 github.com/grpc-ecosystem/grpc-gateway/runtime
 github.com/grpc-ecosystem/grpc-gateway/utilities
-# github.com/grpc-ecosystem/grpc-gateway/v2 v2.6.0
-## explicit
 # github.com/gsterjov/go-libsecret v0.0.0-20161001094733-a6f4afe4910c
 github.com/gsterjov/go-libsecret
 # github.com/gtank/merlin v0.1.1
@@ -439,6 +444,8 @@ github.com/jmhodges/levigo
 github.com/keybase/go-keychain
 # github.com/klauspost/compress v1.11.7
 github.com/klauspost/compress/flate
+# github.com/leodido/go-urn v1.2.0
+github.com/leodido/go-urn
 # github.com/libp2p/go-buffer-pool v0.0.2
 github.com/libp2p/go-buffer-pool
 # github.com/magiconair/properties v1.8.5
@@ -455,6 +462,12 @@ github.com/minio/highwayhash
 github.com/mitchellh/mapstructure
 # github.com/mtibben/percent v0.2.1
 github.com/mtibben/percent
+# github.com/obada-foundation/sdkgo v0.0.0-20210806134350-52114fd65231
+## explicit
+github.com/obada-foundation/sdkgo
+github.com/obada-foundation/sdkgo/base58
+github.com/obada-foundation/sdkgo/hash
+github.com/obada-foundation/sdkgo/properties
 # github.com/pelletier/go-toml v1.9.3
 github.com/pelletier/go-toml
 # github.com/petermattis/goid v0.0.0-20180202154549-b0b1615b78e5
@@ -483,7 +496,6 @@ github.com/rakyll/statik/fs
 # github.com/rcrowley/go-metrics v0.0.0-20200313005456-10cdbea86bc0
 github.com/rcrowley/go-metrics
 # github.com/regen-network/cosmos-proto v0.3.1
-## explicit
 github.com/regen-network/cosmos-proto
 # github.com/rs/cors v1.7.0
 github.com/rs/cors
@@ -667,6 +679,7 @@ golang.org/x/crypto/pbkdf2
 golang.org/x/crypto/poly1305
 golang.org/x/crypto/ripemd160
 golang.org/x/crypto/salsa20/salsa
+golang.org/x/crypto/sha3
 golang.org/x/crypto/ssh/terminal
 # golang.org/x/net v0.0.0-20210903162142-ad29c8ab022f
 golang.org/x/net/context
@@ -686,17 +699,21 @@ golang.org/x/sys/windows
 # golang.org/x/term v0.0.0-20201126162022-7de9c90e9dd1
 golang.org/x/term
 # golang.org/x/text v0.3.6
+golang.org/x/text/internal/language
+golang.org/x/text/internal/language/compact
+golang.org/x/text/internal/tag
+golang.org/x/text/language
 golang.org/x/text/secure/bidirule
 golang.org/x/text/transform
 golang.org/x/text/unicode/bidi
 golang.org/x/text/unicode/norm
-# google.golang.org/genproto v0.0.0-20210903162649-d08c68adba83
+# google.golang.org/genproto v0.0.0-20211118181313-81c1377c94b1
 ## explicit
 google.golang.org/genproto/googleapis/api/annotations
 google.golang.org/genproto/googleapis/api/httpbody
 google.golang.org/genproto/googleapis/rpc/status
 google.golang.org/genproto/protobuf/field_mask
-# google.golang.org/grpc v1.40.0 => google.golang.org/grpc v1.33.2
+# google.golang.org/grpc v1.42.0 => google.golang.org/grpc v1.33.2
 ## explicit
 google.golang.org/grpc
 google.golang.org/grpc/attributes

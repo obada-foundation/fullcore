@@ -2,6 +2,8 @@ package cli
 
 import (
 	"fmt"
+	"github.com/cosmos/cosmos-sdk/client/flags"
+	"github.com/cosmos/cosmos-sdk/client/tx"
 	"time"
 
 	"github.com/spf13/cobra"
@@ -29,7 +31,38 @@ func GetTxCmd() *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
+	cmd.AddCommand(CmdCreateObit())
+
 	// this line is used by starport scaffolding # 1
+
+	return cmd
+}
+
+func CmdCreateObit() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "create-obit [serial-number-hash] [manufacturer] [part-number] [signature]",
+		Short: "Creates a new obit",
+		Args:  cobra.ExactArgs(4),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			serialNumberHash := args[0]
+			manufacturer := args[1]
+			pn := args[2]
+			sig := args[3]
+
+			clientCtx, err := client.GetClientTxContext(cmd)
+			if err != nil {
+				return err
+			}
+
+			msg := types.NewMsgCreateObit(clientCtx.GetFromAddress().String(), serialNumberHash, manufacturer, pn, sig)
+			if err := msg.ValidateBasic(); err != nil {
+				return err
+			}
+			return tx.GenerateOrBroadcastTxCLI(clientCtx, cmd.Flags(), msg)
+		},
+	}
+
+	flags.AddTxFlagsToCmd(cmd)
 
 	return cmd
 }
