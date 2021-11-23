@@ -372,6 +372,9 @@ github.com/gogo/protobuf/proto
 github.com/gogo/protobuf/protoc-gen-gogo/descriptor
 github.com/gogo/protobuf/sortkeys
 github.com/gogo/protobuf/types
+# github.com/golang-jwt/jwt v3.2.2+incompatible
+## explicit
+github.com/golang-jwt/jwt
 # github.com/golang/protobuf v1.5.2
 ## explicit
 github.com/golang/protobuf/descriptor
@@ -392,6 +395,9 @@ github.com/google/btree
 ## explicit
 # github.com/google/orderedcode v0.0.1
 github.com/google/orderedcode
+# github.com/google/uuid v1.2.0
+## explicit
+github.com/google/uuid
 # github.com/gorilla/handlers v1.5.1
 github.com/gorilla/handlers
 # github.com/gorilla/mux v1.8.0
@@ -473,6 +479,7 @@ github.com/pelletier/go-toml
 # github.com/petermattis/goid v0.0.0-20180202154549-b0b1615b78e5
 github.com/petermattis/goid
 # github.com/pkg/errors v0.9.1
+## explicit
 github.com/pkg/errors
 # github.com/pmezard/go-difflib v1.0.0
 github.com/pmezard/go-difflib/difflib
