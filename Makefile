@@ -1,8 +1,8 @@
 docker/develop/build:
-	docker build -t obada/fullcore:develop -f docker/Dockerfile .
+	docker build -t obada/cored:develop -f docker/Dockerfile .
 
 docker/develop/publish:
-	docker push obada/fullcore:develop
+	docker push obada/cored:develop
 
 docker/develop: docker/develop/build docker/develop/publish
 
