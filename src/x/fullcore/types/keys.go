@@ -14,13 +14,7 @@ const (
 	QuerierRoute = ModuleName
 
 	// MemStoreKey defines the in-memory store key
-	MemStoreKey = "mem_core"
-
-	// ObitKey defines the obit value store key
-	ObitKey = "Obit-value-"
-
-	// ObitCountKey defines the obit count store key
-	ObitCountKey = "Obit-count-"
+	MemStoreKey = "mem_fullcore"
 )
 
 func KeyPrefix(p string) []byte {

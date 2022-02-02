@@ -1,0 +1,12 @@
+syntax = "proto3";
+package obadafoundation.fullcore.fullcore;
+
+import "gogoproto/gogo.proto";
+
+option go_package = "github.com/obada-foundation/fullcore/x/fullcore/types";
+
+// Params defines the parameters for the module.
+message Params {
+  option (gogoproto.goproto_stringer) = false;
+  
+}

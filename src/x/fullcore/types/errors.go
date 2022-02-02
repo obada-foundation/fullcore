@@ -8,6 +8,5 @@ import (
 
 // x/fullcore module sentinel errors
 var (
-	ErrSample           = sdkerrors.Register(ModuleName, 1100, "sample error")
-	ErrInvalidSignature = sdkerrors.Register(ModuleName, 1101, "invalid registry signature")
+	ErrSample = sdkerrors.Register(ModuleName, 1100, "sample error")
 )

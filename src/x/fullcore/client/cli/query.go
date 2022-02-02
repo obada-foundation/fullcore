@@ -15,7 +15,7 @@ import (
 
 // GetQueryCmd returns the cli query commands for this module
 func GetQueryCmd(queryRoute string) *cobra.Command {
-	// Group core queries under a subcommand
+	// Group fullcore queries under a subcommand
 	cmd := &cobra.Command{
 		Use:                        types.ModuleName,
 		Short:                      fmt.Sprintf("Querying commands for the %s module", types.ModuleName),
@@ -24,9 +24,7 @@ func GetQueryCmd(queryRoute string) *cobra.Command {
 		RunE:                       client.ValidateCmd,
 	}
 
-	cmd.AddCommand(CmdShowObit())
-	cmd.AddCommand(CmdListObits())
-
+	cmd.AddCommand(CmdQueryParams())
 	// this line is used by starport scaffolding # 1
 
 	return cmd
