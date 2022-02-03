@@ -7,15 +7,18 @@ option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
 
 // Msg defines the Msg service.
 service Msg {
+      // MintObit mint a new OBADA NFT (Obit)
       rpc MintObit(MsgMintObit) returns (MsgMintObitResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
+// MsgMintObit handles obit information
 message MsgMintObit {
   string creator = 1;
   string did = 2;
 }
 
+// MsgMintObitResponse success minting response
 message MsgMintObitResponse {
   string did = 1;
 }

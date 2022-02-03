@@ -19965,6 +19965,7 @@ definitions:
     properties:
       did:
         type: string
+    title: MsgMintObitResponse success minting response
   obadafoundation.fullcore.obit.Params:
     type: object
     description: Params defines the parameters for the module.

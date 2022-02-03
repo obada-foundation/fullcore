@@ -402,6 +402,8 @@ github.com/grpc-ecosystem/go-grpc-middleware/recovery
 github.com/grpc-ecosystem/grpc-gateway/internal
 github.com/grpc-ecosystem/grpc-gateway/runtime
 github.com/grpc-ecosystem/grpc-gateway/utilities
+# github.com/grpc-ecosystem/grpc-gateway/v2 v2.7.3
+## explicit
 # github.com/gsterjov/go-libsecret v0.0.0-20161001094733-a6f4afe4910c
 github.com/gsterjov/go-libsecret
 # github.com/gtank/merlin v0.1.1
@@ -489,6 +491,7 @@ github.com/rakyll/statik/fs
 # github.com/rcrowley/go-metrics v0.0.0-20200313005456-10cdbea86bc0
 github.com/rcrowley/go-metrics
 # github.com/regen-network/cosmos-proto v0.3.1
+## explicit
 github.com/regen-network/cosmos-proto
 # github.com/rs/cors v1.7.0
 github.com/rs/cors

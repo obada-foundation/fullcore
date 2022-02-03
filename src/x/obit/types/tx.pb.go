@@ -27,6 +27,7 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+// MsgMintObit handles obit information
 type MsgMintObit struct {
 	Creator string `protobuf:"bytes,1,opt,name=creator,proto3" json:"creator,omitempty"`
 	Did     string `protobuf:"bytes,2,opt,name=did,proto3" json:"did,omitempty"`
@@ -79,6 +80,7 @@ func (m *MsgMintObit) GetDid() string {
 	return ""
 }
 
+// MsgMintObitResponse success minting response
 type MsgMintObitResponse struct {
 	Did string `protobuf:"bytes,1,opt,name=did,proto3" json:"did,omitempty"`
 }
@@ -161,6 +163,7 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
+	// MintObit mint a new OBADA NFT (Obit)
 	MintObit(ctx context.Context, in *MsgMintObit, opts ...grpc.CallOption) (*MsgMintObitResponse, error)
 }
 
@@ -183,6 +186,7 @@ func (c *msgClient) MintObit(ctx context.Context, in *MsgMintObit, opts ...grpc.
 
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
+	// MintObit mint a new OBADA NFT (Obit)
 	MintObit(context.Context, *MsgMintObit) (*MsgMintObitResponse, error)
 }
 
