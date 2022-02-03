@@ -1,0 +1,22 @@
+syntax = "proto3";
+package obadafoundation.fullcore.obit;
+
+// this line is used by starport scaffolding # proto/tx/import
+
+option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
+
+// Msg defines the Msg service.
+service Msg {
+      rpc MintObit(MsgMintObit) returns (MsgMintObitResponse);
+// this line is used by starport scaffolding # proto/tx/rpc
+}
+
+message MsgMintObit {
+  string creator = 1;
+  string did = 2;
+}
+
+message MsgMintObitResponse {
+}
+
+// this line is used by starport scaffolding # proto/tx/message

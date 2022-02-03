@@ -80,6 +80,9 @@ import (
 	ibcporttypes "github.com/cosmos/ibc-go/v2/modules/core/05-port/types"
 	ibchost "github.com/cosmos/ibc-go/v2/modules/core/24-host"
 	ibckeeper "github.com/cosmos/ibc-go/v2/modules/core/keeper"
+	"github.com/obada-foundation/fullcore/x/nft"
+	nftkeeper "github.com/obada-foundation/fullcore/x/nft/keeper"
+	nftmodule "github.com/obada-foundation/fullcore/x/nft/module"
 	"github.com/spf13/cast"
 	abci "github.com/tendermint/tendermint/abci/types"
 	tmjson "github.com/tendermint/tendermint/libs/json"
@@ -91,10 +94,9 @@ import (
 	"github.com/tendermint/starport/starport/pkg/openapiconsole"
 
 	"github.com/obada-foundation/fullcore/docs"
-
-	fullcoremodule "github.com/obada-foundation/fullcore/x/fullcore"
-	fullcoremodulekeeper "github.com/obada-foundation/fullcore/x/fullcore/keeper"
-	fullcoremoduletypes "github.com/obada-foundation/fullcore/x/fullcore/types"
+	obitmodule "github.com/obada-foundation/fullcore/x/obit"
+	obitmodulekeeper "github.com/obada-foundation/fullcore/x/obit/keeper"
+	obitmoduletypes "github.com/obada-foundation/fullcore/x/obit/types"
 	// this line is used by starport scaffolding # stargate/app/moduleImport
 )
 
@@ -147,7 +149,8 @@ var (
 		evidence.AppModuleBasic{},
 		transfer.AppModuleBasic{},
 		vesting.AppModuleBasic{},
-		fullcoremodule.AppModuleBasic{},
+		nftmodule.AppModuleBasic{},
+		obitmodule.AppModuleBasic{},
 		// this line is used by starport scaffolding # stargate/app/moduleBasic
 	)
 
@@ -160,6 +163,7 @@ var (
 		stakingtypes.NotBondedPoolName: {authtypes.Burner, authtypes.Staking},
 		govtypes.ModuleName:            {authtypes.Burner},
 		ibctransfertypes.ModuleName:    {authtypes.Minter, authtypes.Burner},
+		nft.ModuleName:                 nil,
 		// this line is used by starport scaffolding # stargate/app/maccPerms
 	}
 )
@@ -212,12 +216,13 @@ type App struct {
 	EvidenceKeeper   evidencekeeper.Keeper
 	TransferKeeper   ibctransferkeeper.Keeper
 	FeeGrantKeeper   feegrantkeeper.Keeper
+	NftKeeper        nftkeeper.Keeper
 
 	// make scoped keepers public for test purposes
 	ScopedIBCKeeper      capabilitykeeper.ScopedKeeper
 	ScopedTransferKeeper capabilitykeeper.ScopedKeeper
 
-	FullcoreKeeper fullcoremodulekeeper.Keeper
+	ObitKeeper obitmodulekeeper.Keeper
 	// this line is used by starport scaffolding # stargate/app/keeperDeclaration
 
 	// mm is the module manager
@@ -254,7 +259,7 @@ func New(
 		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
-		fullcoremoduletypes.StoreKey,
+		obitmoduletypes.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -353,14 +358,15 @@ func New(
 		&stakingKeeper, govRouter,
 	)
 
-	app.FullcoreKeeper = *fullcoremodulekeeper.NewKeeper(
+	app.ObitKeeper = *obitmodulekeeper.NewKeeper(
 		appCodec,
-		keys[fullcoremoduletypes.StoreKey],
-		keys[fullcoremoduletypes.MemStoreKey],
-		app.GetSubspace(fullcoremoduletypes.ModuleName),
-	)
-	fullcoreModule := fullcoremodule.NewAppModule(appCodec, app.FullcoreKeeper, app.AccountKeeper, app.BankKeeper)
+		keys[obitmoduletypes.StoreKey],
+		keys[obitmoduletypes.MemStoreKey],
+		app.GetSubspace(obitmoduletypes.ModuleName),
 
+		app.NftKeeper,
+	)
+	obitModule := obitmodule.NewAppModule(appCodec, app.ObitKeeper, app.AccountKeeper, app.BankKeeper)
 	// this line is used by starport scaffolding # stargate/app/keeperDefinition
 
 	// Create static IBC router, add transfer route, then set and seal it
@@ -398,8 +404,9 @@ func New(
 		evidence.NewAppModule(app.EvidenceKeeper),
 		ibc.NewAppModule(app.IBCKeeper),
 		params.NewAppModule(app.ParamsKeeper),
+		nftmodule.NewAppModule(appCodec, app.NftKeeper, app.AccountKeeper, app.BankKeeper, app.interfaceRegistry),
 		transferModule,
-		fullcoreModule,
+		obitModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 
@@ -409,11 +416,11 @@ func New(
 	// NOTE: staking module is required if HistoricalEntries param > 0
 	app.mm.SetOrderBeginBlockers(
 		upgradetypes.ModuleName, capabilitytypes.ModuleName, minttypes.ModuleName, distrtypes.ModuleName, slashingtypes.ModuleName,
-		evidencetypes.ModuleName, stakingtypes.ModuleName, ibchost.ModuleName,
+		evidencetypes.ModuleName, stakingtypes.ModuleName, ibchost.ModuleName, nft.ModuleName,
 		feegrant.ModuleName,
 	)
 
-	app.mm.SetOrderEndBlockers(crisistypes.ModuleName, govtypes.ModuleName, stakingtypes.ModuleName)
+	app.mm.SetOrderEndBlockers(crisistypes.ModuleName, govtypes.ModuleName, stakingtypes.ModuleName, nft.ModuleName)
 
 	// NOTE: The genutils module must occur after staking so that pools are
 	// properly initialized with tokens from genesis accounts.
@@ -433,8 +440,9 @@ func New(
 		ibchost.ModuleName,
 		genutiltypes.ModuleName,
 		evidencetypes.ModuleName,
+		nft.ModuleName,
 		ibctransfertypes.ModuleName,
-		fullcoremoduletypes.ModuleName,
+		obitmoduletypes.ModuleName,
 		// this line is used by starport scaffolding # stargate/app/initGenesis
 	)
 
@@ -457,7 +465,7 @@ func New(
 		evidence.NewAppModule(app.EvidenceKeeper),
 		ibc.NewAppModule(app.IBCKeeper),
 		transferModule,
-		fullcoreModule,
+		obitModule,
 		// this line is used by starport scaffolding # stargate/app/appModule
 	)
 	app.sm.RegisterStoreDecoders()
@@ -645,7 +653,7 @@ func initParamsKeeper(appCodec codec.BinaryCodec, legacyAmino *codec.LegacyAmino
 	paramsKeeper.Subspace(crisistypes.ModuleName)
 	paramsKeeper.Subspace(ibctransfertypes.ModuleName)
 	paramsKeeper.Subspace(ibchost.ModuleName)
-	paramsKeeper.Subspace(fullcoremoduletypes.ModuleName)
+	paramsKeeper.Subspace(obitmoduletypes.ModuleName)
 	// this line is used by starport scaffolding # stargate/app/paramSubspace
 
 	return paramsKeeper
