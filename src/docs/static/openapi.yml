@@ -19962,6 +19962,9 @@ definitions:
       freezing clients
   obadafoundation.fullcore.obit.MsgMintObitResponse:
     type: object
+    properties:
+      did:
+        type: string
   obadafoundation.fullcore.obit.Params:
     type: object
     description: Params defines the parameters for the module.
