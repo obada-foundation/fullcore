@@ -9,10 +9,14 @@ const TypeMsgMintObit = "mint_obit"
 
 var _ sdk.Msg = &MsgMintObit{}
 
-func NewMsgMintObit(creator string, did string) *MsgMintObit {
+func NewMsgMintObit(creator, serialNumberHash, manufacturer, pn, ta, ownerDID string) *MsgMintObit {
 	return &MsgMintObit{
-		Creator: creator,
-		Did:     did,
+		Creator:          creator,
+		SerialNumberHash: serialNumberHash,
+		Manufacturer:     manufacturer,
+		PartNumber:       pn,
+		TrustAnchor:      ta,
+		OwnerDid:         ownerDID,
 	}
 }
 

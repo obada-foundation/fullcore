@@ -100,6 +100,7 @@ github.com/cosmos/cosmos-sdk/store/transient
 github.com/cosmos/cosmos-sdk/store/types
 github.com/cosmos/cosmos-sdk/telemetry
 github.com/cosmos/cosmos-sdk/testutil
+github.com/cosmos/cosmos-sdk/testutil/cli
 github.com/cosmos/cosmos-sdk/testutil/network
 github.com/cosmos/cosmos-sdk/testutil/testdata
 github.com/cosmos/cosmos-sdk/types
@@ -353,6 +354,13 @@ github.com/go-kit/kit/metrics/internal/lv
 github.com/go-kit/kit/metrics/prometheus
 # github.com/go-logfmt/logfmt v0.5.0
 github.com/go-logfmt/logfmt
+# github.com/go-playground/locales v0.13.0
+github.com/go-playground/locales
+github.com/go-playground/locales/currency
+# github.com/go-playground/universal-translator v0.17.0
+github.com/go-playground/universal-translator
+# github.com/go-playground/validator/v10 v10.6.1
+github.com/go-playground/validator/v10
 # github.com/godbus/dbus v0.0.0-20190726142602-4481cbc300e2
 github.com/godbus/dbus
 # github.com/gogo/gateway v1.1.0
@@ -439,6 +447,8 @@ github.com/jmhodges/levigo
 github.com/keybase/go-keychain
 # github.com/klauspost/compress v1.11.13
 github.com/klauspost/compress/flate
+# github.com/leodido/go-urn v1.2.0
+github.com/leodido/go-urn
 # github.com/lib/pq v1.10.2
 github.com/lib/pq
 github.com/lib/pq/oid
@@ -461,6 +471,12 @@ github.com/mitchellh/go-homedir
 github.com/mitchellh/mapstructure
 # github.com/mtibben/percent v0.2.1
 github.com/mtibben/percent
+# github.com/obada-foundation/sdkgo v0.0.0-20220115154325-7568659879be
+## explicit
+github.com/obada-foundation/sdkgo
+github.com/obada-foundation/sdkgo/base58
+github.com/obada-foundation/sdkgo/hash
+github.com/obada-foundation/sdkgo/properties
 # github.com/pelletier/go-toml v1.9.4
 github.com/pelletier/go-toml
 # github.com/petermattis/goid v0.0.0-20180202154549-b0b1615b78e5
@@ -673,6 +689,7 @@ golang.org/x/crypto/pbkdf2
 golang.org/x/crypto/poly1305
 golang.org/x/crypto/ripemd160
 golang.org/x/crypto/salsa20/salsa
+golang.org/x/crypto/sha3
 golang.org/x/crypto/ssh/terminal
 # golang.org/x/net v0.0.0-20210903162142-ad29c8ab022f
 golang.org/x/net/context
@@ -692,6 +709,10 @@ golang.org/x/sys/windows
 # golang.org/x/term v0.0.0-20201210144234-2321bbc49cbf
 golang.org/x/term
 # golang.org/x/text v0.3.6
+golang.org/x/text/internal/language
+golang.org/x/text/internal/language/compact
+golang.org/x/text/internal/tag
+golang.org/x/text/language
 golang.org/x/text/secure/bidirule
 golang.org/x/text/transform
 golang.org/x/text/unicode/bidi
