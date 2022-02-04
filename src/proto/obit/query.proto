@@ -6,6 +6,7 @@ import "google/api/annotations.proto";
 import "cosmos/base/query/v1beta1/pagination.proto";
 import "obit/params.proto";
 import "obit/ta.proto";
+import "obit/nft.proto";
 // this line is used by starport scaffolding # 1
 
 option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
@@ -17,14 +18,18 @@ service Query {
     option (google.api.http).get = "/obadafoundation/fullcore/obit/params";
   }
   // Queries a Ta by id.
-	rpc Ta(QueryGetTaRequest) returns (QueryGetTaResponse) {
-		option (google.api.http).get = "/obada-foundation/fullcore/obit/ta/{id}";
-	}
+  rpc Ta(QueryGetTaRequest) returns (QueryGetTaResponse) {
+    option (google.api.http).get = "/obada-foundation/fullcore/obit/ta/{id}";
+  }
 
-	// Queries a list of Ta items.
-	rpc TaAll(QueryAllTaRequest) returns (QueryAllTaResponse) {
-		option (google.api.http).get = "/obada-foundation/fullcore/obit/ta";
-	}
+  // Queries a list of Ta items.
+  rpc TaAll(QueryAllTaRequest) returns (QueryAllTaResponse) {
+    option (google.api.http).get = "/obada-foundation/fullcore/obit/ta";
+  }
+
+  rpc GetAllNftByOwner(QueryGetAllNftByOwnerRequest) returns (QueryGetAllNftByOwnerResponse) {
+    option (google.api.http).get = "/obada-foundation/fullcore/obit/{owner}";
+  }
 
 // this line is used by starport scaffolding # 2
 }
@@ -36,6 +41,14 @@ message QueryParamsRequest {}
 message QueryParamsResponse {
   // params holds all the parameters of this module.
   Params params = 1 [(gogoproto.nullable) = false];
+}
+
+message QueryGetAllNftByOwnerRequest {
+  string owner = 1;
+}
+
+message QueryGetAllNftByOwnerResponse {
+        repeated Nft Nft = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryGetTaRequest {

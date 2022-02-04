@@ -1,7 +1,8 @@
 import { Reader, Writer } from "protobufjs/minimal";
 import { Params } from "../obit/params";
-import { Ta } from "../obit/ta";
 import { PageRequest, PageResponse } from "../cosmos/base/query/v1beta1/pagination";
+import { Nft } from "../obit/nft";
+import { Ta } from "../obit/ta";
 export declare const protobufPackage = "obadafoundation.fullcore.obit";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {
@@ -10,6 +11,14 @@ export interface QueryParamsRequest {
 export interface QueryParamsResponse {
     /** params holds all the parameters of this module. */
     params: Params | undefined;
+}
+export interface QueryGetAllNftByOwnerRequest {
+    owner: string;
+    pagination: PageRequest | undefined;
+}
+export interface QueryGetAllNftByOwnerResponse {
+    Nft: Nft[];
+    pagination: PageResponse | undefined;
 }
 export interface QueryGetTaRequest {
     id: number;
@@ -37,6 +46,20 @@ export declare const QueryParamsResponse: {
     fromJSON(object: any): QueryParamsResponse;
     toJSON(message: QueryParamsResponse): unknown;
     fromPartial(object: DeepPartial<QueryParamsResponse>): QueryParamsResponse;
+};
+export declare const QueryGetAllNftByOwnerRequest: {
+    encode(message: QueryGetAllNftByOwnerRequest, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): QueryGetAllNftByOwnerRequest;
+    fromJSON(object: any): QueryGetAllNftByOwnerRequest;
+    toJSON(message: QueryGetAllNftByOwnerRequest): unknown;
+    fromPartial(object: DeepPartial<QueryGetAllNftByOwnerRequest>): QueryGetAllNftByOwnerRequest;
+};
+export declare const QueryGetAllNftByOwnerResponse: {
+    encode(message: QueryGetAllNftByOwnerResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): QueryGetAllNftByOwnerResponse;
+    fromJSON(object: any): QueryGetAllNftByOwnerResponse;
+    toJSON(message: QueryGetAllNftByOwnerResponse): unknown;
+    fromPartial(object: DeepPartial<QueryGetAllNftByOwnerResponse>): QueryGetAllNftByOwnerResponse;
 };
 export declare const QueryGetTaRequest: {
     encode(message: QueryGetTaRequest, writer?: Writer): Writer;
@@ -74,6 +97,7 @@ export interface Query {
     Ta(request: QueryGetTaRequest): Promise<QueryGetTaResponse>;
     /** Queries a list of Ta items. */
     TaAll(request: QueryAllTaRequest): Promise<QueryAllTaResponse>;
+    GetAllNftByOwner(request: QueryGetAllNftByOwnerRequest): Promise<QueryGetAllNftByOwnerResponse>;
 }
 export declare class QueryClientImpl implements Query {
     private readonly rpc;
@@ -81,6 +105,7 @@ export declare class QueryClientImpl implements Query {
     Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
     Ta(request: QueryGetTaRequest): Promise<QueryGetTaResponse>;
     TaAll(request: QueryAllTaRequest): Promise<QueryAllTaResponse>;
+    GetAllNftByOwner(request: QueryGetAllNftByOwnerRequest): Promise<QueryGetAllNftByOwnerResponse>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

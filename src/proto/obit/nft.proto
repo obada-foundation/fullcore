@@ -1,0 +1,12 @@
+syntax = "proto3";
+package obadafoundation.fullcore.obit;
+
+option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
+
+message NFT {
+  string class_id           = 1;
+  string id                 = 2;
+  string uri                = 3;
+  string uri_hash           = 4;
+  google.protobuf.Any data  = 10;
+}

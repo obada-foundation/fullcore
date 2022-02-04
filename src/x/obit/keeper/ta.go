@@ -93,6 +93,10 @@ func (k Keeper) GetAllTa(ctx sdk.Context) (list []types.Ta) {
 	return
 }
 
+func (k Keeper) CheckCompliance(trustAnchor, token string) (bool, error) {
+	return true, nil
+}
+
 // GetTaIDBytes returns the byte representation of the ID
 func GetTaIDBytes(id uint64) []byte {
 	bz := make([]byte, 8)

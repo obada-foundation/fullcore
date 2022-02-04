@@ -16,7 +16,7 @@ func CmdMintObit() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "mint-obit [serial-number-hash] [manufacturer] [pn] [ta] [owner-did]",
 		Short: "Broadcast message mint-obit",
-		Args:  cobra.ExactArgs(1),
+		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argSnh := args[0]
 			argMan := args[1]

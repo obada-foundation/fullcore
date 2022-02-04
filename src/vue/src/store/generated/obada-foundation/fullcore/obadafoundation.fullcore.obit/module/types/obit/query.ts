@@ -2,11 +2,12 @@
 import { Reader, util, configure, Writer } from "protobufjs/minimal";
 import * as Long from "long";
 import { Params } from "../obit/params";
-import { Ta } from "../obit/ta";
 import {
   PageRequest,
   PageResponse,
 } from "../cosmos/base/query/v1beta1/pagination";
+import { Nft } from "../obit/nft";
+import { Ta } from "../obit/ta";
 
 export const protobufPackage = "obadafoundation.fullcore.obit";
 
@@ -17,6 +18,16 @@ export interface QueryParamsRequest {}
 export interface QueryParamsResponse {
   /** params holds all the parameters of this module. */
   params: Params | undefined;
+}
+
+export interface QueryGetAllNftByOwnerRequest {
+  owner: string;
+  pagination: PageRequest | undefined;
+}
+
+export interface QueryGetAllNftByOwnerResponse {
+  Nft: Nft[];
+  pagination: PageResponse | undefined;
 }
 
 export interface QueryGetTaRequest {
@@ -128,6 +139,194 @@ export const QueryParamsResponse = {
       message.params = Params.fromPartial(object.params);
     } else {
       message.params = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetAllNftByOwnerRequest: object = { owner: "" };
+
+export const QueryGetAllNftByOwnerRequest = {
+  encode(
+    message: QueryGetAllNftByOwnerRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.owner !== "") {
+      writer.uint32(10).string(message.owner);
+    }
+    if (message.pagination !== undefined) {
+      PageRequest.encode(message.pagination, writer.uint32(18).fork()).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetAllNftByOwnerRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetAllNftByOwnerRequest,
+    } as QueryGetAllNftByOwnerRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.owner = reader.string();
+          break;
+        case 2:
+          message.pagination = PageRequest.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetAllNftByOwnerRequest {
+    const message = {
+      ...baseQueryGetAllNftByOwnerRequest,
+    } as QueryGetAllNftByOwnerRequest;
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = String(object.owner);
+    } else {
+      message.owner = "";
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetAllNftByOwnerRequest): unknown {
+    const obj: any = {};
+    message.owner !== undefined && (obj.owner = message.owner);
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageRequest.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetAllNftByOwnerRequest>
+  ): QueryGetAllNftByOwnerRequest {
+    const message = {
+      ...baseQueryGetAllNftByOwnerRequest,
+    } as QueryGetAllNftByOwnerRequest;
+    if (object.owner !== undefined && object.owner !== null) {
+      message.owner = object.owner;
+    } else {
+      message.owner = "";
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageRequest.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+};
+
+const baseQueryGetAllNftByOwnerResponse: object = {};
+
+export const QueryGetAllNftByOwnerResponse = {
+  encode(
+    message: QueryGetAllNftByOwnerResponse,
+    writer: Writer = Writer.create()
+  ): Writer {
+    for (const v of message.Nft) {
+      Nft.encode(v!, writer.uint32(10).fork()).ldelim();
+    }
+    if (message.pagination !== undefined) {
+      PageResponse.encode(
+        message.pagination,
+        writer.uint32(18).fork()
+      ).ldelim();
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetAllNftByOwnerResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetAllNftByOwnerResponse,
+    } as QueryGetAllNftByOwnerResponse;
+    message.Nft = [];
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.Nft.push(Nft.decode(reader, reader.uint32()));
+          break;
+        case 2:
+          message.pagination = PageResponse.decode(reader, reader.uint32());
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetAllNftByOwnerResponse {
+    const message = {
+      ...baseQueryGetAllNftByOwnerResponse,
+    } as QueryGetAllNftByOwnerResponse;
+    message.Nft = [];
+    if (object.Nft !== undefined && object.Nft !== null) {
+      for (const e of object.Nft) {
+        message.Nft.push(Nft.fromJSON(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromJSON(object.pagination);
+    } else {
+      message.pagination = undefined;
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetAllNftByOwnerResponse): unknown {
+    const obj: any = {};
+    if (message.Nft) {
+      obj.Nft = message.Nft.map((e) => (e ? Nft.toJSON(e) : undefined));
+    } else {
+      obj.Nft = [];
+    }
+    message.pagination !== undefined &&
+      (obj.pagination = message.pagination
+        ? PageResponse.toJSON(message.pagination)
+        : undefined);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetAllNftByOwnerResponse>
+  ): QueryGetAllNftByOwnerResponse {
+    const message = {
+      ...baseQueryGetAllNftByOwnerResponse,
+    } as QueryGetAllNftByOwnerResponse;
+    message.Nft = [];
+    if (object.Nft !== undefined && object.Nft !== null) {
+      for (const e of object.Nft) {
+        message.Nft.push(Nft.fromPartial(e));
+      }
+    }
+    if (object.pagination !== undefined && object.pagination !== null) {
+      message.pagination = PageResponse.fromPartial(object.pagination);
+    } else {
+      message.pagination = undefined;
     }
     return message;
   },
@@ -401,6 +600,9 @@ export interface Query {
   Ta(request: QueryGetTaRequest): Promise<QueryGetTaResponse>;
   /** Queries a list of Ta items. */
   TaAll(request: QueryAllTaRequest): Promise<QueryAllTaResponse>;
+  GetAllNftByOwner(
+    request: QueryGetAllNftByOwnerRequest
+  ): Promise<QueryGetAllNftByOwnerResponse>;
 }
 
 export class QueryClientImpl implements Query {
@@ -436,6 +638,20 @@ export class QueryClientImpl implements Query {
       data
     );
     return promise.then((data) => QueryAllTaResponse.decode(new Reader(data)));
+  }
+
+  GetAllNftByOwner(
+    request: QueryGetAllNftByOwnerRequest
+  ): Promise<QueryGetAllNftByOwnerResponse> {
+    const data = QueryGetAllNftByOwnerRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "obadafoundation.fullcore.obit.Query",
+      "GetAllNftByOwner",
+      data
+    );
+    return promise.then((data) =>
+      QueryGetAllNftByOwnerResponse.decode(new Reader(data))
+    );
   }
 }
 

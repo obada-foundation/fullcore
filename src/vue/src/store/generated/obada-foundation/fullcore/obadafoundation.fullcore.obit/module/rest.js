@@ -169,6 +169,20 @@ export class Api extends HttpClient {
          * No description
          *
          * @tags Query
+         * @name QueryGetAllNftByOwner
+         * @request GET:/obada-foundation/fullcore/obit/{owner}
+         */
+        this.queryGetAllNftByOwner = (owner, query, params = {}) => this.request({
+            path: `/obada-foundation/fullcore/obit/${owner}`,
+            method: "GET",
+            query: query,
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
          * @name QueryParams
          * @summary Parameters queries the parameters of the module.
          * @request GET:/obadafoundation/fullcore/obit/params

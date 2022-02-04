@@ -2,6 +2,7 @@ package keeper
 
 import (
 	"context"
+	"errors"
 	"log"
 	"os"
 
@@ -25,12 +26,32 @@ func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*typ
 		return resp, err
 	}
 
-	obt, err := osdk.NewObit(obadasdk.ObitDto{})
+	// Validate trust anchor
+	if len(msg.OwnerDid) > 0 {
+		isCompliant, err := k.CheckCompliance(msg.TrustAnchor, msg.OwnerDid)
+		if err != nil {
+			return resp, err
+		}
+
+		if !isCompliant {
+			return resp, errors.New("owner is not compliant")
+		}
+	}
+
+	obt, err := osdk.NewObit(obadasdk.ObitDto{
+		ObitIDDto: obadasdk.ObitIDDto{
+			SerialNumberHash: msg.SerialNumberHash,
+			Manufacturer:     msg.Manufacturer,
+			PartNumber:       msg.PartNumber,
+		},
+		OwnerDid: msg.OwnerDid,
+	})
 
 	if err != nil {
 		return resp, err
 	}
 
+	// Find a right place for provisioning NFT class
 	if !k.nftKeeper.HasClass(ctx, "OBT") {
 		k.nftKeeper.SaveClass(ctx, nft.Class{
 			Id:     "OBT",
@@ -40,9 +61,13 @@ func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*typ
 		})
 	}
 
+	did := obt.GetObitID()
+
+	// check URI hash
+
 	nftToken := nft.NFT{
 		ClassId: "OBT",
-		Id:      obt.GetObdDID().GetValue(),
+		Id:      did.GetDid(),
 		Uri:     "http://google.com",
 		UriHash: "",
 		Data:    &codectypes.Any{},

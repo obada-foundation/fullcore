@@ -7,12 +7,29 @@ export interface ObitMsgMintObitResponse {
     did?: string;
 }
 export declare type ObitMsgUpdateTaResponse = object;
+export interface ObitNft {
+    /** @format uint64 */
+    did?: string;
+}
 /**
  * Params defines the parameters for the module.
  */
 export declare type ObitParams = object;
 export interface ObitQueryAllTaResponse {
     Ta?: ObitTa[];
+    /**
+     * PageResponse is to be embedded in gRPC response messages where the
+     * corresponding request message has used PageRequest.
+     *
+     *  message SomeResponse {
+     *          repeated Bar results = 1;
+     *          PageResponse page = 2;
+     *  }
+     */
+    pagination?: V1Beta1PageResponse;
+}
+export interface ObitQueryGetAllNftByOwnerResponse {
+    Nft?: ObitNft[];
     /**
      * PageResponse is to be embedded in gRPC response messages where the
      * corresponding request message has used PageRequest.
@@ -188,6 +205,20 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * @request GET:/obada-foundation/fullcore/obit/ta/{id}
      */
     queryTa: (id: string, params?: RequestParams) => Promise<HttpResponse<ObitQueryGetTaResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryGetAllNftByOwner
+     * @request GET:/obada-foundation/fullcore/obit/{owner}
+     */
+    queryGetAllNftByOwner: (owner: string, query?: {
+        "pagination.key"?: string;
+        "pagination.offset"?: string;
+        "pagination.limit"?: string;
+        "pagination.countTotal"?: boolean;
+        "pagination.reverse"?: boolean;
+    }, params?: RequestParams) => Promise<HttpResponse<ObitQueryGetAllNftByOwnerResponse, RpcStatus>>;
     /**
      * No description
      *
