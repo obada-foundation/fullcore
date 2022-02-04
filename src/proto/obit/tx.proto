@@ -1,6 +1,7 @@
 syntax = "proto3";
 package obadafoundation.fullcore.obit;
 
+import "obit/ta.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
@@ -9,18 +10,52 @@ option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
 service Msg {
       // MintObit mint a new OBADA NFT (Obit)
       rpc MintObit(MsgMintObit) returns (MsgMintObitResponse);
+rpc CreateTa(MsgCreateTa) returns (MsgCreateTaResponse);
+  rpc UpdateTa(MsgUpdateTa) returns (MsgUpdateTaResponse);
+  rpc DeleteTa(MsgDeleteTa) returns (MsgDeleteTaResponse);
 // this line is used by starport scaffolding # proto/tx/rpc
 }
 
 // MsgMintObit handles obit information
 message MsgMintObit {
   string creator = 1;
-  string did = 2;
+  string serial_number_hash = 2;
+  string manufacturer = 3;
+  string part_number = 4;
+  string trust_anchor = 5;
+  string owner_did = 6;
+  
 }
 
 // MsgMintObitResponse success minting response
 message MsgMintObitResponse {
   string did = 1;
 }
+
+message MsgCreateTa {
+  string creator = 1;
+  string title = 2;
+  string pubkey = 3;
+}
+
+message MsgCreateTaResponse {
+  uint64 id = 1;
+}
+
+message MsgUpdateTa {
+  string creator = 1;
+  uint64 id = 2;
+  string title = 3;
+  string pubkey = 4;
+}
+
+message MsgUpdateTaResponse {}
+
+message MsgDeleteTa {
+  string creator = 1;
+  uint64 id = 2;
+}
+
+message MsgDeleteTaResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message

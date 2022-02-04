@@ -140,6 +140,35 @@ export class Api extends HttpClient {
          * No description
          *
          * @tags Query
+         * @name QueryTaAll
+         * @summary Queries a list of Ta items.
+         * @request GET:/obada-foundation/fullcore/obit/ta
+         */
+        this.queryTaAll = (query, params = {}) => this.request({
+            path: `/obada-foundation/fullcore/obit/ta`,
+            method: "GET",
+            query: query,
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryTa
+         * @summary Queries a Ta by id.
+         * @request GET:/obada-foundation/fullcore/obit/ta/{id}
+         */
+        this.queryTa = (id, params = {}) => this.request({
+            path: `/obada-foundation/fullcore/obit/ta/${id}`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
          * @name QueryParams
          * @summary Parameters queries the parameters of the module.
          * @request GET:/obadafoundation/fullcore/obit/params

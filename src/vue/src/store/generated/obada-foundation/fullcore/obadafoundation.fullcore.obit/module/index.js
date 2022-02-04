@@ -2,8 +2,14 @@
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
+import { MsgUpdateTa } from "./types/obit/tx";
+import { MsgDeleteTa } from "./types/obit/tx";
+import { MsgCreateTa } from "./types/obit/tx";
 import { MsgMintObit } from "./types/obit/tx";
 const types = [
+    ["/obadafoundation.fullcore.obit.MsgUpdateTa", MsgUpdateTa],
+    ["/obadafoundation.fullcore.obit.MsgDeleteTa", MsgDeleteTa],
+    ["/obadafoundation.fullcore.obit.MsgCreateTa", MsgCreateTa],
     ["/obadafoundation.fullcore.obit.MsgMintObit", MsgMintObit],
 ];
 export const MissingWalletError = new Error("wallet is required");
@@ -25,6 +31,9 @@ const txClient = async (wallet, { addr: addr } = { addr: "http://localhost:26657
     const { address } = (await wallet.getAccounts())[0];
     return {
         signAndBroadcast: (msgs, { fee, memo } = { fee: defaultFee, memo: "" }) => client.signAndBroadcast(address, msgs, fee, memo),
+        msgUpdateTa: (data) => ({ typeUrl: "/obadafoundation.fullcore.obit.MsgUpdateTa", value: MsgUpdateTa.fromPartial(data) }),
+        msgDeleteTa: (data) => ({ typeUrl: "/obadafoundation.fullcore.obit.MsgDeleteTa", value: MsgDeleteTa.fromPartial(data) }),
+        msgCreateTa: (data) => ({ typeUrl: "/obadafoundation.fullcore.obit.MsgCreateTa", value: MsgCreateTa.fromPartial(data) }),
         msgMintObit: (data) => ({ typeUrl: "/obadafoundation.fullcore.obit.MsgMintObit", value: MsgMintObit.fromPartial(data) }),
     };
 };

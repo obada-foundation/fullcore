@@ -259,7 +259,7 @@ func New(
 		minttypes.StoreKey, distrtypes.StoreKey, slashingtypes.StoreKey,
 		govtypes.StoreKey, paramstypes.StoreKey, ibchost.StoreKey, upgradetypes.StoreKey, feegrant.StoreKey,
 		evidencetypes.StoreKey, ibctransfertypes.StoreKey, capabilitytypes.StoreKey,
-		obitmoduletypes.StoreKey,
+		obitmoduletypes.StoreKey, nft.StoreKey,
 		// this line is used by starport scaffolding # stargate/app/storeKey
 	)
 	tkeys := sdk.NewTransientStoreKeys(paramstypes.TStoreKey)
@@ -323,6 +323,8 @@ func New(
 		stakingtypes.NewMultiStakingHooks(app.DistrKeeper.Hooks(), app.SlashingKeeper.Hooks()),
 	)
 
+	//	app.NftKeeperNftKeeper = nftkeeper.NewKeeper(key types.StoreKey, cdc codec.BinaryCodec, ak nft.AccountKeeper, bk nft.BankKeeper)
+
 	// ... other modules keepers
 
 	// Create IBC Keeper
@@ -357,6 +359,8 @@ func New(
 		appCodec, keys[govtypes.StoreKey], app.GetSubspace(govtypes.ModuleName), app.AccountKeeper, app.BankKeeper,
 		&stakingKeeper, govRouter,
 	)
+
+	app.NftKeeper = nftkeeper.NewKeeper(keys[nft.StoreKey], appCodec, app.AccountKeeper, app.BankKeeper)
 
 	app.ObitKeeper = *obitmodulekeeper.NewKeeper(
 		appCodec,

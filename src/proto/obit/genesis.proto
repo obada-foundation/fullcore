@@ -3,6 +3,7 @@ package obadafoundation.fullcore.obit;
 
 import "gogoproto/gogo.proto";
 import "obit/params.proto";
+import "obit/ta.proto";
 // this line is used by starport scaffolding # genesis/proto/import
 
 option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
@@ -10,5 +11,7 @@ option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
 // GenesisState defines the obit module's genesis state.
 message GenesisState {
   Params params = 1 [(gogoproto.nullable) = false];
+  repeated Ta taList = 2 [(gogoproto.nullable) = false];
+  uint64 taCount = 3;
   // this line is used by starport scaffolding # genesis/proto/state
 }

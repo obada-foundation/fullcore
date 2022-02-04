@@ -9,12 +9,20 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgMintObit{}, "obit/MintObit", nil)
+	cdc.RegisterConcrete(&MsgCreateTa{}, "obit/CreateTa", nil)
+	cdc.RegisterConcrete(&MsgUpdateTa{}, "obit/UpdateTa", nil)
+	cdc.RegisterConcrete(&MsgDeleteTa{}, "obit/DeleteTa", nil)
 	// this line is used by starport scaffolding # 2
 }
 
 func RegisterInterfaces(registry cdctypes.InterfaceRegistry) {
 	registry.RegisterImplementations((*sdk.Msg)(nil),
 		&MsgMintObit{},
+	)
+	registry.RegisterImplementations((*sdk.Msg)(nil),
+		&MsgCreateTa{},
+		&MsgUpdateTa{},
+		&MsgDeleteTa{},
 	)
 	// this line is used by starport scaffolding # 3
 

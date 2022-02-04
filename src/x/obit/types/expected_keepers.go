@@ -8,6 +8,10 @@ import (
 
 type NftKeeper interface {
 	Mint(ctx sdk.Context, token nft.NFT, receiver sdk.AccAddress) error
+
+	SaveClass(ctx sdk.Context, class nft.Class) error
+
+	HasClass(ctx sdk.Context, classID string) bool
 	// Methods imported from nft should be defined here
 }
 

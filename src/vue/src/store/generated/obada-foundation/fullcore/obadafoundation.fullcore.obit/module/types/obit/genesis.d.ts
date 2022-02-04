@@ -1,10 +1,13 @@
-import { Params } from "../obit/params";
 import { Writer, Reader } from "protobufjs/minimal";
+import { Params } from "../obit/params";
+import { Ta } from "../obit/ta";
 export declare const protobufPackage = "obadafoundation.fullcore.obit";
 /** GenesisState defines the obit module's genesis state. */
 export interface GenesisState {
-    /** this line is used by starport scaffolding # genesis/proto/state */
     params: Params | undefined;
+    taList: Ta[];
+    /** this line is used by starport scaffolding # genesis/proto/state */
+    taCount: number;
 }
 export declare const GenesisState: {
     encode(message: GenesisState, writer?: Writer): Writer;

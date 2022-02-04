@@ -1,5 +1,5 @@
-import { Obit } from "./module/types/obit/obit";
 import { Params } from "./module/types/obit/params";
-export { Obit, Params };
+import { Ta } from "./module/types/obit/ta";
+export { Params, Ta };
 declare const _default;
 export default _default;

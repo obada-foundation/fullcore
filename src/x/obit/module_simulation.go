@@ -28,6 +28,18 @@ const (
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgMintObit int = 100
 
+	opWeightMsgCreateTa = "op_weight_msg_create_chain"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgCreateTa int = 100
+
+	opWeightMsgUpdateTa = "op_weight_msg_create_chain"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgUpdateTa int = 100
+
+	opWeightMsgDeleteTa = "op_weight_msg_create_chain"
+	// TODO: Determine the simulation weight value
+	defaultWeightMsgDeleteTa int = 100
+
 	// this line is used by starport scaffolding # simapp/module/const
 )
 
@@ -38,6 +50,17 @@ func (AppModule) GenerateGenesisState(simState *module.SimulationState) {
 		accs[i] = acc.Address.String()
 	}
 	obitGenesis := types.GenesisState{
+		TaList: []types.Ta{
+			{
+				Id:      0,
+				Creator: sample.AccAddress(),
+			},
+			{
+				Id:      1,
+				Creator: sample.AccAddress(),
+			},
+		},
+		TaCount: 2,
 		// this line is used by starport scaffolding # simapp/module/genesisState
 	}
 	simState.GenState[types.ModuleName] = simState.Cdc.MustMarshalJSON(&obitGenesis)
@@ -70,6 +93,39 @@ func (am AppModule) WeightedOperations(simState module.SimulationState) []simtyp
 	operations = append(operations, simulation.NewWeightedOperation(
 		weightMsgMintObit,
 		obitsimulation.SimulateMsgMintObit(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgCreateTa int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgCreateTa, &weightMsgCreateTa, nil,
+		func(_ *rand.Rand) {
+			weightMsgCreateTa = defaultWeightMsgCreateTa
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgCreateTa,
+		obitsimulation.SimulateMsgCreateTa(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgUpdateTa int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgUpdateTa, &weightMsgUpdateTa, nil,
+		func(_ *rand.Rand) {
+			weightMsgUpdateTa = defaultWeightMsgUpdateTa
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgUpdateTa,
+		obitsimulation.SimulateMsgUpdateTa(am.accountKeeper, am.bankKeeper, am.keeper),
+	))
+
+	var weightMsgDeleteTa int
+	simState.AppParams.GetOrGenerate(simState.Cdc, opWeightMsgDeleteTa, &weightMsgDeleteTa, nil,
+		func(_ *rand.Rand) {
+			weightMsgDeleteTa = defaultWeightMsgDeleteTa
+		},
+	)
+	operations = append(operations, simulation.NewWeightedOperation(
+		weightMsgDeleteTa,
+		obitsimulation.SimulateMsgDeleteTa(am.accountKeeper, am.bankKeeper, am.keeper),
 	))
 
 	// this line is used by starport scaffolding # simapp/module/operation

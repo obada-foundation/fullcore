@@ -16,25 +16,28 @@ func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*typ
 		Did: msg.Did,
 	}
 
-	obd := nft.NFT{
-		ClassId: "OBD",
+	if !k.nftKeeper.HasClass(ctx, "OBT") {
+		k.nftKeeper.SaveClass(ctx, nft.Class{
+			Id:     "OBT",
+			Name:   "Obada network NFT Token",
+			Symbol: "OBT",
+			Uri:    "https://obada.io",
+		})
+	}
+
+	nftToken := nft.NFT{
+		ClassId: "OBT",
 		Id:      obit.Did,
-		Uri:     "",
+		Uri:     "http://google.com",
 		UriHash: "",
 		Data:    &codectypes.Any{},
 	}
 
-	logger := k.Logger(ctx)
-
-	logger.Info("NFT before minting", obd)
-
-	err := k.nftKeeper.Mint(ctx, obd, sdk.AccAddress(msg.Creator))
+	err := k.nftKeeper.Mint(ctx, nftToken, sdk.AccAddress(msg.Creator))
 
 	if err != nil {
-		return nil, err
+		return &types.MsgMintObitResponse{}, err
 	}
-
-	logger.Info("NFT before minting", obd, err)
 
 	return &types.MsgMintObitResponse{
 		Did: obd.Id,
