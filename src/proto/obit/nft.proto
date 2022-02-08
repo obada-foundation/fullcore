@@ -1,6 +1,8 @@
 syntax = "proto3";
 package obadafoundation.fullcore.obit;
 
+import "google/protobuf/any.proto";
+
 option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
 
 message NFT {
@@ -9,4 +11,8 @@ message NFT {
   string uri                = 3;
   string uri_hash           = 4;
   google.protobuf.Any data  = 10;
+}
+
+message NFTData {
+  string owner_did = 1;
 }

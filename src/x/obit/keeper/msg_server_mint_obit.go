@@ -44,7 +44,8 @@ func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*typ
 			Manufacturer:     msg.Manufacturer,
 			PartNumber:       msg.PartNumber,
 		},
-		OwnerDid: msg.OwnerDid,
+		OwnerDid:   msg.OwnerDid,
+		ModifiedOn: 1644067988,
 	})
 
 	if err != nil {
@@ -64,13 +65,19 @@ func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*typ
 	did := obt.GetObitID()
 
 	// check URI hash
+	data, err := codectypes.NewAnyWithValue(&types.NFTData{
+		OwnerDid: obt.GetOwnerDID().GetValue(),
+	})
+	if err != nil {
+		return resp, err
+	}
 
 	nftToken := nft.NFT{
 		ClassId: "OBT",
 		Id:      did.GetDid(),
 		Uri:     "http://google.com",
 		UriHash: "",
-		Data:    &codectypes.Any{},
+		Data:    data,
 	}
 
 	if err := k.nftKeeper.Mint(ctx, nftToken, sdk.AccAddress(msg.Creator)); err != nil {

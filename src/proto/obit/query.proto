@@ -48,7 +48,7 @@ message QueryGetAllNftByOwnerRequest {
 }
 
 message QueryGetAllNftByOwnerResponse {
-        repeated Nft Nft = 1 [(gogoproto.nullable) = false];
+        repeated NFT NFT = 1 [(gogoproto.nullable) = false];
 }
 
 message QueryGetTaRequest {

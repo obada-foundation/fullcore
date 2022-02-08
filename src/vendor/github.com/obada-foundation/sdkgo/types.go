@@ -33,12 +33,12 @@ type ObitIDDto struct {
 // ObitDto todo add description
 type ObitDto struct {
 	ObitIDDto
-	OwnerDid       string
+	OwnerDid       string `validate:"required"`
 	ObdDid         string
 	Matadata       []properties.KV
 	StructuredData []properties.KV
 	Documents      []properties.Doc
-	ModifiedOn     int64
+	ModifiedOn     int64 `validate:"min-modified-on"`
 	AlternateIDS   []string
 	Status         string
 }

@@ -3,10 +3,7 @@ package keeper
 import (
 	"context"
 
-	"github.com/cosmos/cosmos-sdk/store/prefix"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/query"
-	"github.com/obada-foundation/fullcore/x/nft"
 	"github.com/obada-foundation/fullcore/x/obit/types"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -21,5 +18,20 @@ func (k Keeper) GetAllNftByOwner(c context.Context, req *types.QueryGetAllNftByO
 
 	nfts := k.nftKeeper.GetNFTsOfClassByOwner(ctx, "OBT", sdk.AccAddress(req.Owner))
 
-	return &types.QueryGetAllNftByOwnerResponse{Nft: nfts}, nil
+	localNfts := make([]types.NFT, len(nfts))
+
+	for _, n := range nfts {
+		// TODO: check why we have empty duplicates
+		if n.ClassId != "" {
+			localNfts = append(localNfts, types.NFT{
+				ClassId: n.ClassId,
+				Id:      n.Id,
+				Uri:     n.Uri,
+				UriHash: n.UriHash,
+				Data:    n.Data,
+			})
+		}
+	}
+
+	return &types.QueryGetAllNftByOwnerResponse{NFT: localNfts}, nil
 }
