@@ -13,7 +13,7 @@ const routes = [
   },
   { path: '/types', component: Types },
   { path: '/relayers', component: Relayers },
-  { path: '/nft', component: NFT },
+  { path: '/nfts', component: NFT },
   { path: '/trust-anchors', component: TrustAnchors },
 ]
 

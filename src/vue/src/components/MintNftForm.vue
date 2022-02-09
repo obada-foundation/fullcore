@@ -7,20 +7,24 @@
           </div>
 
           <input class="sp-input" placeholder="Serial Number" v-model="serial_number_hash" required />
-	  <br><br>
+          <br><br>
 
-	  <input class="sp-input" placeholder="Manufacturer" v-model="manufacturer" required />
-	  <br><br>
+          <input class="sp-input" placeholder="Manufacturer" v-model="manufacturer" required />
+          <br><br>
 
-	  <input class="sp-input" placeholder="Part Number" v-model="part_number" required />
-	  <br><br>
+          <input class="sp-input" placeholder="Part Number" v-model="part_number" required />
+          <br><br>
 
-          <input class="sp-input" name="owner_did" placeholder="Physical Asset Owner ID"/>
-	  <br /><br>
+          <div>
+            <input class="sp-input" v-model="owner_did" placeholder="Physical Asset Owner ID"/>
+            <button @click="getToken" class="sp-button" type="button">Get Token</button>
+          </div>
 
-	  <input class="sp-input" name="trust_anchor" placeholder="Trust Anchor (Registered Agent) ID"  />
-	  <br /><br>
- 
+          <br><br>
+
+          <label>Trust Anchor (Registered Agent) ID</label>
+          <input class="sp-input" placeholder="Trust Anchor (Registered Agent) ID" v-model="trust_anchor" disabled />
+          <br /><br>
 
           <sp-button @click="submit">Mint OBT</sp-button>
         </form>
@@ -32,11 +36,15 @@ export default {
   name: "MintNftForm",
   data() {
     return {
+      trustAnchors: [{
+        id: "demoTrustAnchor",
+        name: "Demo Trust Anchor"
+      }],
       serial_number_hash: "",
       manufacturer: "",
       part_number: "",
       owner_did: "",
-      trust_anchor: "",
+      trust_anchor: "demoTrustAnchor",
     };
   },
   computed: {
@@ -61,14 +69,17 @@ export default {
     }
   },
   methods: {
+    getToken() {
+        return ""
+    },
     async submit() {
       const value = {
         creator: this.currentAccount,
-        title: this.serial_number_hash,
+        serialNumberHash: this.serial_number_hash,
         manufacturer: this.manufacturer,
-        part_number: this.part_number,
-        owner_did: this.owner_id,
-        trust_anchor: this.trust_anchor,
+        partNumber: this.part_number,
+        ownerDid: this.owner_did,
+        trustAnchor: this.trust_anchor,
       };
 	
       const resp = await this.$store.dispatch("obadafoundation.fullcore.obit/sendMsgMintObit", {
