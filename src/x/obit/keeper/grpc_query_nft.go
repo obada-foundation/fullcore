@@ -18,11 +18,11 @@ func (k Keeper) GetAllNftByOwner(c context.Context, req *types.QueryGetAllNftByO
 
 	nfts := k.nftKeeper.GetNFTsOfClassByOwner(ctx, "OBT", sdk.AccAddress(req.Owner))
 
-	localNfts := make([]types.NFT, len(nfts))
+	localNfts := make([]types.NFT, 0)
 
 	for _, n := range nfts {
 		// TODO: check why we have empty duplicates
-		if n.ClassId != "" {
+		if len(n.Id) > 0 {
 			localNfts = append(localNfts, types.NFT{
 				ClassId: n.ClassId,
 				Id:      n.Id,
