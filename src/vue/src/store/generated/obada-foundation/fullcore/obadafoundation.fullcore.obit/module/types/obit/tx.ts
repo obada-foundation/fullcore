@@ -10,7 +10,7 @@ export interface MsgMintObit {
   serialNumberHash: string;
   manufacturer: string;
   partNumber: string;
-  trustAnchor: string;
+  obdDid: string;
   ownerDid: string;
 }
 
@@ -45,12 +45,25 @@ export interface MsgDeleteTa {
 
 export interface MsgDeleteTaResponse {}
 
+/** MsgSend represents a message to send a nft from one account to another account. */
+export interface MsgSend {
+  /** id defines the unique identification of nft */
+  did: string;
+  /** sender is the address of the owner of nft */
+  sender: string;
+  /** receiver is the receiver address of nft */
+  receiver: string;
+}
+
+/** MsgSendResponse defines the Msg/Send response type. */
+export interface MsgSendResponse {}
+
 const baseMsgMintObit: object = {
   creator: "",
   serialNumberHash: "",
   manufacturer: "",
   partNumber: "",
-  trustAnchor: "",
+  obdDid: "",
   ownerDid: "",
 };
 
@@ -68,8 +81,8 @@ export const MsgMintObit = {
     if (message.partNumber !== "") {
       writer.uint32(34).string(message.partNumber);
     }
-    if (message.trustAnchor !== "") {
-      writer.uint32(42).string(message.trustAnchor);
+    if (message.obdDid !== "") {
+      writer.uint32(42).string(message.obdDid);
     }
     if (message.ownerDid !== "") {
       writer.uint32(50).string(message.ownerDid);
@@ -97,7 +110,7 @@ export const MsgMintObit = {
           message.partNumber = reader.string();
           break;
         case 5:
-          message.trustAnchor = reader.string();
+          message.obdDid = reader.string();
           break;
         case 6:
           message.ownerDid = reader.string();
@@ -135,10 +148,10 @@ export const MsgMintObit = {
     } else {
       message.partNumber = "";
     }
-    if (object.trustAnchor !== undefined && object.trustAnchor !== null) {
-      message.trustAnchor = String(object.trustAnchor);
+    if (object.obdDid !== undefined && object.obdDid !== null) {
+      message.obdDid = String(object.obdDid);
     } else {
-      message.trustAnchor = "";
+      message.obdDid = "";
     }
     if (object.ownerDid !== undefined && object.ownerDid !== null) {
       message.ownerDid = String(object.ownerDid);
@@ -156,8 +169,7 @@ export const MsgMintObit = {
     message.manufacturer !== undefined &&
       (obj.manufacturer = message.manufacturer);
     message.partNumber !== undefined && (obj.partNumber = message.partNumber);
-    message.trustAnchor !== undefined &&
-      (obj.trustAnchor = message.trustAnchor);
+    message.obdDid !== undefined && (obj.obdDid = message.obdDid);
     message.ownerDid !== undefined && (obj.ownerDid = message.ownerDid);
     return obj;
   },
@@ -187,10 +199,10 @@ export const MsgMintObit = {
     } else {
       message.partNumber = "";
     }
-    if (object.trustAnchor !== undefined && object.trustAnchor !== null) {
-      message.trustAnchor = object.trustAnchor;
+    if (object.obdDid !== undefined && object.obdDid !== null) {
+      message.obdDid = object.obdDid;
     } else {
-      message.trustAnchor = "";
+      message.obdDid = "";
     }
     if (object.ownerDid !== undefined && object.ownerDid !== null) {
       message.ownerDid = object.ownerDid;
@@ -660,13 +672,141 @@ export const MsgDeleteTaResponse = {
   },
 };
 
+const baseMsgSend: object = { did: "", sender: "", receiver: "" };
+
+export const MsgSend = {
+  encode(message: MsgSend, writer: Writer = Writer.create()): Writer {
+    if (message.did !== "") {
+      writer.uint32(10).string(message.did);
+    }
+    if (message.sender !== "") {
+      writer.uint32(18).string(message.sender);
+    }
+    if (message.receiver !== "") {
+      writer.uint32(26).string(message.receiver);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgSend {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgSend } as MsgSend;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.did = reader.string();
+          break;
+        case 2:
+          message.sender = reader.string();
+          break;
+        case 3:
+          message.receiver = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): MsgSend {
+    const message = { ...baseMsgSend } as MsgSend;
+    if (object.did !== undefined && object.did !== null) {
+      message.did = String(object.did);
+    } else {
+      message.did = "";
+    }
+    if (object.sender !== undefined && object.sender !== null) {
+      message.sender = String(object.sender);
+    } else {
+      message.sender = "";
+    }
+    if (object.receiver !== undefined && object.receiver !== null) {
+      message.receiver = String(object.receiver);
+    } else {
+      message.receiver = "";
+    }
+    return message;
+  },
+
+  toJSON(message: MsgSend): unknown {
+    const obj: any = {};
+    message.did !== undefined && (obj.did = message.did);
+    message.sender !== undefined && (obj.sender = message.sender);
+    message.receiver !== undefined && (obj.receiver = message.receiver);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<MsgSend>): MsgSend {
+    const message = { ...baseMsgSend } as MsgSend;
+    if (object.did !== undefined && object.did !== null) {
+      message.did = object.did;
+    } else {
+      message.did = "";
+    }
+    if (object.sender !== undefined && object.sender !== null) {
+      message.sender = object.sender;
+    } else {
+      message.sender = "";
+    }
+    if (object.receiver !== undefined && object.receiver !== null) {
+      message.receiver = object.receiver;
+    } else {
+      message.receiver = "";
+    }
+    return message;
+  },
+};
+
+const baseMsgSendResponse: object = {};
+
+export const MsgSendResponse = {
+  encode(_: MsgSendResponse, writer: Writer = Writer.create()): Writer {
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): MsgSendResponse {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseMsgSendResponse } as MsgSendResponse;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(_: any): MsgSendResponse {
+    const message = { ...baseMsgSendResponse } as MsgSendResponse;
+    return message;
+  },
+
+  toJSON(_: MsgSendResponse): unknown {
+    const obj: any = {};
+    return obj;
+  },
+
+  fromPartial(_: DeepPartial<MsgSendResponse>): MsgSendResponse {
+    const message = { ...baseMsgSendResponse } as MsgSendResponse;
+    return message;
+  },
+};
+
 /** Msg defines the Msg service. */
 export interface Msg {
   /** MintObit mint a new OBADA NFT (Obit) */
   MintObit(request: MsgMintObit): Promise<MsgMintObitResponse>;
+  Send(request: MsgSend): Promise<MsgSendResponse>;
   CreateTa(request: MsgCreateTa): Promise<MsgCreateTaResponse>;
   UpdateTa(request: MsgUpdateTa): Promise<MsgUpdateTaResponse>;
-  /** this line is used by starport scaffolding # proto/tx/rpc */
+  /** this line is used by starport scaffolding # proto/tx/rpcxf */
   DeleteTa(request: MsgDeleteTa): Promise<MsgDeleteTaResponse>;
 }
 
@@ -683,6 +823,16 @@ export class MsgClientImpl implements Msg {
       data
     );
     return promise.then((data) => MsgMintObitResponse.decode(new Reader(data)));
+  }
+
+  Send(request: MsgSend): Promise<MsgSendResponse> {
+    const data = MsgSend.encode(request).finish();
+    const promise = this.rpc.request(
+      "obadafoundation.fullcore.obit.Msg",
+      "Send",
+      data
+    );
+    return promise.then((data) => MsgSendResponse.decode(new Reader(data)));
   }
 
   CreateTa(request: MsgCreateTa): Promise<MsgCreateTaResponse> {

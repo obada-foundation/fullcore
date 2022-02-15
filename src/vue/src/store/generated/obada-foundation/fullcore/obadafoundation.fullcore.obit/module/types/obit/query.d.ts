@@ -1,8 +1,8 @@
 import { Reader, Writer } from "protobufjs/minimal";
 import { Params } from "../obit/params";
-import { PageRequest, PageResponse } from "../cosmos/base/query/v1beta1/pagination";
-import { Nft } from "../obit/nft";
+import { NFT } from "../obit/nft";
 import { Ta } from "../obit/ta";
+import { PageRequest, PageResponse } from "../cosmos/base/query/v1beta1/pagination";
 export declare const protobufPackage = "obadafoundation.fullcore.obit";
 /** QueryParamsRequest is request type for the Query/Params RPC method. */
 export interface QueryParamsRequest {
@@ -14,11 +14,9 @@ export interface QueryParamsResponse {
 }
 export interface QueryGetAllNftByOwnerRequest {
     owner: string;
-    pagination: PageRequest | undefined;
 }
 export interface QueryGetAllNftByOwnerResponse {
-    Nft: Nft[];
-    pagination: PageResponse | undefined;
+    NFT: NFT[];
 }
 export interface QueryGetTaRequest {
     id: number;

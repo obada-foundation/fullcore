@@ -6,7 +6,7 @@ export interface MsgMintObit {
     serialNumberHash: string;
     manufacturer: string;
     partNumber: string;
-    trustAnchor: string;
+    obdDid: string;
     ownerDid: string;
 }
 /** MsgMintObitResponse success minting response */
@@ -34,6 +34,18 @@ export interface MsgDeleteTa {
     id: number;
 }
 export interface MsgDeleteTaResponse {
+}
+/** MsgSend represents a message to send a nft from one account to another account. */
+export interface MsgSend {
+    /** id defines the unique identification of nft */
+    did: string;
+    /** sender is the address of the owner of nft */
+    sender: string;
+    /** receiver is the receiver address of nft */
+    receiver: string;
+}
+/** MsgSendResponse defines the Msg/Send response type. */
+export interface MsgSendResponse {
 }
 export declare const MsgMintObit: {
     encode(message: MsgMintObit, writer?: Writer): Writer;
@@ -91,19 +103,35 @@ export declare const MsgDeleteTaResponse: {
     toJSON(_: MsgDeleteTaResponse): unknown;
     fromPartial(_: DeepPartial<MsgDeleteTaResponse>): MsgDeleteTaResponse;
 };
+export declare const MsgSend: {
+    encode(message: MsgSend, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgSend;
+    fromJSON(object: any): MsgSend;
+    toJSON(message: MsgSend): unknown;
+    fromPartial(object: DeepPartial<MsgSend>): MsgSend;
+};
+export declare const MsgSendResponse: {
+    encode(_: MsgSendResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): MsgSendResponse;
+    fromJSON(_: any): MsgSendResponse;
+    toJSON(_: MsgSendResponse): unknown;
+    fromPartial(_: DeepPartial<MsgSendResponse>): MsgSendResponse;
+};
 /** Msg defines the Msg service. */
 export interface Msg {
     /** MintObit mint a new OBADA NFT (Obit) */
     MintObit(request: MsgMintObit): Promise<MsgMintObitResponse>;
+    Send(request: MsgSend): Promise<MsgSendResponse>;
     CreateTa(request: MsgCreateTa): Promise<MsgCreateTaResponse>;
     UpdateTa(request: MsgUpdateTa): Promise<MsgUpdateTaResponse>;
-    /** this line is used by starport scaffolding # proto/tx/rpc */
+    /** this line is used by starport scaffolding # proto/tx/rpcxf */
     DeleteTa(request: MsgDeleteTa): Promise<MsgDeleteTaResponse>;
 }
 export declare class MsgClientImpl implements Msg {
     private readonly rpc;
     constructor(rpc: Rpc);
     MintObit(request: MsgMintObit): Promise<MsgMintObitResponse>;
+    Send(request: MsgSend): Promise<MsgSendResponse>;
     CreateTa(request: MsgCreateTa): Promise<MsgCreateTaResponse>;
     UpdateTa(request: MsgUpdateTa): Promise<MsgUpdateTaResponse>;
     DeleteTa(request: MsgDeleteTa): Promise<MsgDeleteTaResponse>;

@@ -4,6 +4,7 @@ import { StdFee } from "@cosmjs/launchpad";
 import { SigningStargateClient } from "@cosmjs/stargate";
 import { Registry, OfflineSigner, EncodeObject, DirectSecp256k1HdWallet } from "@cosmjs/proto-signing";
 import { Api } from "./rest";
+import { MsgSend } from "./types/obit/tx";
 import { MsgUpdateTa } from "./types/obit/tx";
 import { MsgCreateTa } from "./types/obit/tx";
 import { MsgMintObit } from "./types/obit/tx";
@@ -11,6 +12,7 @@ import { MsgDeleteTa } from "./types/obit/tx";
 
 
 const types = [
+  ["/obadafoundation.fullcore.obit.MsgSend", MsgSend],
   ["/obadafoundation.fullcore.obit.MsgUpdateTa", MsgUpdateTa],
   ["/obadafoundation.fullcore.obit.MsgCreateTa", MsgCreateTa],
   ["/obadafoundation.fullcore.obit.MsgMintObit", MsgMintObit],
@@ -47,6 +49,7 @@ const txClient = async (wallet: OfflineSigner, { addr: addr }: TxClientOptions =
 
   return {
     signAndBroadcast: (msgs: EncodeObject[], { fee, memo }: SignAndBroadcastOptions = {fee: defaultFee, memo: ""}) => client.signAndBroadcast(address, msgs, fee,memo),
+    msgSend: (data: MsgSend): EncodeObject => ({ typeUrl: "/obadafoundation.fullcore.obit.MsgSend", value: MsgSend.fromPartial( data ) }),
     msgUpdateTa: (data: MsgUpdateTa): EncodeObject => ({ typeUrl: "/obadafoundation.fullcore.obit.MsgUpdateTa", value: MsgUpdateTa.fromPartial( data ) }),
     msgCreateTa: (data: MsgCreateTa): EncodeObject => ({ typeUrl: "/obadafoundation.fullcore.obit.MsgCreateTa", value: MsgCreateTa.fromPartial( data ) }),
     msgMintObit: (data: MsgMintObit): EncodeObject => ({ typeUrl: "/obadafoundation.fullcore.obit.MsgMintObit", value: MsgMintObit.fromPartial( data ) }),

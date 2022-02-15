@@ -172,10 +172,9 @@ export class Api extends HttpClient {
          * @name QueryGetAllNftByOwner
          * @request GET:/obada-foundation/fullcore/obit/{owner}
          */
-        this.queryGetAllNftByOwner = (owner, query, params = {}) => this.request({
+        this.queryGetAllNftByOwner = (owner, params = {}) => this.request({
             path: `/obada-foundation/fullcore/obit/${owner}`,
             method: "GET",
-            query: query,
             format: "json",
             ...params,
         });

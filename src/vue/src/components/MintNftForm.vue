@@ -19,7 +19,6 @@
             <input class="sp-input" v-model="owner_did" placeholder="Physical Asset Owner ID"/>
             <button @click="getToken" class="sp-button" type="button">Get Token</button>
           </div>
-
           <br><br>
 
           <label>Trust Anchor (Registered Agent) ID</label>
@@ -32,10 +31,14 @@
   </div>
 </template>
 <script>
+import axios from 'axios'
+
 export default {
   name: "MintNftForm",
   data() {
     return {
+      // Until we not define trust-anchor spec with Denis and Joe we going to use sandbox service
+      taAuthToken: "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZWU0MjRmN2QtODVjNi00MTM2LWJmMjQtYTgxYjA3ZGI2OTY5In0.3sl5tmp_BOmHSRpQbWMSK5CpDmHQLNOHpy1WzNgrkvDbEi4P3DdpiD-1iH9QsQajx_JZhkRq3S4-Ti1Cs390Bw",
       trustAnchors: [{
         id: "demoTrustAnchor",
         name: "Demo Trust Anchor"
@@ -70,7 +73,20 @@ export default {
   },
   methods: {
     getToken() {
-        return ""
+      axios.post("http://demo.ta.alpha.obada.io/api/v1/issue-token", {}, {
+        headers: {
+          'Authrization': 'Bearer ' + this.taAuthToken,
+          'Content-Type': 'application/json'
+        },
+        withCredentials: true
+      })
+        .then(response => console.log(response))
+        .catch(error => {
+          this.errorMessage = error.message;
+          console.error("There was an error!", error);
+        });
+
+      return ""
     },
     async submit() {
       const value = {

@@ -2,12 +2,13 @@ import { txClient, queryClient, MissingWalletError , registry} from './module'
 // @ts-ignore
 import { SpVuexError } from '@starport/vuex'
 
-import { Nft } from "./module/types/obit/nft"
+import { NFT } from "./module/types/obit/nft"
+import { NFTData } from "./module/types/obit/nft"
 import { Params } from "./module/types/obit/params"
 import { Ta } from "./module/types/obit/ta"
 
 
-export { Nft, Params, Ta };
+export { NFT, NFTData, Params, Ta };
 
 async function initTxClient(vuexGetters) {
 	return await txClient(vuexGetters['common/wallet/signer'], {
@@ -51,7 +52,8 @@ const getDefaultState = () => {
 				GetAllNftByOwner: {},
 				
 				_Structure: {
-						Nft: getStructure(Nft.fromPartial({})),
+						NFT: getStructure(NFT.fromPartial({})),
+						NFTData: getStructure(NFTData.fromPartial({})),
 						Params: getStructure(Params.fromPartial({})),
 						Ta: getStructure(Ta.fromPartial({})),
 						
@@ -219,13 +221,9 @@ export default {
 			try {
 				const key = params ?? {};
 				const queryClient=await initQueryClient(rootGetters)
-				let value= (await queryClient.queryGetAllNftByOwner( key.owner, query)).data
+				let value= (await queryClient.queryGetAllNftByOwner( key.owner)).data
 				
 					
-				while (all && (<any> value).pagination && (<any> value).pagination.next_key!=null) {
-					let next_values=(await queryClient.queryGetAllNftByOwner( key.owner, {...query, 'pagination.key':(<any> value).pagination.next_key})).data
-					value = mergeResults(value, next_values);
-				}
 				commit('QUERY', { query: 'GetAllNftByOwner', key: { params: {...key}, query}, value })
 				if (subscribe) commit('SUBSCRIBE', { action: 'QueryGetAllNftByOwner', payload: { options: { all }, params: {...key},query }})
 				return getters['getGetAllNftByOwner']( { params: {...key}, query}) ?? {}
@@ -236,6 +234,21 @@ export default {
 		},
 		
 		
+		async sendMsgSend({ rootGetters }, { value, fee = [], memo = '' }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgSend(value)
+				const result = await txClient.signAndBroadcast([msg], {fee: { amount: fee, 
+	gas: "200000" }, memo})
+				return result
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new SpVuexError('TxClient:MsgSend:Init', 'Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new SpVuexError('TxClient:MsgSend:Send', 'Could not broadcast Tx: '+ e.message)
+				}
+			}
+		},
 		async sendMsgUpdateTa({ rootGetters }, { value, fee = [], memo = '' }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
@@ -297,6 +310,20 @@ export default {
 			}
 		},
 		
+		async MsgSend({ rootGetters }, { value }) {
+			try {
+				const txClient=await initTxClient(rootGetters)
+				const msg = await txClient.msgSend(value)
+				return msg
+			} catch (e) {
+				if (e == MissingWalletError) {
+					throw new SpVuexError('TxClient:MsgSend:Init', 'Could not initialize signing client. Wallet is required.')
+				}else{
+					throw new SpVuexError('TxClient:MsgSend:Create', 'Could not create message: ' + e.message)
+					
+				}
+			}
+		},
 		async MsgUpdateTa({ rootGetters }, { value }) {
 			try {
 				const txClient=await initTxClient(rootGetters)
