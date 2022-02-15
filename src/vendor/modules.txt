@@ -471,7 +471,7 @@ github.com/mitchellh/go-homedir
 github.com/mitchellh/mapstructure
 # github.com/mtibben/percent v0.2.1
 github.com/mtibben/percent
-# github.com/obada-foundation/sdkgo v0.0.0-20220115154325-7568659879be
+# github.com/obada-foundation/sdkgo v0.1.0
 ## explicit
 github.com/obada-foundation/sdkgo
 github.com/obada-foundation/sdkgo/base58
