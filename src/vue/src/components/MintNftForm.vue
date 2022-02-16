@@ -1,35 +1,36 @@
 <template>
-  <div>
-    <div class="sp-voter__main sp-box sp-shadow sp-form-group">
-        <form class="sp-voter__main__form">
-          <div class="sp-voter__main__rcpt__header sp-box-header">
-            Create a NFT
-          </div>
+  <div class="sp-type-form sp-box sp-shadow">
+    <form class="sp-type-form__main__form">
+      <div class="sp-type-form__header sp-box-header">Create an NFT</div>
 
-          <input class="sp-input" placeholder="Serial Number" v-model="serial_number_hash" required />
-          <br><br>
+      <div class="sp-type-form__field sp-form-group">
+        <input type="text" class="sp-input" v-model="serial_number_hash" placeholder="Serial Number" required />
+      </div>
 
-          <input class="sp-input" placeholder="Manufacturer" v-model="manufacturer" required />
-          <br><br>
+      <div class="sp-type-form__field sp-form-group">
+        <input type="text" class="sp-input" v-model="manufacturer" placeholder="Manufacturer" required />
+      </div>
 
-          <input class="sp-input" placeholder="Part Number" v-model="part_number" required />
-          <br><br>
+      <div class="sp-type-form__field sp-form-group">
+        <input type="text" class="sp-input" v-model="part_number" placeholder="Part Number" required />
+      </div>
 
-          <div>
-            <input class="sp-input" v-model="owner_did" placeholder="Physical Asset Owner ID"/>
-            <button @click="getToken" class="sp-button" type="button">Get Token</button>
-          </div>
-          <br><br>
+      <div class="sp-type-form__field sp-form-group">
+        <input type="text" class="sp-input" v-model="owner_did" placeholder="Physical Asset Owner ID" />
+      </div>
+      <SpButton type="primary" v-on:click="getToken">Get Token</SpButton>
 
-          <label>Trust Anchor (Registered Agent) ID</label>
-          <input class="sp-input" placeholder="Trust Anchor (Registered Agent) ID" v-model="trust_anchor" disabled />
-          <br /><br>
+      <div class="sp-type-form__field sp-form-group">
+        <input type="text" class="sp-input" v-model="trust_anchor" placeholder="Trust Anchor (Registered Agent) ID" disabled />
+      </div>
 
-          <sp-button @click="submit">Mint OBT</sp-button>
-        </form>
-    </div>
+      <div class="sp-type-form__btns">
+        <SpButton type="primary" v-on:click="submit">Mint OBT</SpButton>
+      </div>
+    </form>
   </div>
 </template>
+
 <script>
 import axios from 'axios'
 
@@ -80,11 +81,11 @@ export default {
         },
         withCredentials: true
       })
-        .then(response => console.log(response))
-        .catch(error => {
-          this.errorMessage = error.message;
-          console.error("There was an error!", error);
-        });
+          .then(response => console.log(response))
+          .catch(error => {
+            this.errorMessage = error.message;
+            console.error("There was an error!", error);
+          });
 
       return ""
     },
@@ -97,7 +98,7 @@ export default {
         ownerDid: this.owner_did,
         trustAnchor: this.trust_anchor,
       };
-	
+
       const resp = await this.$store.dispatch("obadafoundation.fullcore.obit/sendMsgMintObit", {
         value,
         fee: [],
