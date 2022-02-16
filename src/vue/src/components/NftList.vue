@@ -4,6 +4,7 @@
 		<thead>
 		<tr>
 			<th class="sp-blockstable__height"><strong>DID</strong></th>
+			<th class="sp-blockstable__height"><strong>USN</strong></th>
 			<th class="sp-blockstable__hash"><strong>Metadata URL</strong></th>
 			<th class="sp-blockstable__timestamp"><strong>Root Hash</strong></th>
 		</tr>
@@ -15,11 +16,12 @@
 						>{{ nft.id }}
 					</router-link>
 				</td>
+				<td>{{ nft.data.usn }}</td>
 				<td class="sp-blockdisplayline__hash">
-					{{ nft.uri }}
+					{{ nft.data.uri }}
 				</td>
 				<td class="sp-blockdisplayline__timestamp">
-					{{ nft.rootHash }}
+					{{ nft.data.root_hash }}
 				</td>
 			</tr>
 		</tbody>
