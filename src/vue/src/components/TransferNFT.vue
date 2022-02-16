@@ -1,15 +1,19 @@
 <template>
   <div>
-    <div class="sp-voter__main sp-box sp-shadow sp-form-group">
-        <form class="sp-voter__main__form">
-          <input class="sp-input" placeholder="DID" v-model="did" />
-          <br /><br>
+    <div class="sp-type-form sp-box sp-shadow">
+      <form class="sp-voter__main__form">
+        <div class="sp-type-form__field sp-form-group">
+          <input type="text" class="sp-input" placeholder="DID" v-model="did" />
+        </div>
 
-          <input class="sp-input" placeholder="Receiver address" v-model="receiver" />
-          <br /><br>
+        <div class="sp-type-form__field sp-form-group">
+          <input type="text" class="sp-input" placeholder="Receiver address" v-model="receiver" />
+        </div>
 
+        <div class="sp-type-form__btns">
           <sp-button @click="submit">Transfer</sp-button>
-        </form>
+        </div>
+      </form>
     </div>
   </div>
 </template>
@@ -18,10 +22,10 @@
 export default {
   name: "TransferNFT",
   data() {
-      return {
-          did: "",
-          receiver: "",
-      }
+    return {
+      did: "",
+      receiver: "",
+    }
   },
   computed: {
     currentAccount() {
@@ -41,7 +45,7 @@ export default {
       } else {
         return false
       }
-    }
+    },
   },
   methods: {
     async submit() {
@@ -50,7 +54,7 @@ export default {
         receiver: this.receiver,
         id: this.did,
       };
-	
+
       const resp = await this.$store.dispatch("obadafoundation.fullcore.obit/sendMsgSend", {
         value,
         fee: [],
@@ -58,6 +62,6 @@ export default {
 
       console.log(resp);
     },
-  }
+  },
 }
 </script>
