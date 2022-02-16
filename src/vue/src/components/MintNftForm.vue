@@ -11,29 +11,20 @@
         <input type="text" class="sp-input" v-model="manufacturer" placeholder="Manufacturer" required />
       </div>
 
-          <input class="sp-input" placeholder="Serial Number" v-model="serial_number_hash" required />
-          <br><br>
-
-          <input class="sp-input" placeholder="Manufacturer" v-model="manufacturer" required />
-          <br><br>
-
-          <input class="sp-input" placeholder="Part Number" v-model="part_number" required />
-          <br><br>
-
-          <input class="sp-input" placeholder="Metadata URI" v-model="uri" required />
-          <br><br>
-
-          <input class="sp-input" placeholder="Metadata URI Hash" v-model="uri_hash" required />
-          <br><br>
-
-          <div>
-            <input class="sp-input" v-model="obd_did" placeholder="Physical Asset Owner ID"/>
-            <button @click="getToken" class="sp-button" type="button">Get Token</button>
-          </div>
-          <br><br>
+      <div class="sp-type-form__field sp-form-group">
+        <input type="text" class="sp-input" v-model="part_number" placeholder="Part Number" required />
+      </div>
 
       <div class="sp-type-form__field sp-form-group">
-        <input type="text" class="sp-input" v-model="owner_did" placeholder="Physical Asset Owner ID" />
+        <input type="text" class="sp-input" v-model="uri" placeholder="Metadata URI" required />
+      </div>
+
+      <div class="sp-type-form__field sp-form-group">
+        <input type="text" class="sp-input" placeholder="Metadata URI Hash" v-model="uri_hash" required />
+      </div>
+
+      <div class="sp-type-form__field sp-form-group">
+        <input type="text" class="sp-input" v-model="obd_did" placeholder="Physical Asset Owner ID" />
       </div>
       <SpButton type="secondary" v-on:click="getToken">Get Token</SpButton>
 

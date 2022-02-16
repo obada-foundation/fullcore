@@ -9,7 +9,7 @@
       <MintNftForm />
     </div>
 
-    <div class="sp-component" v-show="loggedIn">
+    <div class="sp-component sp-component--half" v-show="loggedIn">
       <div class="sp-component-title">
         <h3>Transfer NFT</h3>
       </div>
@@ -31,8 +31,8 @@
 <style>
 @media (min-width: 1366px) {
   .sp-component--half {
-    flex-basis: 62%;
-    width: 62%;
+    flex-basis: 50%;
+    width: 50%;
     padding-right: 2rem;
   }
 }

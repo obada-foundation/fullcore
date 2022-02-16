@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="sp-box sp-shadow">
     <table class="sp-blockstable">
       <thead>
         <tr>
@@ -10,6 +10,9 @@
         </tr>
       </thead>
       <tbody>
+        <tr class="sp-blockdisplayline" v-if="!nfts || nfts.length === 0">
+          <td colspan="3">No NFTs yet</td>
+        </tr>
         <tr class="sp-blockdisplayline" v-for="nft in nfts" v-bind:key="nft.id">
           <td class="sp-blockdisplayline__height">
             <router-link :to="/nfts/" class="sp-blockdisplayline__height__link"
