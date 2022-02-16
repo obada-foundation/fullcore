@@ -1,20 +1,16 @@
 <template>
   <div class="container">
 
-    <div class="sp-type">
-      <div class="sp-type__header sp-component-title">
+    <div class="sp-component sp-component--half">
+      <div class="sp-component-title">
         <h3>OBT NFT</h3>
       </div>
 
-      <div class="sp-type__holder">
-        <div class="sp-type-form__holder">
-          <MintNftForm />
-        </div>
-      </div>
+      <MintNftForm />
     </div>
 
-    <div class="sp-type" v-show="loggedIn">
-      <div class="sp-type__header sp-component-title">
+    <div class="sp-component" v-show="loggedIn">
+      <div class="sp-component-title">
         <h3>NFT List</h3>
       </div>
 
@@ -25,19 +21,11 @@
 </template>
 
 <style>
-.sp-type {
-  margin-bottom: 3rem;
-}
-
-.sp-type .sp-type__holder .sp-type-form__holder {
-  flex-basis: 50%;
-  width: 50%;
-}
-
-@media (max-width: 600px) {
-  .sp-type .sp-type__holder .sp-type-form__holder {
-    flex-basis: 100%;
-    width: 100%;
+@media (min-width: 1366px) {
+  .sp-component--half {
+    flex-basis: 62%;
+    width: 62%;
+    padding-right: 2rem;
   }
 }
 </style>

@@ -18,7 +18,7 @@
       <div class="sp-type-form__field sp-form-group">
         <input type="text" class="sp-input" v-model="owner_did" placeholder="Physical Asset Owner ID" />
       </div>
-      <SpButton type="primary" v-on:click="getToken">Get Token</SpButton>
+      <SpButton type="secondary" v-on:click="getToken">Get Token</SpButton>
 
       <div class="sp-type-form__field sp-form-group">
         <input type="text" class="sp-input" v-model="trust_anchor" placeholder="Trust Anchor (Registered Agent) ID" disabled />
@@ -30,6 +30,12 @@
     </form>
   </div>
 </template>
+
+<style>
+.sp-type-form__btns {
+  margin-top: 2rem;
+}
+</style>
 
 <script>
 import axios from 'axios'
