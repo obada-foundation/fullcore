@@ -11,6 +11,14 @@
 
     <div class="sp-component" v-show="loggedIn">
       <div class="sp-component-title">
+        <h3>Transfer NFT</h3>
+      </div>
+
+      <TransferNFT />
+    </div>
+
+    <div class="sp-component" v-show="loggedIn">
+      <div class="sp-component-title">
         <h3>NFT List</h3>
       </div>
 
@@ -31,12 +39,13 @@
 </style>
 
 <script>
-import MintNftForm from '../components/MintNftForm'
-import NftList from '../components/NftList'
+import MintNftForm from "../components/MintNftForm"
+import NftList from "../components/NftList"
+import TransferNFT from "../components/TransferNFT"
 
 export default {
   name: 'NFT',
-  components: { MintNftForm, NftList },
+  components: { MintNftForm, NftList, TransferNFT },
   computed: {
     loggedIn() {
       if (this._depsLoaded) {

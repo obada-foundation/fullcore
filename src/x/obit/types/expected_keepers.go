@@ -9,6 +9,8 @@ import (
 type NftKeeper interface {
 	Mint(ctx sdk.Context, token nft.NFT, receiver sdk.AccAddress) error
 
+	Transfer(ctx sdk.Context, classID string, nftID string, receiver sdk.AccAddress) error
+
 	GetNFTsOfClassByOwner(ctx sdk.Context, classID string, owner sdk.AccAddress) (nfts []nft.NFT)
 
 	SaveClass(ctx sdk.Context, class nft.Class) error

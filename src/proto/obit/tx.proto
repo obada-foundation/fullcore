@@ -10,6 +10,7 @@ option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
 service Msg {
   // MintObit mint a new OBADA NFT (Obit)
   rpc MintObit(MsgMintObit) returns (MsgMintObitResponse);
+  rpc Send(MsgSend) returns (MsgSendResponse);
 
   rpc CreateTa(MsgCreateTa) returns (MsgCreateTaResponse);
   rpc UpdateTa(MsgUpdateTa) returns (MsgUpdateTaResponse);
@@ -23,9 +24,10 @@ message MsgMintObit {
   string serial_number_hash = 2;
   string manufacturer = 3;
   string part_number = 4;
-  string trust_anchor = 5;
-  string owner_did = 6;
-  
+  string trust_anchor_token = 5;
+  string uri = 6;
+  string uri_hash = 7;
+  string documents = 8;
 }
 
 // MsgMintObitResponse success minting response
@@ -58,5 +60,19 @@ message MsgDeleteTa {
 }
 
 message MsgDeleteTaResponse {}
+
+// MsgSend represents a message to send a nft from one account to another account.
+message MsgSend {
+  // id defines the unique identification of nft
+  string did = 1;
+
+  // sender is the address of the owner of nft
+  string sender = 2;
+
+  // receiver is the receiver address of nft
+  string receiver = 3;
+}
+// MsgSendResponse defines the Msg/Send response type.
+message MsgSendResponse {}
 
 // this line is used by starport scaffolding # proto/tx/message

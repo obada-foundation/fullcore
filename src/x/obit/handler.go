@@ -20,6 +20,11 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 		case *types.MsgMintObit:
 			res, err := msgServer.MintObit(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
+
+		case *types.MsgSend:
+			res, err := msgServer.Send(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+
 		case *types.MsgCreateTa:
 			res, err := msgServer.CreateTa(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)

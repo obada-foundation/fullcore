@@ -6,7 +6,7 @@
 		<template v-slot:default>
 			<SpLinkIcon link="/" text="Dashboard" icon="Dashboard" />
 			<SpLinkIcon link="/nfts" text="NFT" icon="Form" v-show="loggedIn" />
-			<SpLinkIcon link="/trust-anchors" text="Trust Anchors" icon="Form" v-show="loggedIn" />
+			<!-- <SpLinkIcon link="/trust-anchors" text="Trust Anchors" icon="Form" v-show="loggedIn" /> -->
 			<!-- <SpLinkIcon link="/relayers" text="Relayers" icon="Transactions" /> -->
 			<div class="sp-dash"></div>
 			<SpLinkIcon

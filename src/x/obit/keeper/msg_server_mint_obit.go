@@ -14,6 +14,24 @@ import (
 	"github.com/obada-foundation/fullcore/x/obit/types"
 )
 
+func (k msgServer) Send(goCtx context.Context, msg *types.MsgSend) (*types.MsgSendResponse, error) {
+	resp := &types.MsgSendResponse{}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	receiver, err := sdk.AccAddressFromBech32(msg.Receiver)
+
+	if err != nil {
+		return resp, nil
+	}
+
+	if err := k.nftKeeper.Transfer(ctx, "OBT", msg.Did, receiver); err != nil {
+		return resp, nil
+	}
+
+	return resp, nil
+}
+
 func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*types.MsgMintObitResponse, error) {
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
@@ -28,7 +46,7 @@ func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*typ
 
 	// Validate trust anchor
 	if len(msg.OwnerDid) > 0 {
-		isCompliant, err := k.CheckCompliance(msg.TrustAnchor, msg.OwnerDid)
+		isCompliant, err := k.CheckCompliance(msg.ObdDid, msg.OwnerDid)
 		if err != nil {
 			return resp, err
 		}
@@ -44,8 +62,7 @@ func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*typ
 			Manufacturer:     msg.Manufacturer,
 			PartNumber:       msg.PartNumber,
 		},
-		OwnerDid:   msg.OwnerDid,
-		ModifiedOn: 1644067988,
+		TrustAnchorToken: msg.TrustAnchorToken,
 	})
 
 	if err != nil {
@@ -64,9 +81,17 @@ func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*typ
 
 	did := obt.GetObitID()
 
+	checksum, err := obt.GetChecksum(nil)
+	if err != nil {
+		return resp, err
+	}
+
 	// check URI hash
 	data, err := codectypes.NewAnyWithValue(&types.NFTData{
 		OwnerDid: obt.GetOwnerDID().GetValue(),
+		ObdDid:   msg.ObdDid,
+		RootHash: checksum.GetHash(),
+		Usn:      did.GetUsn(),
 	})
 	if err != nil {
 		return resp, err
@@ -75,8 +100,8 @@ func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*typ
 	nftToken := nft.NFT{
 		ClassId: "OBT",
 		Id:      did.GetDid(),
-		Uri:     "http://google.com",
-		UriHash: "",
+		Uri:     msg.Uri,
+		UriHash: msg.UriHash,
 		Data:    data,
 	}
 

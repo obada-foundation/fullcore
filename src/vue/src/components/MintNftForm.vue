@@ -11,9 +11,26 @@
         <input type="text" class="sp-input" v-model="manufacturer" placeholder="Manufacturer" required />
       </div>
 
-      <div class="sp-type-form__field sp-form-group">
-        <input type="text" class="sp-input" v-model="part_number" placeholder="Part Number" required />
-      </div>
+          <input class="sp-input" placeholder="Serial Number" v-model="serial_number_hash" required />
+          <br><br>
+
+          <input class="sp-input" placeholder="Manufacturer" v-model="manufacturer" required />
+          <br><br>
+
+          <input class="sp-input" placeholder="Part Number" v-model="part_number" required />
+          <br><br>
+
+          <input class="sp-input" placeholder="Metadata URI" v-model="uri" required />
+          <br><br>
+
+          <input class="sp-input" placeholder="Metadata URI Hash" v-model="uri_hash" required />
+          <br><br>
+
+          <div>
+            <input class="sp-input" v-model="obd_did" placeholder="Physical Asset Owner ID"/>
+            <button @click="getToken" class="sp-button" type="button">Get Token</button>
+          </div>
+          <br><br>
 
       <div class="sp-type-form__field sp-form-group">
         <input type="text" class="sp-input" v-model="owner_did" placeholder="Physical Asset Owner ID" />
@@ -53,7 +70,9 @@ export default {
       serial_number_hash: "",
       manufacturer: "",
       part_number: "",
-      owner_did: "",
+      obd_did: "",
+      uri: "",
+      uri_hash: "",
       trust_anchor: "demoTrustAnchor",
     };
   },
@@ -82,12 +101,14 @@ export default {
     getToken() {
       axios.post("http://demo.ta.alpha.obada.io/api/v1/issue-token", {}, {
         headers: {
-          'Authrization': 'Bearer ' + this.taAuthToken,
+          'Authorization': 'Bearer ' + this.taAuthToken,
           'Content-Type': 'application/json'
         },
-        withCredentials: true
+        withCredentials: false
       })
-          .then(response => console.log(response))
+          .then(response => {
+            this.obd_did = response.data.token
+          })
           .catch(error => {
             this.errorMessage = error.message;
             console.error("There was an error!", error);
@@ -101,8 +122,9 @@ export default {
         serialNumberHash: this.serial_number_hash,
         manufacturer: this.manufacturer,
         partNumber: this.part_number,
-        ownerDid: this.owner_did,
-        trustAnchor: this.trust_anchor,
+        obdDid: this.obd_did,
+        uri: this.uri,
+        uriHash: this.uri_hash,
       };
 
       const resp = await this.$store.dispatch("obadafoundation.fullcore.obit/sendMsgMintObit", {

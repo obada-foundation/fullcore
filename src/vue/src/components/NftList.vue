@@ -1,26 +1,27 @@
 <template>
-  <div class="sp-box sp-shadow">
+  <div>
     <table class="sp-blockstable">
       <thead>
         <tr>
           <th class="sp-blockstable__height"><strong>DID</strong></th>
+          <th class="sp-blockstable__height"><strong>USN</strong></th>
           <th class="sp-blockstable__hash"><strong>Metadata URL</strong></th>
           <th class="sp-blockstable__timestamp"><strong>Root Hash</strong></th>
         </tr>
       </thead>
       <tbody>
-        <tr class="sp-blockdisplayline" v-if="!nfts || nfts.length === 0">
-          <td colspan="3">No NFTs yet</td>
-        </tr>
         <tr class="sp-blockdisplayline" v-for="nft in nfts" v-bind:key="nft.id">
           <td class="sp-blockdisplayline__height">
-            <router-link :to="/nfts/" class="sp-blockdisplayline__height__link">{{ nft.id }}</router-link>
+            <router-link :to="/nfts/" class="sp-blockdisplayline__height__link"
+              >{{ nft.id }}
+            </router-link>
           </td>
+          <td>{{ nft.data.usn }}</td>
           <td class="sp-blockdisplayline__hash">
-            {{ nft.uri }}
+            {{ nft.data.uri }}
           </td>
           <td class="sp-blockdisplayline__timestamp">
-            {{ nft.rootHash }}
+            {{ nft.data.root_hash }}
           </td>
         </tr>
       </tbody>
