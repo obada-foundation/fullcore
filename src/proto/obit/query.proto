@@ -15,20 +15,26 @@ option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
 service Query {
   // Parameters queries the parameters of the module.
   rpc Params(QueryParamsRequest) returns (QueryParamsResponse) {
-    option (google.api.http).get = "/obadafoundation/fullcore/obit/params";
+    option (google.api.http).get = "/obadafoundation/fullcore/params";
   }
   // Queries a Ta by id.
   rpc Ta(QueryGetTaRequest) returns (QueryGetTaResponse) {
-    option (google.api.http).get = "/obada-foundation/fullcore/obit/ta/{id}";
+    option (google.api.http).get = "/obada-foundation/fullcore/ta/{id}";
   }
 
   // Queries a list of Ta items.
   rpc TaAll(QueryAllTaRequest) returns (QueryAllTaResponse) {
-    option (google.api.http).get = "/obada-foundation/fullcore/obit/ta";
+    option (google.api.http).get = "/obada-foundation/fullcore/ta";
   }
 
-  rpc GetAllNftByOwner(QueryGetAllNftByOwnerRequest) returns (QueryGetAllNftByOwnerResponse) {
-    option (google.api.http).get = "/obada-foundation/fullcore/obit/{owner}";
+  // GetNftsByAddress returns a list of NFTs ownerd by given address
+  rpc GetNftsByAddress(QueryGetNftsByAddressRequest) returns (QueryGetNftsByAddressResponse) {
+    option (google.api.http).get = "/obada-foundation/fullcore/nfts/{address}";
+  }
+
+  // GetNft returns single NFT by DID
+  rpc GetNft(QueryGetNftRequest) returns (NFT) {
+    option (google.api.http).get = "/obada-foundation/fullcore/nft/{did}";
   }
 
 // this line is used by starport scaffolding # 2
@@ -43,11 +49,15 @@ message QueryParamsResponse {
   Params params = 1 [(gogoproto.nullable) = false];
 }
 
-message QueryGetAllNftByOwnerRequest {
-  string owner = 1;
+message QueryGetNftRequest {
+  string did = 1;
 }
 
-message QueryGetAllNftByOwnerResponse {
+message QueryGetNftsByAddressRequest {
+  string address = 1;
+}
+
+message QueryGetNftsByAddressResponse {
         repeated NFT NFT = 1 [(gogoproto.nullable) = false];
 }
 

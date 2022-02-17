@@ -146,7 +146,7 @@ export interface ObitQueryAllTaResponse {
   pagination?: V1Beta1PageResponse;
 }
 
-export interface ObitQueryGetAllNftByOwnerResponse {
+export interface ObitQueryGetNftsByAddressResponse {
   NFT?: ObitNFT[];
 }
 
@@ -557,9 +557,41 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * No description
    *
    * @tags Query
+   * @name QueryGetNft
+   * @summary GetNft returns single NFT by DID
+   * @request GET:/obada-foundation/fullcore/nft/{did}
+   */
+  queryGetNft = (did: string, params: RequestParams = {}) =>
+    this.request<ObitNFT, RpcStatus>({
+      path: `/obada-foundation/fullcore/nft/${did}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
+   * @name QueryGetNftsByAddress
+   * @summary GetNftsByAddress returns a list of NFTs ownerd by given address
+   * @request GET:/obada-foundation/fullcore/nfts/{address}
+   */
+  queryGetNftsByAddress = (address: string, params: RequestParams = {}) =>
+    this.request<ObitQueryGetNftsByAddressResponse, RpcStatus>({
+      path: `/obada-foundation/fullcore/nfts/${address}`,
+      method: "GET",
+      format: "json",
+      ...params,
+    });
+
+  /**
+   * No description
+   *
+   * @tags Query
    * @name QueryTaAll
    * @summary Queries a list of Ta items.
-   * @request GET:/obada-foundation/fullcore/obit/ta
+   * @request GET:/obada-foundation/fullcore/ta
    */
   queryTaAll = (
     query?: {
@@ -572,7 +604,7 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
     params: RequestParams = {},
   ) =>
     this.request<ObitQueryAllTaResponse, RpcStatus>({
-      path: `/obada-foundation/fullcore/obit/ta`,
+      path: `/obada-foundation/fullcore/ta`,
       method: "GET",
       query: query,
       format: "json",
@@ -585,26 +617,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryTa
    * @summary Queries a Ta by id.
-   * @request GET:/obada-foundation/fullcore/obit/ta/{id}
+   * @request GET:/obada-foundation/fullcore/ta/{id}
    */
   queryTa = (id: string, params: RequestParams = {}) =>
     this.request<ObitQueryGetTaResponse, RpcStatus>({
-      path: `/obada-foundation/fullcore/obit/ta/${id}`,
-      method: "GET",
-      format: "json",
-      ...params,
-    });
-
-  /**
-   * No description
-   *
-   * @tags Query
-   * @name QueryGetAllNftByOwner
-   * @request GET:/obada-foundation/fullcore/obit/{owner}
-   */
-  queryGetAllNftByOwner = (owner: string, params: RequestParams = {}) =>
-    this.request<ObitQueryGetAllNftByOwnerResponse, RpcStatus>({
-      path: `/obada-foundation/fullcore/obit/${owner}`,
+      path: `/obada-foundation/fullcore/ta/${id}`,
       method: "GET",
       format: "json",
       ...params,
@@ -616,11 +633,11 @@ export class Api<SecurityDataType extends unknown> extends HttpClient<SecurityDa
    * @tags Query
    * @name QueryParams
    * @summary Parameters queries the parameters of the module.
-   * @request GET:/obadafoundation/fullcore/obit/params
+   * @request GET:/obadafoundation/fullcore/params
    */
   queryParams = (params: RequestParams = {}) =>
     this.request<ObitQueryParamsResponse, RpcStatus>({
-      path: `/obadafoundation/fullcore/obit/params`,
+      path: `/obadafoundation/fullcore/params`,
       method: "GET",
       format: "json",
       ...params,

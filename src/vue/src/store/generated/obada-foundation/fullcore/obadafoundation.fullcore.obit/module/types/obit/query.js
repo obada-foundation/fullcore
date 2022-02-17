@@ -90,11 +90,62 @@ export const QueryParamsResponse = {
         return message;
     },
 };
-const baseQueryGetAllNftByOwnerRequest = { owner: "" };
-export const QueryGetAllNftByOwnerRequest = {
+const baseQueryGetNftRequest = { did: "" };
+export const QueryGetNftRequest = {
     encode(message, writer = Writer.create()) {
-        if (message.owner !== "") {
-            writer.uint32(10).string(message.owner);
+        if (message.did !== "") {
+            writer.uint32(10).string(message.did);
+        }
+        return writer;
+    },
+    decode(input, length) {
+        const reader = input instanceof Uint8Array ? new Reader(input) : input;
+        let end = length === undefined ? reader.len : reader.pos + length;
+        const message = { ...baseQueryGetNftRequest };
+        while (reader.pos < end) {
+            const tag = reader.uint32();
+            switch (tag >>> 3) {
+                case 1:
+                    message.did = reader.string();
+                    break;
+                default:
+                    reader.skipType(tag & 7);
+                    break;
+            }
+        }
+        return message;
+    },
+    fromJSON(object) {
+        const message = { ...baseQueryGetNftRequest };
+        if (object.did !== undefined && object.did !== null) {
+            message.did = String(object.did);
+        }
+        else {
+            message.did = "";
+        }
+        return message;
+    },
+    toJSON(message) {
+        const obj = {};
+        message.did !== undefined && (obj.did = message.did);
+        return obj;
+    },
+    fromPartial(object) {
+        const message = { ...baseQueryGetNftRequest };
+        if (object.did !== undefined && object.did !== null) {
+            message.did = object.did;
+        }
+        else {
+            message.did = "";
+        }
+        return message;
+    },
+};
+const baseQueryGetNftsByAddressRequest = { address: "" };
+export const QueryGetNftsByAddressRequest = {
+    encode(message, writer = Writer.create()) {
+        if (message.address !== "") {
+            writer.uint32(10).string(message.address);
         }
         return writer;
     },
@@ -102,13 +153,13 @@ export const QueryGetAllNftByOwnerRequest = {
         const reader = input instanceof Uint8Array ? new Reader(input) : input;
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = {
-            ...baseQueryGetAllNftByOwnerRequest,
+            ...baseQueryGetNftsByAddressRequest,
         };
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
                 case 1:
-                    message.owner = reader.string();
+                    message.address = reader.string();
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -119,36 +170,36 @@ export const QueryGetAllNftByOwnerRequest = {
     },
     fromJSON(object) {
         const message = {
-            ...baseQueryGetAllNftByOwnerRequest,
+            ...baseQueryGetNftsByAddressRequest,
         };
-        if (object.owner !== undefined && object.owner !== null) {
-            message.owner = String(object.owner);
+        if (object.address !== undefined && object.address !== null) {
+            message.address = String(object.address);
         }
         else {
-            message.owner = "";
+            message.address = "";
         }
         return message;
     },
     toJSON(message) {
         const obj = {};
-        message.owner !== undefined && (obj.owner = message.owner);
+        message.address !== undefined && (obj.address = message.address);
         return obj;
     },
     fromPartial(object) {
         const message = {
-            ...baseQueryGetAllNftByOwnerRequest,
+            ...baseQueryGetNftsByAddressRequest,
         };
-        if (object.owner !== undefined && object.owner !== null) {
-            message.owner = object.owner;
+        if (object.address !== undefined && object.address !== null) {
+            message.address = object.address;
         }
         else {
-            message.owner = "";
+            message.address = "";
         }
         return message;
     },
 };
-const baseQueryGetAllNftByOwnerResponse = {};
-export const QueryGetAllNftByOwnerResponse = {
+const baseQueryGetNftsByAddressResponse = {};
+export const QueryGetNftsByAddressResponse = {
     encode(message, writer = Writer.create()) {
         for (const v of message.NFT) {
             NFT.encode(v, writer.uint32(10).fork()).ldelim();
@@ -159,7 +210,7 @@ export const QueryGetAllNftByOwnerResponse = {
         const reader = input instanceof Uint8Array ? new Reader(input) : input;
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = {
-            ...baseQueryGetAllNftByOwnerResponse,
+            ...baseQueryGetNftsByAddressResponse,
         };
         message.NFT = [];
         while (reader.pos < end) {
@@ -177,7 +228,7 @@ export const QueryGetAllNftByOwnerResponse = {
     },
     fromJSON(object) {
         const message = {
-            ...baseQueryGetAllNftByOwnerResponse,
+            ...baseQueryGetNftsByAddressResponse,
         };
         message.NFT = [];
         if (object.NFT !== undefined && object.NFT !== null) {
@@ -199,7 +250,7 @@ export const QueryGetAllNftByOwnerResponse = {
     },
     fromPartial(object) {
         const message = {
-            ...baseQueryGetAllNftByOwnerResponse,
+            ...baseQueryGetNftsByAddressResponse,
         };
         message.NFT = [];
         if (object.NFT !== undefined && object.NFT !== null) {
@@ -465,10 +516,15 @@ export class QueryClientImpl {
         const promise = this.rpc.request("obadafoundation.fullcore.obit.Query", "TaAll", data);
         return promise.then((data) => QueryAllTaResponse.decode(new Reader(data)));
     }
-    GetAllNftByOwner(request) {
-        const data = QueryGetAllNftByOwnerRequest.encode(request).finish();
-        const promise = this.rpc.request("obadafoundation.fullcore.obit.Query", "GetAllNftByOwner", data);
-        return promise.then((data) => QueryGetAllNftByOwnerResponse.decode(new Reader(data)));
+    GetNftsByAddress(request) {
+        const data = QueryGetNftsByAddressRequest.encode(request).finish();
+        const promise = this.rpc.request("obadafoundation.fullcore.obit.Query", "GetNftsByAddress", data);
+        return promise.then((data) => QueryGetNftsByAddressResponse.decode(new Reader(data)));
+    }
+    GetNft(request) {
+        const data = QueryGetNftRequest.encode(request).finish();
+        const promise = this.rpc.request("obadafoundation.fullcore.obit.Query", "GetNft", data);
+        return promise.then((data) => NFT.decode(new Reader(data)));
     }
 }
 var globalThis = (() => {

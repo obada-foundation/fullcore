@@ -12,10 +12,13 @@ export interface QueryParamsResponse {
     /** params holds all the parameters of this module. */
     params: Params | undefined;
 }
-export interface QueryGetAllNftByOwnerRequest {
-    owner: string;
+export interface QueryGetNftRequest {
+    did: string;
 }
-export interface QueryGetAllNftByOwnerResponse {
+export interface QueryGetNftsByAddressRequest {
+    address: string;
+}
+export interface QueryGetNftsByAddressResponse {
     NFT: NFT[];
 }
 export interface QueryGetTaRequest {
@@ -45,19 +48,26 @@ export declare const QueryParamsResponse: {
     toJSON(message: QueryParamsResponse): unknown;
     fromPartial(object: DeepPartial<QueryParamsResponse>): QueryParamsResponse;
 };
-export declare const QueryGetAllNftByOwnerRequest: {
-    encode(message: QueryGetAllNftByOwnerRequest, writer?: Writer): Writer;
-    decode(input: Reader | Uint8Array, length?: number): QueryGetAllNftByOwnerRequest;
-    fromJSON(object: any): QueryGetAllNftByOwnerRequest;
-    toJSON(message: QueryGetAllNftByOwnerRequest): unknown;
-    fromPartial(object: DeepPartial<QueryGetAllNftByOwnerRequest>): QueryGetAllNftByOwnerRequest;
+export declare const QueryGetNftRequest: {
+    encode(message: QueryGetNftRequest, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): QueryGetNftRequest;
+    fromJSON(object: any): QueryGetNftRequest;
+    toJSON(message: QueryGetNftRequest): unknown;
+    fromPartial(object: DeepPartial<QueryGetNftRequest>): QueryGetNftRequest;
 };
-export declare const QueryGetAllNftByOwnerResponse: {
-    encode(message: QueryGetAllNftByOwnerResponse, writer?: Writer): Writer;
-    decode(input: Reader | Uint8Array, length?: number): QueryGetAllNftByOwnerResponse;
-    fromJSON(object: any): QueryGetAllNftByOwnerResponse;
-    toJSON(message: QueryGetAllNftByOwnerResponse): unknown;
-    fromPartial(object: DeepPartial<QueryGetAllNftByOwnerResponse>): QueryGetAllNftByOwnerResponse;
+export declare const QueryGetNftsByAddressRequest: {
+    encode(message: QueryGetNftsByAddressRequest, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): QueryGetNftsByAddressRequest;
+    fromJSON(object: any): QueryGetNftsByAddressRequest;
+    toJSON(message: QueryGetNftsByAddressRequest): unknown;
+    fromPartial(object: DeepPartial<QueryGetNftsByAddressRequest>): QueryGetNftsByAddressRequest;
+};
+export declare const QueryGetNftsByAddressResponse: {
+    encode(message: QueryGetNftsByAddressResponse, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): QueryGetNftsByAddressResponse;
+    fromJSON(object: any): QueryGetNftsByAddressResponse;
+    toJSON(message: QueryGetNftsByAddressResponse): unknown;
+    fromPartial(object: DeepPartial<QueryGetNftsByAddressResponse>): QueryGetNftsByAddressResponse;
 };
 export declare const QueryGetTaRequest: {
     encode(message: QueryGetTaRequest, writer?: Writer): Writer;
@@ -95,7 +105,10 @@ export interface Query {
     Ta(request: QueryGetTaRequest): Promise<QueryGetTaResponse>;
     /** Queries a list of Ta items. */
     TaAll(request: QueryAllTaRequest): Promise<QueryAllTaResponse>;
-    GetAllNftByOwner(request: QueryGetAllNftByOwnerRequest): Promise<QueryGetAllNftByOwnerResponse>;
+    /** GetNftsByAddress returns a list of NFTs ownerd by given address */
+    GetNftsByAddress(request: QueryGetNftsByAddressRequest): Promise<QueryGetNftsByAddressResponse>;
+    /** GetNft returns single NFT by DID */
+    GetNft(request: QueryGetNftRequest): Promise<NFT>;
 }
 export declare class QueryClientImpl implements Query {
     private readonly rpc;
@@ -103,7 +116,8 @@ export declare class QueryClientImpl implements Query {
     Params(request: QueryParamsRequest): Promise<QueryParamsResponse>;
     Ta(request: QueryGetTaRequest): Promise<QueryGetTaResponse>;
     TaAll(request: QueryAllTaRequest): Promise<QueryAllTaResponse>;
-    GetAllNftByOwner(request: QueryGetAllNftByOwnerRequest): Promise<QueryGetAllNftByOwnerResponse>;
+    GetNftsByAddress(request: QueryGetNftsByAddressRequest): Promise<QueryGetNftsByAddressResponse>;
+    GetNft(request: QueryGetNftRequest): Promise<NFT>;
 }
 interface Rpc {
     request(service: string, method: string, data: Uint8Array): Promise<Uint8Array>;

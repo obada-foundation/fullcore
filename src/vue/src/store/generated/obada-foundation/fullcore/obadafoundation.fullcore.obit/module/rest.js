@@ -140,12 +140,40 @@ export class Api extends HttpClient {
          * No description
          *
          * @tags Query
+         * @name QueryGetNft
+         * @summary GetNft returns single NFT by DID
+         * @request GET:/obada-foundation/fullcore/nft/{did}
+         */
+        this.queryGetNft = (did, params = {}) => this.request({
+            path: `/obada-foundation/fullcore/nft/${did}`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
+         * @name QueryGetNftsByAddress
+         * @summary GetNftsByAddress returns a list of NFTs ownerd by given address
+         * @request GET:/obada-foundation/fullcore/nfts/{address}
+         */
+        this.queryGetNftsByAddress = (address, params = {}) => this.request({
+            path: `/obada-foundation/fullcore/nfts/${address}`,
+            method: "GET",
+            format: "json",
+            ...params,
+        });
+        /**
+         * No description
+         *
+         * @tags Query
          * @name QueryTaAll
          * @summary Queries a list of Ta items.
-         * @request GET:/obada-foundation/fullcore/obit/ta
+         * @request GET:/obada-foundation/fullcore/ta
          */
         this.queryTaAll = (query, params = {}) => this.request({
-            path: `/obada-foundation/fullcore/obit/ta`,
+            path: `/obada-foundation/fullcore/ta`,
             method: "GET",
             query: query,
             format: "json",
@@ -157,23 +185,10 @@ export class Api extends HttpClient {
          * @tags Query
          * @name QueryTa
          * @summary Queries a Ta by id.
-         * @request GET:/obada-foundation/fullcore/obit/ta/{id}
+         * @request GET:/obada-foundation/fullcore/ta/{id}
          */
         this.queryTa = (id, params = {}) => this.request({
-            path: `/obada-foundation/fullcore/obit/ta/${id}`,
-            method: "GET",
-            format: "json",
-            ...params,
-        });
-        /**
-         * No description
-         *
-         * @tags Query
-         * @name QueryGetAllNftByOwner
-         * @request GET:/obada-foundation/fullcore/obit/{owner}
-         */
-        this.queryGetAllNftByOwner = (owner, params = {}) => this.request({
-            path: `/obada-foundation/fullcore/obit/${owner}`,
+            path: `/obada-foundation/fullcore/ta/${id}`,
             method: "GET",
             format: "json",
             ...params,
@@ -184,10 +199,10 @@ export class Api extends HttpClient {
          * @tags Query
          * @name QueryParams
          * @summary Parameters queries the parameters of the module.
-         * @request GET:/obadafoundation/fullcore/obit/params
+         * @request GET:/obadafoundation/fullcore/params
          */
         this.queryParams = (params = {}) => this.request({
-            path: `/obadafoundation/fullcore/obit/params`,
+            path: `/obadafoundation/fullcore/params`,
             method: "GET",
             format: "json",
             ...params,

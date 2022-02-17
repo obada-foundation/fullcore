@@ -15,7 +15,7 @@ const routes = [
   { path: '/types', component: Types },
   { path: '/relayers', component: Relayers },
   { path: '/nfts', component: NFT },
-  { path: '/nfts/{did}', component: NFTDetails },
+  { path: '/nfts/:did', component: NFTDetails, name: 'NFTDetails' },
   { path: '/trust-anchors', component: TrustAnchors },
 ]
 

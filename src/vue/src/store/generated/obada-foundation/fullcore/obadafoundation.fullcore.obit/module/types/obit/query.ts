@@ -20,11 +20,15 @@ export interface QueryParamsResponse {
   params: Params | undefined;
 }
 
-export interface QueryGetAllNftByOwnerRequest {
-  owner: string;
+export interface QueryGetNftRequest {
+  did: string;
 }
 
-export interface QueryGetAllNftByOwnerResponse {
+export interface QueryGetNftsByAddressRequest {
+  address: string;
+}
+
+export interface QueryGetNftsByAddressResponse {
   NFT: NFT[];
 }
 
@@ -142,33 +146,28 @@ export const QueryParamsResponse = {
   },
 };
 
-const baseQueryGetAllNftByOwnerRequest: object = { owner: "" };
+const baseQueryGetNftRequest: object = { did: "" };
 
-export const QueryGetAllNftByOwnerRequest = {
+export const QueryGetNftRequest = {
   encode(
-    message: QueryGetAllNftByOwnerRequest,
+    message: QueryGetNftRequest,
     writer: Writer = Writer.create()
   ): Writer {
-    if (message.owner !== "") {
-      writer.uint32(10).string(message.owner);
+    if (message.did !== "") {
+      writer.uint32(10).string(message.did);
     }
     return writer;
   },
 
-  decode(
-    input: Reader | Uint8Array,
-    length?: number
-  ): QueryGetAllNftByOwnerRequest {
+  decode(input: Reader | Uint8Array, length?: number): QueryGetNftRequest {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
-    const message = {
-      ...baseQueryGetAllNftByOwnerRequest,
-    } as QueryGetAllNftByOwnerRequest;
+    const message = { ...baseQueryGetNftRequest } as QueryGetNftRequest;
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.owner = reader.string();
+          message.did = reader.string();
           break;
         default:
           reader.skipType(tag & 7);
@@ -178,44 +177,107 @@ export const QueryGetAllNftByOwnerRequest = {
     return message;
   },
 
-  fromJSON(object: any): QueryGetAllNftByOwnerRequest {
-    const message = {
-      ...baseQueryGetAllNftByOwnerRequest,
-    } as QueryGetAllNftByOwnerRequest;
-    if (object.owner !== undefined && object.owner !== null) {
-      message.owner = String(object.owner);
+  fromJSON(object: any): QueryGetNftRequest {
+    const message = { ...baseQueryGetNftRequest } as QueryGetNftRequest;
+    if (object.did !== undefined && object.did !== null) {
+      message.did = String(object.did);
     } else {
-      message.owner = "";
+      message.did = "";
     }
     return message;
   },
 
-  toJSON(message: QueryGetAllNftByOwnerRequest): unknown {
+  toJSON(message: QueryGetNftRequest): unknown {
     const obj: any = {};
-    message.owner !== undefined && (obj.owner = message.owner);
+    message.did !== undefined && (obj.did = message.did);
     return obj;
   },
 
-  fromPartial(
-    object: DeepPartial<QueryGetAllNftByOwnerRequest>
-  ): QueryGetAllNftByOwnerRequest {
-    const message = {
-      ...baseQueryGetAllNftByOwnerRequest,
-    } as QueryGetAllNftByOwnerRequest;
-    if (object.owner !== undefined && object.owner !== null) {
-      message.owner = object.owner;
+  fromPartial(object: DeepPartial<QueryGetNftRequest>): QueryGetNftRequest {
+    const message = { ...baseQueryGetNftRequest } as QueryGetNftRequest;
+    if (object.did !== undefined && object.did !== null) {
+      message.did = object.did;
     } else {
-      message.owner = "";
+      message.did = "";
     }
     return message;
   },
 };
 
-const baseQueryGetAllNftByOwnerResponse: object = {};
+const baseQueryGetNftsByAddressRequest: object = { address: "" };
 
-export const QueryGetAllNftByOwnerResponse = {
+export const QueryGetNftsByAddressRequest = {
   encode(
-    message: QueryGetAllNftByOwnerResponse,
+    message: QueryGetNftsByAddressRequest,
+    writer: Writer = Writer.create()
+  ): Writer {
+    if (message.address !== "") {
+      writer.uint32(10).string(message.address);
+    }
+    return writer;
+  },
+
+  decode(
+    input: Reader | Uint8Array,
+    length?: number
+  ): QueryGetNftsByAddressRequest {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = {
+      ...baseQueryGetNftsByAddressRequest,
+    } as QueryGetNftsByAddressRequest;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.address = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): QueryGetNftsByAddressRequest {
+    const message = {
+      ...baseQueryGetNftsByAddressRequest,
+    } as QueryGetNftsByAddressRequest;
+    if (object.address !== undefined && object.address !== null) {
+      message.address = String(object.address);
+    } else {
+      message.address = "";
+    }
+    return message;
+  },
+
+  toJSON(message: QueryGetNftsByAddressRequest): unknown {
+    const obj: any = {};
+    message.address !== undefined && (obj.address = message.address);
+    return obj;
+  },
+
+  fromPartial(
+    object: DeepPartial<QueryGetNftsByAddressRequest>
+  ): QueryGetNftsByAddressRequest {
+    const message = {
+      ...baseQueryGetNftsByAddressRequest,
+    } as QueryGetNftsByAddressRequest;
+    if (object.address !== undefined && object.address !== null) {
+      message.address = object.address;
+    } else {
+      message.address = "";
+    }
+    return message;
+  },
+};
+
+const baseQueryGetNftsByAddressResponse: object = {};
+
+export const QueryGetNftsByAddressResponse = {
+  encode(
+    message: QueryGetNftsByAddressResponse,
     writer: Writer = Writer.create()
   ): Writer {
     for (const v of message.NFT) {
@@ -227,12 +289,12 @@ export const QueryGetAllNftByOwnerResponse = {
   decode(
     input: Reader | Uint8Array,
     length?: number
-  ): QueryGetAllNftByOwnerResponse {
+  ): QueryGetNftsByAddressResponse {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = {
-      ...baseQueryGetAllNftByOwnerResponse,
-    } as QueryGetAllNftByOwnerResponse;
+      ...baseQueryGetNftsByAddressResponse,
+    } as QueryGetNftsByAddressResponse;
     message.NFT = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
@@ -248,10 +310,10 @@ export const QueryGetAllNftByOwnerResponse = {
     return message;
   },
 
-  fromJSON(object: any): QueryGetAllNftByOwnerResponse {
+  fromJSON(object: any): QueryGetNftsByAddressResponse {
     const message = {
-      ...baseQueryGetAllNftByOwnerResponse,
-    } as QueryGetAllNftByOwnerResponse;
+      ...baseQueryGetNftsByAddressResponse,
+    } as QueryGetNftsByAddressResponse;
     message.NFT = [];
     if (object.NFT !== undefined && object.NFT !== null) {
       for (const e of object.NFT) {
@@ -261,7 +323,7 @@ export const QueryGetAllNftByOwnerResponse = {
     return message;
   },
 
-  toJSON(message: QueryGetAllNftByOwnerResponse): unknown {
+  toJSON(message: QueryGetNftsByAddressResponse): unknown {
     const obj: any = {};
     if (message.NFT) {
       obj.NFT = message.NFT.map((e) => (e ? NFT.toJSON(e) : undefined));
@@ -272,11 +334,11 @@ export const QueryGetAllNftByOwnerResponse = {
   },
 
   fromPartial(
-    object: DeepPartial<QueryGetAllNftByOwnerResponse>
-  ): QueryGetAllNftByOwnerResponse {
+    object: DeepPartial<QueryGetNftsByAddressResponse>
+  ): QueryGetNftsByAddressResponse {
     const message = {
-      ...baseQueryGetAllNftByOwnerResponse,
-    } as QueryGetAllNftByOwnerResponse;
+      ...baseQueryGetNftsByAddressResponse,
+    } as QueryGetNftsByAddressResponse;
     message.NFT = [];
     if (object.NFT !== undefined && object.NFT !== null) {
       for (const e of object.NFT) {
@@ -555,9 +617,12 @@ export interface Query {
   Ta(request: QueryGetTaRequest): Promise<QueryGetTaResponse>;
   /** Queries a list of Ta items. */
   TaAll(request: QueryAllTaRequest): Promise<QueryAllTaResponse>;
-  GetAllNftByOwner(
-    request: QueryGetAllNftByOwnerRequest
-  ): Promise<QueryGetAllNftByOwnerResponse>;
+  /** GetNftsByAddress returns a list of NFTs ownerd by given address */
+  GetNftsByAddress(
+    request: QueryGetNftsByAddressRequest
+  ): Promise<QueryGetNftsByAddressResponse>;
+  /** GetNft returns single NFT by DID */
+  GetNft(request: QueryGetNftRequest): Promise<NFT>;
 }
 
 export class QueryClientImpl implements Query {
@@ -595,18 +660,28 @@ export class QueryClientImpl implements Query {
     return promise.then((data) => QueryAllTaResponse.decode(new Reader(data)));
   }
 
-  GetAllNftByOwner(
-    request: QueryGetAllNftByOwnerRequest
-  ): Promise<QueryGetAllNftByOwnerResponse> {
-    const data = QueryGetAllNftByOwnerRequest.encode(request).finish();
+  GetNftsByAddress(
+    request: QueryGetNftsByAddressRequest
+  ): Promise<QueryGetNftsByAddressResponse> {
+    const data = QueryGetNftsByAddressRequest.encode(request).finish();
     const promise = this.rpc.request(
       "obadafoundation.fullcore.obit.Query",
-      "GetAllNftByOwner",
+      "GetNftsByAddress",
       data
     );
     return promise.then((data) =>
-      QueryGetAllNftByOwnerResponse.decode(new Reader(data))
+      QueryGetNftsByAddressResponse.decode(new Reader(data))
     );
+  }
+
+  GetNft(request: QueryGetNftRequest): Promise<NFT> {
+    const data = QueryGetNftRequest.encode(request).finish();
+    const promise = this.rpc.request(
+      "obadafoundation.fullcore.obit.Query",
+      "GetNft",
+      data
+    );
+    return promise.then((data) => NFT.decode(new Reader(data)));
   }
 }
 

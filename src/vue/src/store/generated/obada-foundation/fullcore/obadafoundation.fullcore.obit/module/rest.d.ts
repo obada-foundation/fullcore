@@ -124,7 +124,7 @@ export interface ObitQueryAllTaResponse {
      */
     pagination?: V1Beta1PageResponse;
 }
-export interface ObitQueryGetAllNftByOwnerResponse {
+export interface ObitQueryGetNftsByAddressResponse {
     NFT?: ObitNFT[];
 }
 export interface ObitQueryGetTaResponse {
@@ -384,9 +384,27 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * No description
      *
      * @tags Query
+     * @name QueryGetNft
+     * @summary GetNft returns single NFT by DID
+     * @request GET:/obada-foundation/fullcore/nft/{did}
+     */
+    queryGetNft: (did: string, params?: RequestParams) => Promise<HttpResponse<ObitNFT, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
+     * @name QueryGetNftsByAddress
+     * @summary GetNftsByAddress returns a list of NFTs ownerd by given address
+     * @request GET:/obada-foundation/fullcore/nfts/{address}
+     */
+    queryGetNftsByAddress: (address: string, params?: RequestParams) => Promise<HttpResponse<ObitQueryGetNftsByAddressResponse, RpcStatus>>;
+    /**
+     * No description
+     *
+     * @tags Query
      * @name QueryTaAll
      * @summary Queries a list of Ta items.
-     * @request GET:/obada-foundation/fullcore/obit/ta
+     * @request GET:/obada-foundation/fullcore/ta
      */
     queryTaAll: (query?: {
         "pagination.key"?: string;
@@ -401,24 +419,16 @@ export declare class Api<SecurityDataType extends unknown> extends HttpClient<Se
      * @tags Query
      * @name QueryTa
      * @summary Queries a Ta by id.
-     * @request GET:/obada-foundation/fullcore/obit/ta/{id}
+     * @request GET:/obada-foundation/fullcore/ta/{id}
      */
     queryTa: (id: string, params?: RequestParams) => Promise<HttpResponse<ObitQueryGetTaResponse, RpcStatus>>;
     /**
      * No description
      *
      * @tags Query
-     * @name QueryGetAllNftByOwner
-     * @request GET:/obada-foundation/fullcore/obit/{owner}
-     */
-    queryGetAllNftByOwner: (owner: string, params?: RequestParams) => Promise<HttpResponse<ObitQueryGetAllNftByOwnerResponse, RpcStatus>>;
-    /**
-     * No description
-     *
-     * @tags Query
      * @name QueryParams
      * @summary Parameters queries the parameters of the module.
-     * @request GET:/obadafoundation/fullcore/obit/params
+     * @request GET:/obadafoundation/fullcore/params
      */
     queryParams: (params?: RequestParams) => Promise<HttpResponse<ObitQueryParamsResponse, RpcStatus>>;
 }

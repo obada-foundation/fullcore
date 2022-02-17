@@ -113,22 +113,22 @@ func (m *QueryParamsResponse) GetParams() Params {
 	return Params{}
 }
 
-type QueryGetAllNftByOwnerRequest struct {
-	Owner string `protobuf:"bytes,1,opt,name=owner,proto3" json:"owner,omitempty"`
+type QueryGetNftRequest struct {
+	Did string `protobuf:"bytes,1,opt,name=did,proto3" json:"did,omitempty"`
 }
 
-func (m *QueryGetAllNftByOwnerRequest) Reset()         { *m = QueryGetAllNftByOwnerRequest{} }
-func (m *QueryGetAllNftByOwnerRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryGetAllNftByOwnerRequest) ProtoMessage()    {}
-func (*QueryGetAllNftByOwnerRequest) Descriptor() ([]byte, []int) {
+func (m *QueryGetNftRequest) Reset()         { *m = QueryGetNftRequest{} }
+func (m *QueryGetNftRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetNftRequest) ProtoMessage()    {}
+func (*QueryGetNftRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_3b91743c0fd69115, []int{2}
 }
-func (m *QueryGetAllNftByOwnerRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryGetNftRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetAllNftByOwnerRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGetNftRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetAllNftByOwnerRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGetNftRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -138,41 +138,41 @@ func (m *QueryGetAllNftByOwnerRequest) XXX_Marshal(b []byte, deterministic bool)
 		return b[:n], nil
 	}
 }
-func (m *QueryGetAllNftByOwnerRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetAllNftByOwnerRequest.Merge(m, src)
+func (m *QueryGetNftRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetNftRequest.Merge(m, src)
 }
-func (m *QueryGetAllNftByOwnerRequest) XXX_Size() int {
+func (m *QueryGetNftRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetAllNftByOwnerRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetAllNftByOwnerRequest.DiscardUnknown(m)
+func (m *QueryGetNftRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetNftRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetAllNftByOwnerRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryGetNftRequest proto.InternalMessageInfo
 
-func (m *QueryGetAllNftByOwnerRequest) GetOwner() string {
+func (m *QueryGetNftRequest) GetDid() string {
 	if m != nil {
-		return m.Owner
+		return m.Did
 	}
 	return ""
 }
 
-type QueryGetAllNftByOwnerResponse struct {
-	NFT []NFT `protobuf:"bytes,1,rep,name=NFT,proto3" json:"NFT"`
+type QueryGetNftsByAddressRequest struct {
+	Address string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
 }
 
-func (m *QueryGetAllNftByOwnerResponse) Reset()         { *m = QueryGetAllNftByOwnerResponse{} }
-func (m *QueryGetAllNftByOwnerResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryGetAllNftByOwnerResponse) ProtoMessage()    {}
-func (*QueryGetAllNftByOwnerResponse) Descriptor() ([]byte, []int) {
+func (m *QueryGetNftsByAddressRequest) Reset()         { *m = QueryGetNftsByAddressRequest{} }
+func (m *QueryGetNftsByAddressRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetNftsByAddressRequest) ProtoMessage()    {}
+func (*QueryGetNftsByAddressRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_3b91743c0fd69115, []int{3}
 }
-func (m *QueryGetAllNftByOwnerResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryGetNftsByAddressRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetAllNftByOwnerResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGetNftsByAddressRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetAllNftByOwnerResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGetNftsByAddressRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -182,19 +182,63 @@ func (m *QueryGetAllNftByOwnerResponse) XXX_Marshal(b []byte, deterministic bool
 		return b[:n], nil
 	}
 }
-func (m *QueryGetAllNftByOwnerResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetAllNftByOwnerResponse.Merge(m, src)
+func (m *QueryGetNftsByAddressRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetNftsByAddressRequest.Merge(m, src)
 }
-func (m *QueryGetAllNftByOwnerResponse) XXX_Size() int {
+func (m *QueryGetNftsByAddressRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetAllNftByOwnerResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetAllNftByOwnerResponse.DiscardUnknown(m)
+func (m *QueryGetNftsByAddressRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetNftsByAddressRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetAllNftByOwnerResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryGetNftsByAddressRequest proto.InternalMessageInfo
 
-func (m *QueryGetAllNftByOwnerResponse) GetNFT() []NFT {
+func (m *QueryGetNftsByAddressRequest) GetAddress() string {
+	if m != nil {
+		return m.Address
+	}
+	return ""
+}
+
+type QueryGetNftsByAddressResponse struct {
+	NFT []NFT `protobuf:"bytes,1,rep,name=NFT,proto3" json:"NFT"`
+}
+
+func (m *QueryGetNftsByAddressResponse) Reset()         { *m = QueryGetNftsByAddressResponse{} }
+func (m *QueryGetNftsByAddressResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetNftsByAddressResponse) ProtoMessage()    {}
+func (*QueryGetNftsByAddressResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_3b91743c0fd69115, []int{4}
+}
+func (m *QueryGetNftsByAddressResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetNftsByAddressResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetNftsByAddressResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetNftsByAddressResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetNftsByAddressResponse.Merge(m, src)
+}
+func (m *QueryGetNftsByAddressResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetNftsByAddressResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetNftsByAddressResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetNftsByAddressResponse proto.InternalMessageInfo
+
+func (m *QueryGetNftsByAddressResponse) GetNFT() []NFT {
 	if m != nil {
 		return m.NFT
 	}
@@ -209,7 +253,7 @@ func (m *QueryGetTaRequest) Reset()         { *m = QueryGetTaRequest{} }
 func (m *QueryGetTaRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryGetTaRequest) ProtoMessage()    {}
 func (*QueryGetTaRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_3b91743c0fd69115, []int{4}
+	return fileDescriptor_3b91743c0fd69115, []int{5}
 }
 func (m *QueryGetTaRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -253,7 +297,7 @@ func (m *QueryGetTaResponse) Reset()         { *m = QueryGetTaResponse{} }
 func (m *QueryGetTaResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryGetTaResponse) ProtoMessage()    {}
 func (*QueryGetTaResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_3b91743c0fd69115, []int{5}
+	return fileDescriptor_3b91743c0fd69115, []int{6}
 }
 func (m *QueryGetTaResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -297,7 +341,7 @@ func (m *QueryAllTaRequest) Reset()         { *m = QueryAllTaRequest{} }
 func (m *QueryAllTaRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryAllTaRequest) ProtoMessage()    {}
 func (*QueryAllTaRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_3b91743c0fd69115, []int{6}
+	return fileDescriptor_3b91743c0fd69115, []int{7}
 }
 func (m *QueryAllTaRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -342,7 +386,7 @@ func (m *QueryAllTaResponse) Reset()         { *m = QueryAllTaResponse{} }
 func (m *QueryAllTaResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryAllTaResponse) ProtoMessage()    {}
 func (*QueryAllTaResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_3b91743c0fd69115, []int{7}
+	return fileDescriptor_3b91743c0fd69115, []int{8}
 }
 func (m *QueryAllTaResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -388,8 +432,9 @@ func (m *QueryAllTaResponse) GetPagination() *query.PageResponse {
 func init() {
 	proto.RegisterType((*QueryParamsRequest)(nil), "obadafoundation.fullcore.obit.QueryParamsRequest")
 	proto.RegisterType((*QueryParamsResponse)(nil), "obadafoundation.fullcore.obit.QueryParamsResponse")
-	proto.RegisterType((*QueryGetAllNftByOwnerRequest)(nil), "obadafoundation.fullcore.obit.QueryGetAllNftByOwnerRequest")
-	proto.RegisterType((*QueryGetAllNftByOwnerResponse)(nil), "obadafoundation.fullcore.obit.QueryGetAllNftByOwnerResponse")
+	proto.RegisterType((*QueryGetNftRequest)(nil), "obadafoundation.fullcore.obit.QueryGetNftRequest")
+	proto.RegisterType((*QueryGetNftsByAddressRequest)(nil), "obadafoundation.fullcore.obit.QueryGetNftsByAddressRequest")
+	proto.RegisterType((*QueryGetNftsByAddressResponse)(nil), "obadafoundation.fullcore.obit.QueryGetNftsByAddressResponse")
 	proto.RegisterType((*QueryGetTaRequest)(nil), "obadafoundation.fullcore.obit.QueryGetTaRequest")
 	proto.RegisterType((*QueryGetTaResponse)(nil), "obadafoundation.fullcore.obit.QueryGetTaResponse")
 	proto.RegisterType((*QueryAllTaRequest)(nil), "obadafoundation.fullcore.obit.QueryAllTaRequest")
@@ -399,44 +444,47 @@ func init() {
 func init() { proto.RegisterFile("obit/query.proto", fileDescriptor_3b91743c0fd69115) }
 
 var fileDescriptor_3b91743c0fd69115 = []byte{
-	// 587 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x94, 0x41, 0x6b, 0x13, 0x4f,
-	0x18, 0xc6, 0x33, 0x9b, 0x26, 0xf0, 0x9f, 0xf2, 0x2f, 0xed, 0x98, 0x43, 0x09, 0xed, 0x5a, 0x47,
-	0x6b, 0x6a, 0xa1, 0x33, 0x26, 0x0a, 0x82, 0x7a, 0x49, 0x84, 0xf4, 0x20, 0xc6, 0x1a, 0xf6, 0xd4,
-	0x9e, 0x66, 0x93, 0xc9, 0xba, 0xb0, 0xd9, 0xd9, 0x66, 0x27, 0x6a, 0x28, 0xbd, 0xf8, 0x09, 0x04,
-	0x41, 0xc4, 0x83, 0xe0, 0x17, 0xf1, 0xdc, 0x63, 0xc1, 0x8b, 0x27, 0x91, 0xc4, 0x0f, 0x22, 0x3b,
-	0x33, 0xa1, 0x49, 0xb4, 0xdd, 0xc4, 0x5b, 0xde, 0xc9, 0xfb, 0xbc, 0xcf, 0x2f, 0x6f, 0x9e, 0x19,
-	0xb8, 0x2a, 0x5c, 0x5f, 0xd2, 0xe3, 0x3e, 0xef, 0x0d, 0x48, 0xd4, 0x13, 0x52, 0xa0, 0x4d, 0xe1,
-	0xb2, 0x36, 0xeb, 0x88, 0x7e, 0xd8, 0x66, 0xd2, 0x17, 0x21, 0xe9, 0xf4, 0x83, 0xa0, 0x25, 0x7a,
-	0x9c, 0x24, 0xad, 0xc5, 0x82, 0x27, 0x3c, 0xa1, 0x3a, 0x69, 0xf2, 0x49, 0x8b, 0x8a, 0x1b, 0x9e,
-	0x10, 0x5e, 0xc0, 0x29, 0x8b, 0x7c, 0xca, 0xc2, 0x50, 0x48, 0x25, 0x8d, 0xcd, 0xb7, 0xbb, 0x2d,
-	0x11, 0x77, 0x45, 0x4c, 0x5d, 0x16, 0x73, 0xed, 0x45, 0x5f, 0x95, 0x5d, 0x2e, 0x59, 0x99, 0x46,
-	0xcc, 0xf3, 0x43, 0xed, 0xa3, 0x7b, 0xd7, 0x14, 0x50, 0xc4, 0x7a, 0xac, 0x3b, 0x96, 0xff, 0xaf,
-	0x8e, 0x24, 0x33, 0xe5, 0x8a, 0x2a, 0xc3, 0x8e, 0xd4, 0x35, 0x2e, 0x40, 0xf4, 0x22, 0x99, 0x79,
-	0xa0, 0x34, 0x4d, 0x7e, 0xdc, 0xe7, 0xb1, 0xc4, 0x87, 0xf0, 0xda, 0xd4, 0x69, 0x1c, 0x89, 0x30,
-	0xe6, 0xe8, 0x09, 0xcc, 0xeb, 0xd9, 0xeb, 0x60, 0x0b, 0xec, 0x2c, 0x57, 0xb6, 0xc9, 0x95, 0x3f,
-	0x97, 0x68, 0x79, 0x6d, 0xe9, 0xec, 0xc7, 0xf5, 0x4c, 0xd3, 0x48, 0xf1, 0x7d, 0xb8, 0xa1, 0x66,
-	0xef, 0x73, 0x59, 0x0d, 0x82, 0x46, 0x47, 0xd6, 0x06, 0xcf, 0x5f, 0x87, 0xbc, 0x67, 0xbc, 0x51,
-	0x01, 0xe6, 0x44, 0x52, 0x2b, 0x8f, 0xff, 0x9a, 0xba, 0xc0, 0x47, 0x70, 0xf3, 0x12, 0x95, 0x61,
-	0x7b, 0x08, 0xb3, 0x8d, 0xba, 0xb3, 0x0e, 0xb6, 0xb2, 0x3b, 0xcb, 0x15, 0x9c, 0x02, 0xd6, 0xa8,
-	0x3b, 0x86, 0x2a, 0x11, 0xe1, 0x9b, 0x70, 0x6d, 0x3c, 0xdc, 0x61, 0x63, 0x8e, 0x15, 0x68, 0xf9,
-	0x6d, 0x05, 0xb1, 0xd4, 0xb4, 0xfc, 0x36, 0x7e, 0x66, 0x36, 0x65, 0x9a, 0x8c, 0xed, 0x03, 0x68,
-	0x39, 0xcc, 0xac, 0xe3, 0x46, 0x8a, 0xab, 0xc3, 0x8c, 0xa9, 0xe5, 0x30, 0x7c, 0x64, 0x3c, 0xab,
-	0x41, 0x70, 0xe1, 0x59, 0x87, 0xf0, 0xe2, 0x3f, 0x35, 0x53, 0x6f, 0x13, 0x1d, 0x00, 0x92, 0x04,
-	0x80, 0xe8, 0xb0, 0x99, 0x00, 0x90, 0x03, 0xe6, 0x71, 0xa3, 0x6d, 0x4e, 0x28, 0xf1, 0x07, 0x60,
-	0x60, 0xcd, 0xf4, 0x19, 0xd8, 0xec, 0x82, 0xb0, 0x68, 0x7f, 0x8a, 0xcb, 0x52, 0x5c, 0xa5, 0x54,
-	0x2e, 0xed, 0x3a, 0x09, 0x56, 0xf9, 0x92, 0x83, 0x39, 0x05, 0x86, 0x3e, 0x03, 0x98, 0xd7, 0xf9,
-	0x40, 0xe5, 0x14, 0x94, 0x3f, 0x03, 0x5a, 0xac, 0x2c, 0x22, 0xd1, 0x1c, 0x78, 0xef, 0xed, 0xb7,
-	0x5f, 0xef, 0xad, 0x12, 0xda, 0xa6, 0x33, 0x5a, 0x3a, 0xd6, 0xd2, 0x89, 0xeb, 0x83, 0x3e, 0x81,
-	0x64, 0x5b, 0xe8, 0xee, 0x3c, 0x4e, 0x93, 0xc1, 0x29, 0x96, 0x17, 0x50, 0x18, 0x34, 0xaa, 0xd0,
-	0xee, 0xa0, 0x92, 0x46, 0xdb, 0xbb, 0x94, 0x4d, 0x32, 0x7a, 0xe2, 0xb7, 0x4f, 0xd1, 0x47, 0x00,
-	0x73, 0x0e, 0xab, 0x06, 0xc1, 0x7c, 0x7c, 0x93, 0x21, 0x9b, 0x8f, 0x6f, 0x2a, 0x38, 0x78, 0x57,
-	0xf1, 0xdd, 0x42, 0x38, 0x9d, 0x0f, 0x7d, 0x05, 0x70, 0x75, 0xf6, 0x96, 0xa2, 0x47, 0x73, 0xee,
-	0xe4, 0x6f, 0x2f, 0x42, 0xf1, 0xf1, 0xbf, 0x89, 0x17, 0xdd, 0xed, 0x89, 0x7a, 0x69, 0x4e, 0x6b,
-	0x4f, 0xcf, 0x86, 0x36, 0x38, 0x1f, 0xda, 0xe0, 0xe7, 0xd0, 0x06, 0xef, 0x46, 0x76, 0xe6, 0x7c,
-	0x64, 0x67, 0xbe, 0x8f, 0xec, 0xcc, 0x61, 0xd9, 0xf3, 0xe5, 0xcb, 0xbe, 0x4b, 0x5a, 0xa2, 0x7b,
-	0xc5, 0xb0, 0x37, 0x66, 0x15, 0x83, 0x88, 0xc7, 0x6e, 0x5e, 0x3d, 0xb3, 0xf7, 0x7e, 0x07, 0x00,
-	0x00, 0xff, 0xff, 0x31, 0xfb, 0x3c, 0xdc, 0x2b, 0x06, 0x00, 0x00,
+	// 636 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x95, 0x4f, 0x6f, 0xd3, 0x30,
+	0x18, 0xc6, 0xeb, 0x74, 0x2b, 0xc2, 0x13, 0xd3, 0x66, 0x76, 0x98, 0xaa, 0x2d, 0x1b, 0x66, 0x1b,
+	0x63, 0x40, 0x4c, 0xca, 0x01, 0x04, 0x5c, 0x36, 0xa4, 0xed, 0x80, 0x98, 0x46, 0x95, 0xd3, 0x76,
+	0x72, 0x16, 0x37, 0x44, 0x4a, 0xe3, 0xac, 0x71, 0x11, 0x55, 0xd5, 0x0b, 0x77, 0x24, 0xa4, 0x09,
+	0x24, 0xee, 0x7c, 0x10, 0x8e, 0x3b, 0x4e, 0xe2, 0xc2, 0x09, 0xa1, 0x96, 0x0f, 0x82, 0x62, 0x3b,
+	0xea, 0x1f, 0x46, 0x9b, 0x72, 0x8b, 0xdd, 0xf7, 0x79, 0x9f, 0xdf, 0xeb, 0x3e, 0x71, 0xe0, 0x02,
+	0x77, 0x03, 0x41, 0xce, 0x9a, 0xac, 0xd1, 0xb2, 0xe2, 0x06, 0x17, 0x1c, 0xad, 0x72, 0x97, 0x7a,
+	0xb4, 0xc6, 0x9b, 0x91, 0x47, 0x45, 0xc0, 0x23, 0xab, 0xd6, 0x0c, 0xc3, 0x53, 0xde, 0x60, 0x56,
+	0x5a, 0x5a, 0x5e, 0xf2, 0xb9, 0xcf, 0x65, 0x25, 0x49, 0x9f, 0x94, 0xa8, 0xbc, 0xe2, 0x73, 0xee,
+	0x87, 0x8c, 0xd0, 0x38, 0x20, 0x34, 0x8a, 0xb8, 0x90, 0xd2, 0x44, 0xff, 0xba, 0x73, 0xca, 0x93,
+	0x3a, 0x4f, 0x88, 0x4b, 0x13, 0xa6, 0xbc, 0xc8, 0x5b, 0xdb, 0x65, 0x82, 0xda, 0x24, 0xa6, 0x7e,
+	0x10, 0x29, 0x1f, 0x55, 0xbb, 0x28, 0x81, 0x62, 0xda, 0xa0, 0xf5, 0x4c, 0x7e, 0x43, 0x6e, 0x09,
+	0xaa, 0x97, 0xf3, 0x72, 0x19, 0xd5, 0x84, 0x5a, 0xe3, 0x25, 0x88, 0x5e, 0xa7, 0x3d, 0x8f, 0xa4,
+	0xa6, 0xca, 0xce, 0x9a, 0x2c, 0x11, 0xf8, 0x18, 0xde, 0x1c, 0xda, 0x4d, 0x62, 0x1e, 0x25, 0x0c,
+	0xbd, 0x80, 0x25, 0xd5, 0x7b, 0x19, 0xac, 0x83, 0xed, 0xb9, 0xca, 0xa6, 0x35, 0x76, 0x5c, 0x4b,
+	0xc9, 0xf7, 0x66, 0x2e, 0x7e, 0xae, 0x15, 0xaa, 0x5a, 0x8a, 0xb7, 0xb4, 0xe3, 0x01, 0x13, 0x87,
+	0x35, 0xa1, 0x1d, 0xd1, 0x02, 0x2c, 0x7a, 0x81, 0x27, 0xfb, 0x5e, 0xaf, 0xa6, 0x8f, 0xf8, 0x09,
+	0x5c, 0x19, 0xa8, 0x4b, 0xf6, 0x5a, 0xbb, 0x9e, 0xd7, 0x60, 0x49, 0xc6, 0x88, 0x96, 0xe1, 0x35,
+	0xaa, 0x76, 0xb4, 0x2a, 0x5b, 0xe2, 0x13, 0xb8, 0xfa, 0x0f, 0xa5, 0x9e, 0xe3, 0x29, 0x2c, 0x1e,
+	0xee, 0x3b, 0xcb, 0x60, 0xbd, 0xb8, 0x3d, 0x57, 0xc1, 0x13, 0x86, 0x38, 0xdc, 0x77, 0xf4, 0x04,
+	0xa9, 0x08, 0xdf, 0x86, 0x8b, 0x59, 0x73, 0x87, 0x66, 0x2c, 0xf3, 0xd0, 0xd0, 0xf0, 0x33, 0x55,
+	0x23, 0xf0, 0xf0, 0xab, 0xfe, 0x8c, 0x69, 0x91, 0xb6, 0x7d, 0x0c, 0x0d, 0x87, 0xea, 0xa3, 0xbb,
+	0x35, 0xc1, 0xd5, 0xa1, 0xda, 0xd4, 0x70, 0x28, 0x3e, 0xd1, 0x9e, 0xbb, 0x61, 0xd8, 0xf7, 0xdc,
+	0x87, 0xb0, 0xff, 0xff, 0xeb, 0xae, 0x5b, 0x96, 0x0a, 0x8b, 0x95, 0x86, 0xc5, 0x52, 0xc1, 0xd4,
+	0x61, 0xb1, 0x8e, 0xa8, 0xcf, 0xb4, 0xb6, 0x3a, 0xa0, 0xc4, 0x9f, 0x81, 0x86, 0xd5, 0xdd, 0x47,
+	0x60, 0x8b, 0x53, 0xc2, 0xa2, 0x83, 0x21, 0x2e, 0x43, 0x72, 0xdd, 0x99, 0xc8, 0xa5, 0x5c, 0x07,
+	0xc1, 0x2a, 0x5f, 0x4b, 0x70, 0x56, 0x82, 0xa1, 0x2f, 0x00, 0x96, 0x54, 0x96, 0x90, 0x3d, 0x01,
+	0xe5, 0xef, 0x30, 0x97, 0x2b, 0xd3, 0x48, 0x14, 0x07, 0xde, 0x7e, 0xff, 0xfd, 0xf7, 0xb9, 0x81,
+	0xd1, 0x3a, 0x19, 0xd1, 0x92, 0x4c, 0xab, 0xdf, 0x32, 0xf4, 0x09, 0xa4, 0x07, 0x85, 0x1e, 0xe6,
+	0x31, 0x19, 0xcc, 0x4c, 0xd9, 0x9e, 0x42, 0xa1, 0xa9, 0x76, 0x24, 0xd5, 0x06, 0xc2, 0x8a, 0xea,
+	0xc1, 0x55, 0x58, 0x82, 0x92, 0x76, 0xe0, 0x75, 0xd0, 0x39, 0x80, 0xb3, 0x0e, 0xdd, 0x0d, 0xc3,
+	0x7c, 0x68, 0x83, 0xd1, 0xca, 0x87, 0x36, 0x14, 0x17, 0xbc, 0x29, 0xd1, 0xd6, 0xd0, 0xea, 0x58,
+	0x34, 0xf4, 0x0d, 0xc0, 0x85, 0xd1, 0xd7, 0x12, 0x3d, 0xcb, 0x79, 0x12, 0x57, 0x5d, 0x03, 0xe5,
+	0xe7, 0xff, 0x27, 0xd6, 0xd8, 0xb6, 0xc4, 0xbe, 0x87, 0xee, 0x8e, 0xc1, 0x8e, 0x6a, 0x22, 0x21,
+	0x6d, 0x7d, 0xb9, 0x74, 0xd0, 0x07, 0x00, 0x4b, 0xaa, 0x1f, 0xb2, 0xf3, 0x7b, 0x67, 0xb8, 0x39,
+	0x6e, 0x1b, 0x7c, 0x5f, 0x42, 0x6d, 0xa1, 0x8d, 0xf1, 0x50, 0xa4, 0xed, 0x05, 0x5e, 0x67, 0xef,
+	0xe5, 0x45, 0xd7, 0x04, 0x97, 0x5d, 0x13, 0xfc, 0xea, 0x9a, 0xe0, 0x63, 0xcf, 0x2c, 0x5c, 0xf6,
+	0xcc, 0xc2, 0x8f, 0x9e, 0x59, 0x38, 0xb6, 0xfd, 0x40, 0xbc, 0x69, 0xba, 0xd6, 0x29, 0xaf, 0x8f,
+	0xe9, 0xf4, 0x8e, 0xa8, 0x2f, 0x44, 0x2b, 0x66, 0x89, 0x5b, 0x92, 0x5f, 0x85, 0x47, 0x7f, 0x02,
+	0x00, 0x00, 0xff, 0xff, 0x62, 0x77, 0x9c, 0xff, 0xda, 0x06, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -457,7 +505,10 @@ type QueryClient interface {
 	Ta(ctx context.Context, in *QueryGetTaRequest, opts ...grpc.CallOption) (*QueryGetTaResponse, error)
 	// Queries a list of Ta items.
 	TaAll(ctx context.Context, in *QueryAllTaRequest, opts ...grpc.CallOption) (*QueryAllTaResponse, error)
-	GetAllNftByOwner(ctx context.Context, in *QueryGetAllNftByOwnerRequest, opts ...grpc.CallOption) (*QueryGetAllNftByOwnerResponse, error)
+	// GetNftsByAddress returns a list of NFTs ownerd by given address
+	GetNftsByAddress(ctx context.Context, in *QueryGetNftsByAddressRequest, opts ...grpc.CallOption) (*QueryGetNftsByAddressResponse, error)
+	// GetNft returns single NFT by DID
+	GetNft(ctx context.Context, in *QueryGetNftRequest, opts ...grpc.CallOption) (*NFT, error)
 }
 
 type queryClient struct {
@@ -495,9 +546,18 @@ func (c *queryClient) TaAll(ctx context.Context, in *QueryAllTaRequest, opts ...
 	return out, nil
 }
 
-func (c *queryClient) GetAllNftByOwner(ctx context.Context, in *QueryGetAllNftByOwnerRequest, opts ...grpc.CallOption) (*QueryGetAllNftByOwnerResponse, error) {
-	out := new(QueryGetAllNftByOwnerResponse)
-	err := c.cc.Invoke(ctx, "/obadafoundation.fullcore.obit.Query/GetAllNftByOwner", in, out, opts...)
+func (c *queryClient) GetNftsByAddress(ctx context.Context, in *QueryGetNftsByAddressRequest, opts ...grpc.CallOption) (*QueryGetNftsByAddressResponse, error) {
+	out := new(QueryGetNftsByAddressResponse)
+	err := c.cc.Invoke(ctx, "/obadafoundation.fullcore.obit.Query/GetNftsByAddress", in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
+func (c *queryClient) GetNft(ctx context.Context, in *QueryGetNftRequest, opts ...grpc.CallOption) (*NFT, error) {
+	out := new(NFT)
+	err := c.cc.Invoke(ctx, "/obadafoundation.fullcore.obit.Query/GetNft", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -512,7 +572,10 @@ type QueryServer interface {
 	Ta(context.Context, *QueryGetTaRequest) (*QueryGetTaResponse, error)
 	// Queries a list of Ta items.
 	TaAll(context.Context, *QueryAllTaRequest) (*QueryAllTaResponse, error)
-	GetAllNftByOwner(context.Context, *QueryGetAllNftByOwnerRequest) (*QueryGetAllNftByOwnerResponse, error)
+	// GetNftsByAddress returns a list of NFTs ownerd by given address
+	GetNftsByAddress(context.Context, *QueryGetNftsByAddressRequest) (*QueryGetNftsByAddressResponse, error)
+	// GetNft returns single NFT by DID
+	GetNft(context.Context, *QueryGetNftRequest) (*NFT, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -528,8 +591,11 @@ func (*UnimplementedQueryServer) Ta(ctx context.Context, req *QueryGetTaRequest)
 func (*UnimplementedQueryServer) TaAll(ctx context.Context, req *QueryAllTaRequest) (*QueryAllTaResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TaAll not implemented")
 }
-func (*UnimplementedQueryServer) GetAllNftByOwner(ctx context.Context, req *QueryGetAllNftByOwnerRequest) (*QueryGetAllNftByOwnerResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAllNftByOwner not implemented")
+func (*UnimplementedQueryServer) GetNftsByAddress(ctx context.Context, req *QueryGetNftsByAddressRequest) (*QueryGetNftsByAddressResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetNftsByAddress not implemented")
+}
+func (*UnimplementedQueryServer) GetNft(ctx context.Context, req *QueryGetNftRequest) (*NFT, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetNft not implemented")
 }
 
 func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
@@ -590,20 +656,38 @@ func _Query_TaAll_Handler(srv interface{}, ctx context.Context, dec func(interfa
 	return interceptor(ctx, in, info, handler)
 }
 
-func _Query_GetAllNftByOwner_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryGetAllNftByOwnerRequest)
+func _Query_GetNftsByAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetNftsByAddressRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).GetAllNftByOwner(ctx, in)
+		return srv.(QueryServer).GetNftsByAddress(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/obadafoundation.fullcore.obit.Query/GetAllNftByOwner",
+		FullMethod: "/obadafoundation.fullcore.obit.Query/GetNftsByAddress",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).GetAllNftByOwner(ctx, req.(*QueryGetAllNftByOwnerRequest))
+		return srv.(QueryServer).GetNftsByAddress(ctx, req.(*QueryGetNftsByAddressRequest))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
+func _Query_GetNft_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetNftRequest)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(QueryServer).GetNft(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: "/obadafoundation.fullcore.obit.Query/GetNft",
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(QueryServer).GetNft(ctx, req.(*QueryGetNftRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -625,8 +709,12 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 			Handler:    _Query_TaAll_Handler,
 		},
 		{
-			MethodName: "GetAllNftByOwner",
-			Handler:    _Query_GetAllNftByOwner_Handler,
+			MethodName: "GetNftsByAddress",
+			Handler:    _Query_GetNftsByAddress_Handler,
+		},
+		{
+			MethodName: "GetNft",
+			Handler:    _Query_GetNft_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},
@@ -689,7 +777,7 @@ func (m *QueryParamsResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetAllNftByOwnerRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryGetNftRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -699,27 +787,27 @@ func (m *QueryGetAllNftByOwnerRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetAllNftByOwnerRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGetNftRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetAllNftByOwnerRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGetNftRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
 	_ = l
-	if len(m.Owner) > 0 {
-		i -= len(m.Owner)
-		copy(dAtA[i:], m.Owner)
-		i = encodeVarintQuery(dAtA, i, uint64(len(m.Owner)))
+	if len(m.Did) > 0 {
+		i -= len(m.Did)
+		copy(dAtA[i:], m.Did)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Did)))
 		i--
 		dAtA[i] = 0xa
 	}
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetAllNftByOwnerResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryGetNftsByAddressRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -729,12 +817,42 @@ func (m *QueryGetAllNftByOwnerResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetAllNftByOwnerResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGetNftsByAddressRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetAllNftByOwnerResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGetNftsByAddressRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	if len(m.Address) > 0 {
+		i -= len(m.Address)
+		copy(dAtA[i:], m.Address)
+		i = encodeVarintQuery(dAtA, i, uint64(len(m.Address)))
+		i--
+		dAtA[i] = 0xa
+	}
+	return len(dAtA) - i, nil
+}
+
+func (m *QueryGetNftsByAddressResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetNftsByAddressResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetNftsByAddressResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -932,20 +1050,33 @@ func (m *QueryParamsResponse) Size() (n int) {
 	return n
 }
 
-func (m *QueryGetAllNftByOwnerRequest) Size() (n int) {
+func (m *QueryGetNftRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
 	var l int
 	_ = l
-	l = len(m.Owner)
+	l = len(m.Did)
 	if l > 0 {
 		n += 1 + l + sovQuery(uint64(l))
 	}
 	return n
 }
 
-func (m *QueryGetAllNftByOwnerResponse) Size() (n int) {
+func (m *QueryGetNftsByAddressRequest) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = len(m.Address)
+	if l > 0 {
+		n += 1 + l + sovQuery(uint64(l))
+	}
+	return n
+}
+
+func (m *QueryGetNftsByAddressResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -1154,7 +1285,7 @@ func (m *QueryParamsResponse) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetAllNftByOwnerRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryGetNftRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1177,15 +1308,15 @@ func (m *QueryGetAllNftByOwnerRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetAllNftByOwnerRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGetNftRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetAllNftByOwnerRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGetNftRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field Owner", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Did", wireType)
 			}
 			var stringLen uint64
 			for shift := uint(0); ; shift += 7 {
@@ -1213,7 +1344,7 @@ func (m *QueryGetAllNftByOwnerRequest) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.Owner = string(dAtA[iNdEx:postIndex])
+			m.Did = string(dAtA[iNdEx:postIndex])
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -1236,7 +1367,7 @@ func (m *QueryGetAllNftByOwnerRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetAllNftByOwnerResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryGetNftsByAddressRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -1259,10 +1390,92 @@ func (m *QueryGetAllNftByOwnerResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetAllNftByOwnerResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGetNftsByAddressRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetAllNftByOwnerResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGetNftsByAddressRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Address", wireType)
+			}
+			var stringLen uint64
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				stringLen |= uint64(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			intStringLen := int(stringLen)
+			if intStringLen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + intStringLen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			m.Address = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetNftsByAddressResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetNftsByAddressResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetNftsByAddressResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:

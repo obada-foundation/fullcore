@@ -14,7 +14,9 @@
           <td colspan="3">No NFTs yet</td>
         </tr>
         <tr class="sp-blockdisplayline" v-for="nft in nfts" v-bind:key="nft.id">
-          <td>{{ nft.data.usn }}</td>
+          <td>
+            <router-link class="sp-blockdisplayline__height__link" :to="{ name: 'NFTDetails', params: { did: nft.id }}">{{ nft.data.usn }}</router-link>
+          </td>
           <td class="sp-blockdisplayline__height">
             {{ nft.id.substr(0, 22) }}...
             <a href="#" class="sp-accounts-list-item__copy" @click="copyStr(nft.id)">
@@ -63,9 +65,9 @@ export default {
     // copyToClipboard(did)
     },
     initNFTs() {
-      this.$store.dispatch("obadafoundation.fullcore.obit/QueryGetAllNftByOwner", {
+      this.$store.dispatch("obadafoundation.fullcore.obit/QueryGetNftsByAddress", {
         params: {
-          owner: this.currentAccount,
+          address: this.currentAccount,
         },
         options: {
           subscribe: true,
@@ -96,9 +98,9 @@ export default {
       }
     },
     nfts() {
-      return this.$store.getters['obadafoundation.fullcore.obit/getGetAllNftByOwner']({
+      return this.$store.getters['obadafoundation.fullcore.obit/getGetNftsByAddress']({
         params: {
-          owner: this.currentAccount
+          address: this.currentAccount
         }
       })?.NFT ?? []
     }

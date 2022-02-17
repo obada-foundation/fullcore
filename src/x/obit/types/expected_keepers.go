@@ -13,6 +13,8 @@ type NftKeeper interface {
 
 	GetNFTsOfClassByOwner(ctx sdk.Context, classID string, owner sdk.AccAddress) (nfts []nft.NFT)
 
+	GetNFT(ctx sdk.Context, classID, nftID string) (nft.NFT, bool)
+
 	SaveClass(ctx sdk.Context, class nft.Class) error
 
 	HasClass(ctx sdk.Context, classID string) bool

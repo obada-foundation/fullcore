@@ -9,6 +9,36 @@ import (
 	"github.com/spf13/cobra"
 )
 
+func CmdShowNFT() *cobra.Command {
+	cmd := &cobra.Command{
+		Use:   "show-nft [did]",
+		Short: "shows single NFT by DID",
+		Args:  cobra.ExactArgs(1),
+		RunE: func(cmd *cobra.Command, args []string) error {
+			clientCtx := client.GetClientContextFromCmd(cmd)
+
+			queryClient := types.NewQueryClient(clientCtx)
+
+			did := args[0]
+
+			params := &types.QueryGetNftRequest{
+				Did: did,
+			}
+
+			res, err := queryClient.GetNft(context.Background(), params)
+			if err != nil {
+				return err
+			}
+
+			return clientCtx.PrintProto(res)
+		},
+	}
+
+	flags.AddQueryFlagsToCmd(cmd)
+
+	return cmd
+}
+
 func CmdShowByOwner() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "show-nfts-by-owner [owner-address]",
@@ -19,13 +49,13 @@ func CmdShowByOwner() *cobra.Command {
 
 			queryClient := types.NewQueryClient(clientCtx)
 
-			owner := args[0]
+			address := args[0]
 
-			params := &types.QueryGetAllNftByOwnerRequest{
-				Owner: owner,
+			params := &types.QueryGetNftsByAddressRequest{
+				Address: address,
 			}
 
-			res, err := queryClient.GetAllNftByOwner(context.Background(), params)
+			res, err := queryClient.GetNftsByAddress(context.Background(), params)
 			if err != nil {
 				return err
 			}
