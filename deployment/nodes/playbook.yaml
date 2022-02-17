@@ -1,0 +1,54 @@
+---
+- hosts: alpha.nodes
+
+  tasks:
+    - name: "Stop containers"
+      docker_compose:
+        project_src: .
+        state: absent
+        pull: yes
+      register: output
+
+    - name: "Compose log"
+      debug:
+        var: output
+
+    - name: "Cleanup nodes data"
+      become: yes
+      file:
+        force: yes
+        path: /home/ec2-user/nodes/{{ item }}
+        state: absent
+      loop:
+        - gentxs
+        - node
+        - node0
+        - node1
+        - node2
+        - node3
+
+    - name: "Initialize network"
+      shell: |
+        docker-compose up testnet-init
+        docker-compose up -d tradeloop-node obs-node usody-node ascidi-node
+        sleep 20
+        exit 0
+
+    - name: "Run application node"
+      shell: |
+        PEERS=$(cat nodes/node0/cored/config/config.toml | grep 'persistent_peers =')
+        mkdir -p nodes/node/cored/config
+        cp nodes/node0/cored/config/genesis.json nodes/node/cored/config
+        docker-compose up -d node
+        docker exec -it node sh -c "sed -i 's/persistent_peers = \"\"/${PEERS}/' /home/obada/.cored/config/config.toml"
+        docker exec -it node sh -c "sed -i 's/laddr = \"tcp:\/\/127.0.0.1:26657\"/laddr = \"tcp:\/\/0.0.0.0:26657\"/' /home/obada/.cored/config/config.toml"
+        docker exec -it node sh -c "sed -i 's/laddr = \"tcp:\/\/127.0.0.1:26657\"/laddr = \"tcp:\/\/0.0.0.0:26657\"/' /home/obada/.cored/config/app.toml"
+        docker exec -it node sh -c "sed -i 's/cors_allowed_origins = \[\]/cors_allowed_origins = \[\"\*\"\]/' /home/obada/.cored/config/config.toml"
+        docker exec -it node sh -c "sed -i '125s/enabled-unsafe-cors = false/enabled-unsafe-cors = true/' /home/obada/.cored/config/app.toml"
+        docker exec -it node sh -c "sed -i '104s/enable = false/enable = true/' /home/obada/.cored/config/app.toml"
+        docker restart node
+        exit 0
+      
+
+
+      

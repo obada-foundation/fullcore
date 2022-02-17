@@ -1,11 +1,12 @@
 {
   "name": "@starport/template",
-  "version": "0.1.54",
+  "version": "0.1.58",
   "description": "A Vue 3 boilerplate project utilizing @starport/vue and @starport/vuex",
   "author": "Tendermint, Inc <hello@tendermint.com>",
   "private": true,
   "scripts": {
-    "serve": "vue-cli-service serve --mode=production",
+    "serve": "vue-cli-service serve --port 8090 --mode=production",
+    "servedev": "vue-cli-service serve --port 8070 --mode=development",
     "dev": "vue-cli-service serve",
     "lint": "vue-cli-service lint",
     "build": "vue-cli-service build",
@@ -15,11 +16,13 @@
     "@cosmjs/launchpad": "^0.26.1",
     "@cosmjs/proto-signing": "^0.26.1",
     "@cosmjs/stargate": "^0.26.1",
-    "@starport/vue": "^0.1.54",
-    "@starport/vuex": "^0.1.54",
+    "@starport/vue": "^0.1.58",
+    "@starport/vuex": "^0.1.58",
+    "axios": "^0.25.0",
     "core-js": "^3.18.2",
     "vue": "^3.2.6",
     "vue-router": "^4.0.3",
+    "vue-upload-component": "^3.1.2",
     "vuex": "^4.0.0"
   },
   "devDependencies": {

@@ -199,7 +199,7 @@ func InitTestnet(
 		accTokens := sdk.TokensFromConsensusPower(1000, sdk.DefaultPowerReduction)
 		accStakingTokens := sdk.TokensFromConsensusPower(500, sdk.DefaultPowerReduction)
 		coins := sdk.Coins{
-			sdk.NewCoin("testtoken", accTokens),
+			sdk.NewCoin("obd", accTokens),
 			sdk.NewCoin(sdk.DefaultBondDenom, accStakingTokens),
 		}
 
@@ -294,7 +294,6 @@ func initGenFiles(
 		bankGenState.Supply = bankGenState.Supply.Add(bal.Coins...)
 	}
 	appGenState[banktypes.ModuleName] = clientCtx.Codec.MustMarshalJSON(&bankGenState)
-
 	appGenStateJSON, err := json.MarshalIndent(appGenState, "", "  ")
 	if err != nil {
 		return err

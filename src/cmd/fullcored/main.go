@@ -7,7 +7,7 @@ import (
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
 	"github.com/obada-foundation/fullcore/app"
 	"github.com/obada-foundation/fullcore/cmd/fullcored/cmd"
-	"github.com/tendermint/spm/cosmoscmd"
+	"github.com/tendermint/starport/starport/pkg/cosmoscmd"
 )
 
 func main() {
