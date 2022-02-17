@@ -16,7 +16,10 @@
         <tr class="sp-blockdisplayline" v-for="nft in nfts" v-bind:key="nft.id">
           <td>{{ nft.data.usn }}</td>
           <td class="sp-blockdisplayline__height">
-            {{ nft.id.substr(0, 22) }}...
+            {{ nft.id.substr(0, 16) }}...
+            <a href="#" class="sp-accounts-list-item__copy" @click="copyDid(nft.id)">
+              <span class="sp-icon sp-icon-Copy" />
+            </a>
           </td>
           <td class="sp-blockdisplayline__hash">
             {{ nft.uri }}
@@ -38,12 +41,24 @@
 </style>
 
 <script>
+//import { copyToClipboard } from '@starport/vue/src/utils/helpers'
+
 export default {
   name: 'NftList',
   created() {
     this.initNFTs()
   },
   methods: {
+    copyDid(did) {
+        const el = document.createElement('textarea')
+        el.value = did
+        document.body.appendChild(el)
+        el.select()
+        el.setSelectionRange(0, 999999)
+        document.execCommand('copy')
+        document.body.removeChild(el)
+    // copyToClipboard(did)
+    },
     initNFTs() {
       this.$store.dispatch("obadafoundation.fullcore.obit/QueryGetAllNftByOwner", {
         params: {
