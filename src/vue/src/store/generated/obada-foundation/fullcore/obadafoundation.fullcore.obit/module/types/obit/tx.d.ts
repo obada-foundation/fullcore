@@ -1,4 +1,5 @@
 import { Reader, Writer } from "protobufjs/minimal";
+import { NFTDocument } from "../obit/nft";
 export declare const protobufPackage = "obadafoundation.fullcore.obit";
 /** MsgMintObit handles obit information */
 export interface MsgMintObit {
@@ -6,8 +7,10 @@ export interface MsgMintObit {
     serialNumberHash: string;
     manufacturer: string;
     partNumber: string;
-    obdDid: string;
-    ownerDid: string;
+    trustAnchorToken: string;
+    uri: string;
+    uriHash: string;
+    documents: NFTDocument[];
 }
 /** MsgMintObitResponse success minting response */
 export interface MsgMintObitResponse {

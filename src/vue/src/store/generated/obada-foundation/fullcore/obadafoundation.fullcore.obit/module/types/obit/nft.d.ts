@@ -9,10 +9,15 @@ export interface NFT {
     data: Any | undefined;
 }
 export interface NFTData {
-    ownerDid: string;
-    obdDid: string;
+    trustAnchorToken: string;
     usn: string;
-    rootHash: string;
+    checksum: string;
+    documents: NFTDocument[];
+}
+export interface NFTDocument {
+    name: string;
+    uri: string;
+    hash: string;
 }
 export declare const NFT: {
     encode(message: NFT, writer?: Writer): Writer;
@@ -27,6 +32,13 @@ export declare const NFTData: {
     fromJSON(object: any): NFTData;
     toJSON(message: NFTData): unknown;
     fromPartial(object: DeepPartial<NFTData>): NFTData;
+};
+export declare const NFTDocument: {
+    encode(message: NFTDocument, writer?: Writer): Writer;
+    decode(input: Reader | Uint8Array, length?: number): NFTDocument;
+    fromJSON(object: any): NFTDocument;
+    toJSON(message: NFTDocument): unknown;
+    fromPartial(object: DeepPartial<NFTDocument>): NFTDocument;
 };
 declare type Builtin = Date | Function | Uint8Array | string | number | undefined;
 export declare type DeepPartial<T> = T extends Builtin ? T : T extends Array<infer U> ? Array<DeepPartial<U>> : T extends ReadonlyArray<infer U> ? ReadonlyArray<DeepPartial<U>> : T extends {} ? {

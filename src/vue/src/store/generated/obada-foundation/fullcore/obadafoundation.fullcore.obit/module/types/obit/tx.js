@@ -1,14 +1,16 @@
 /* eslint-disable */
 import { Reader, util, configure, Writer } from "protobufjs/minimal";
 import * as Long from "long";
+import { NFTDocument } from "../obit/nft";
 export const protobufPackage = "obadafoundation.fullcore.obit";
 const baseMsgMintObit = {
     creator: "",
     serialNumberHash: "",
     manufacturer: "",
     partNumber: "",
-    obdDid: "",
-    ownerDid: "",
+    trustAnchorToken: "",
+    uri: "",
+    uriHash: "",
 };
 export const MsgMintObit = {
     encode(message, writer = Writer.create()) {
@@ -24,11 +26,17 @@ export const MsgMintObit = {
         if (message.partNumber !== "") {
             writer.uint32(34).string(message.partNumber);
         }
-        if (message.obdDid !== "") {
-            writer.uint32(42).string(message.obdDid);
+        if (message.trustAnchorToken !== "") {
+            writer.uint32(42).string(message.trustAnchorToken);
         }
-        if (message.ownerDid !== "") {
-            writer.uint32(50).string(message.ownerDid);
+        if (message.uri !== "") {
+            writer.uint32(50).string(message.uri);
+        }
+        if (message.uriHash !== "") {
+            writer.uint32(58).string(message.uriHash);
+        }
+        for (const v of message.documents) {
+            NFTDocument.encode(v, writer.uint32(82).fork()).ldelim();
         }
         return writer;
     },
@@ -36,6 +44,7 @@ export const MsgMintObit = {
         const reader = input instanceof Uint8Array ? new Reader(input) : input;
         let end = length === undefined ? reader.len : reader.pos + length;
         const message = { ...baseMsgMintObit };
+        message.documents = [];
         while (reader.pos < end) {
             const tag = reader.uint32();
             switch (tag >>> 3) {
@@ -52,10 +61,16 @@ export const MsgMintObit = {
                     message.partNumber = reader.string();
                     break;
                 case 5:
-                    message.obdDid = reader.string();
+                    message.trustAnchorToken = reader.string();
                     break;
                 case 6:
-                    message.ownerDid = reader.string();
+                    message.uri = reader.string();
+                    break;
+                case 7:
+                    message.uriHash = reader.string();
+                    break;
+                case 10:
+                    message.documents.push(NFTDocument.decode(reader, reader.uint32()));
                     break;
                 default:
                     reader.skipType(tag & 7);
@@ -66,6 +81,7 @@ export const MsgMintObit = {
     },
     fromJSON(object) {
         const message = { ...baseMsgMintObit };
+        message.documents = [];
         if (object.creator !== undefined && object.creator !== null) {
             message.creator = String(object.creator);
         }
@@ -91,17 +107,29 @@ export const MsgMintObit = {
         else {
             message.partNumber = "";
         }
-        if (object.obdDid !== undefined && object.obdDid !== null) {
-            message.obdDid = String(object.obdDid);
+        if (object.trustAnchorToken !== undefined &&
+            object.trustAnchorToken !== null) {
+            message.trustAnchorToken = String(object.trustAnchorToken);
         }
         else {
-            message.obdDid = "";
+            message.trustAnchorToken = "";
         }
-        if (object.ownerDid !== undefined && object.ownerDid !== null) {
-            message.ownerDid = String(object.ownerDid);
+        if (object.uri !== undefined && object.uri !== null) {
+            message.uri = String(object.uri);
         }
         else {
-            message.ownerDid = "";
+            message.uri = "";
+        }
+        if (object.uriHash !== undefined && object.uriHash !== null) {
+            message.uriHash = String(object.uriHash);
+        }
+        else {
+            message.uriHash = "";
+        }
+        if (object.documents !== undefined && object.documents !== null) {
+            for (const e of object.documents) {
+                message.documents.push(NFTDocument.fromJSON(e));
+            }
         }
         return message;
     },
@@ -113,12 +141,21 @@ export const MsgMintObit = {
         message.manufacturer !== undefined &&
             (obj.manufacturer = message.manufacturer);
         message.partNumber !== undefined && (obj.partNumber = message.partNumber);
-        message.obdDid !== undefined && (obj.obdDid = message.obdDid);
-        message.ownerDid !== undefined && (obj.ownerDid = message.ownerDid);
+        message.trustAnchorToken !== undefined &&
+            (obj.trustAnchorToken = message.trustAnchorToken);
+        message.uri !== undefined && (obj.uri = message.uri);
+        message.uriHash !== undefined && (obj.uriHash = message.uriHash);
+        if (message.documents) {
+            obj.documents = message.documents.map((e) => e ? NFTDocument.toJSON(e) : undefined);
+        }
+        else {
+            obj.documents = [];
+        }
         return obj;
     },
     fromPartial(object) {
         const message = { ...baseMsgMintObit };
+        message.documents = [];
         if (object.creator !== undefined && object.creator !== null) {
             message.creator = object.creator;
         }
@@ -144,17 +181,29 @@ export const MsgMintObit = {
         else {
             message.partNumber = "";
         }
-        if (object.obdDid !== undefined && object.obdDid !== null) {
-            message.obdDid = object.obdDid;
+        if (object.trustAnchorToken !== undefined &&
+            object.trustAnchorToken !== null) {
+            message.trustAnchorToken = object.trustAnchorToken;
         }
         else {
-            message.obdDid = "";
+            message.trustAnchorToken = "";
         }
-        if (object.ownerDid !== undefined && object.ownerDid !== null) {
-            message.ownerDid = object.ownerDid;
+        if (object.uri !== undefined && object.uri !== null) {
+            message.uri = object.uri;
         }
         else {
-            message.ownerDid = "";
+            message.uri = "";
+        }
+        if (object.uriHash !== undefined && object.uriHash !== null) {
+            message.uriHash = object.uriHash;
+        }
+        else {
+            message.uriHash = "";
+        }
+        if (object.documents !== undefined && object.documents !== null) {
+            for (const e of object.documents) {
+                message.documents.push(NFTDocument.fromPartial(e));
+            }
         }
         return message;
     },

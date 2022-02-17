@@ -52,7 +52,7 @@ export default {
       const value = {
         sender: this.currentAccount,
         receiver: this.receiver,
-        id: this.did,
+        did: this.did,
       };
 
       const resp = await this.$store.dispatch("obadafoundation.fullcore.obit/sendMsgSend", {

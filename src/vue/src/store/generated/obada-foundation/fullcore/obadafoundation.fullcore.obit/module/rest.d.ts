@@ -102,6 +102,11 @@ export interface ObitNFT {
      */
     data?: ProtobufAny;
 }
+export interface ObitNFTDocument {
+    name?: string;
+    uri?: string;
+    hash?: string;
+}
 /**
  * Params defines the parameters for the module.
  */

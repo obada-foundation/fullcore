@@ -13,10 +13,16 @@ export interface NFT {
 }
 
 export interface NFTData {
-  ownerDid: string;
-  obdDid: string;
+  trustAnchorToken: string;
   usn: string;
-  rootHash: string;
+  checksum: string;
+  documents: NFTDocument[];
+}
+
+export interface NFTDocument {
+  name: string;
+  uri: string;
+  hash: string;
 }
 
 const baseNFT: object = { classId: "", id: "", uri: "", uriHash: "" };
@@ -143,21 +149,21 @@ export const NFT = {
   },
 };
 
-const baseNFTData: object = { ownerDid: "", obdDid: "", usn: "", rootHash: "" };
+const baseNFTData: object = { trustAnchorToken: "", usn: "", checksum: "" };
 
 export const NFTData = {
   encode(message: NFTData, writer: Writer = Writer.create()): Writer {
-    if (message.ownerDid !== "") {
-      writer.uint32(10).string(message.ownerDid);
-    }
-    if (message.obdDid !== "") {
-      writer.uint32(18).string(message.obdDid);
+    if (message.trustAnchorToken !== "") {
+      writer.uint32(10).string(message.trustAnchorToken);
     }
     if (message.usn !== "") {
-      writer.uint32(26).string(message.usn);
+      writer.uint32(18).string(message.usn);
     }
-    if (message.rootHash !== "") {
-      writer.uint32(34).string(message.rootHash);
+    if (message.checksum !== "") {
+      writer.uint32(26).string(message.checksum);
+    }
+    for (const v of message.documents) {
+      NFTDocument.encode(v!, writer.uint32(34).fork()).ldelim();
     }
     return writer;
   },
@@ -166,20 +172,21 @@ export const NFTData = {
     const reader = input instanceof Uint8Array ? new Reader(input) : input;
     let end = length === undefined ? reader.len : reader.pos + length;
     const message = { ...baseNFTData } as NFTData;
+    message.documents = [];
     while (reader.pos < end) {
       const tag = reader.uint32();
       switch (tag >>> 3) {
         case 1:
-          message.ownerDid = reader.string();
+          message.trustAnchorToken = reader.string();
           break;
         case 2:
-          message.obdDid = reader.string();
-          break;
-        case 3:
           message.usn = reader.string();
           break;
+        case 3:
+          message.checksum = reader.string();
+          break;
         case 4:
-          message.rootHash = reader.string();
+          message.documents.push(NFTDocument.decode(reader, reader.uint32()));
           break;
         default:
           reader.skipType(tag & 7);
@@ -191,59 +198,163 @@ export const NFTData = {
 
   fromJSON(object: any): NFTData {
     const message = { ...baseNFTData } as NFTData;
-    if (object.ownerDid !== undefined && object.ownerDid !== null) {
-      message.ownerDid = String(object.ownerDid);
+    message.documents = [];
+    if (
+      object.trustAnchorToken !== undefined &&
+      object.trustAnchorToken !== null
+    ) {
+      message.trustAnchorToken = String(object.trustAnchorToken);
     } else {
-      message.ownerDid = "";
-    }
-    if (object.obdDid !== undefined && object.obdDid !== null) {
-      message.obdDid = String(object.obdDid);
-    } else {
-      message.obdDid = "";
+      message.trustAnchorToken = "";
     }
     if (object.usn !== undefined && object.usn !== null) {
       message.usn = String(object.usn);
     } else {
       message.usn = "";
     }
-    if (object.rootHash !== undefined && object.rootHash !== null) {
-      message.rootHash = String(object.rootHash);
+    if (object.checksum !== undefined && object.checksum !== null) {
+      message.checksum = String(object.checksum);
     } else {
-      message.rootHash = "";
+      message.checksum = "";
+    }
+    if (object.documents !== undefined && object.documents !== null) {
+      for (const e of object.documents) {
+        message.documents.push(NFTDocument.fromJSON(e));
+      }
     }
     return message;
   },
 
   toJSON(message: NFTData): unknown {
     const obj: any = {};
-    message.ownerDid !== undefined && (obj.ownerDid = message.ownerDid);
-    message.obdDid !== undefined && (obj.obdDid = message.obdDid);
+    message.trustAnchorToken !== undefined &&
+      (obj.trustAnchorToken = message.trustAnchorToken);
     message.usn !== undefined && (obj.usn = message.usn);
-    message.rootHash !== undefined && (obj.rootHash = message.rootHash);
+    message.checksum !== undefined && (obj.checksum = message.checksum);
+    if (message.documents) {
+      obj.documents = message.documents.map((e) =>
+        e ? NFTDocument.toJSON(e) : undefined
+      );
+    } else {
+      obj.documents = [];
+    }
     return obj;
   },
 
   fromPartial(object: DeepPartial<NFTData>): NFTData {
     const message = { ...baseNFTData } as NFTData;
-    if (object.ownerDid !== undefined && object.ownerDid !== null) {
-      message.ownerDid = object.ownerDid;
+    message.documents = [];
+    if (
+      object.trustAnchorToken !== undefined &&
+      object.trustAnchorToken !== null
+    ) {
+      message.trustAnchorToken = object.trustAnchorToken;
     } else {
-      message.ownerDid = "";
-    }
-    if (object.obdDid !== undefined && object.obdDid !== null) {
-      message.obdDid = object.obdDid;
-    } else {
-      message.obdDid = "";
+      message.trustAnchorToken = "";
     }
     if (object.usn !== undefined && object.usn !== null) {
       message.usn = object.usn;
     } else {
       message.usn = "";
     }
-    if (object.rootHash !== undefined && object.rootHash !== null) {
-      message.rootHash = object.rootHash;
+    if (object.checksum !== undefined && object.checksum !== null) {
+      message.checksum = object.checksum;
     } else {
-      message.rootHash = "";
+      message.checksum = "";
+    }
+    if (object.documents !== undefined && object.documents !== null) {
+      for (const e of object.documents) {
+        message.documents.push(NFTDocument.fromPartial(e));
+      }
+    }
+    return message;
+  },
+};
+
+const baseNFTDocument: object = { name: "", uri: "", hash: "" };
+
+export const NFTDocument = {
+  encode(message: NFTDocument, writer: Writer = Writer.create()): Writer {
+    if (message.name !== "") {
+      writer.uint32(10).string(message.name);
+    }
+    if (message.uri !== "") {
+      writer.uint32(18).string(message.uri);
+    }
+    if (message.hash !== "") {
+      writer.uint32(26).string(message.hash);
+    }
+    return writer;
+  },
+
+  decode(input: Reader | Uint8Array, length?: number): NFTDocument {
+    const reader = input instanceof Uint8Array ? new Reader(input) : input;
+    let end = length === undefined ? reader.len : reader.pos + length;
+    const message = { ...baseNFTDocument } as NFTDocument;
+    while (reader.pos < end) {
+      const tag = reader.uint32();
+      switch (tag >>> 3) {
+        case 1:
+          message.name = reader.string();
+          break;
+        case 2:
+          message.uri = reader.string();
+          break;
+        case 3:
+          message.hash = reader.string();
+          break;
+        default:
+          reader.skipType(tag & 7);
+          break;
+      }
+    }
+    return message;
+  },
+
+  fromJSON(object: any): NFTDocument {
+    const message = { ...baseNFTDocument } as NFTDocument;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = String(object.name);
+    } else {
+      message.name = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = String(object.uri);
+    } else {
+      message.uri = "";
+    }
+    if (object.hash !== undefined && object.hash !== null) {
+      message.hash = String(object.hash);
+    } else {
+      message.hash = "";
+    }
+    return message;
+  },
+
+  toJSON(message: NFTDocument): unknown {
+    const obj: any = {};
+    message.name !== undefined && (obj.name = message.name);
+    message.uri !== undefined && (obj.uri = message.uri);
+    message.hash !== undefined && (obj.hash = message.hash);
+    return obj;
+  },
+
+  fromPartial(object: DeepPartial<NFTDocument>): NFTDocument {
+    const message = { ...baseNFTDocument } as NFTDocument;
+    if (object.name !== undefined && object.name !== null) {
+      message.name = object.name;
+    } else {
+      message.name = "";
+    }
+    if (object.uri !== undefined && object.uri !== null) {
+      message.uri = object.uri;
+    } else {
+      message.uri = "";
+    }
+    if (object.hash !== undefined && object.hash !== null) {
+      message.hash = object.hash;
+    } else {
+      message.hash = "";
     }
     return message;
   },
