@@ -24,7 +24,7 @@
       </div>
 
       <div class="sp-type-form__field sp-form-group">
-        <input type="text" class="sp-input" v-model="obd_did" placeholder="Physical Asset Owner ID" />
+        <input type="text" class="sp-input" v-model="trust_anchor_token" placeholder="Physical Asset Owner ID" />
       </div>
       <SpButton type="secondary" v-on:click="getToken">Get Token</SpButton>
 
@@ -61,7 +61,7 @@ export default {
       serial_number_hash: "",
       manufacturer: "",
       part_number: "",
-      obd_did: "",
+      trust_anchor_token: "",
       uri: "",
       uri_hash: "",
       trust_anchor: "demoTrustAnchor",
@@ -98,7 +98,7 @@ export default {
         withCredentials: false
       })
           .then(response => {
-            this.obd_did = response.data.token
+            this.trust_anchor_token = response.data.token
           })
           .catch(error => {
             this.errorMessage = error.message;
@@ -113,7 +113,7 @@ export default {
         serialNumberHash: this.serial_number_hash,
         manufacturer: this.manufacturer,
         partNumber: this.part_number,
-        obdDid: this.obd_did,
+        trustAnchorToken: this.trust_anchor_token,
         uri: this.uri,
         uriHash: this.uri_hash,
       };

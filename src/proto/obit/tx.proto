@@ -2,6 +2,8 @@ syntax = "proto3";
 package obadafoundation.fullcore.obit;
 
 import "obit/ta.proto";
+import "obit/nft.proto";
+import "gogoproto/gogo.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
@@ -27,7 +29,7 @@ message MsgMintObit {
   string trust_anchor_token = 5;
   string uri = 6;
   string uri_hash = 7;
-  string documents = 8;
+  repeated NFTDocument documents = 10 [(gogoproto.nullable) = false];
 }
 
 // MsgMintObitResponse success minting response

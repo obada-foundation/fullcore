@@ -12,14 +12,15 @@ const (
 
 var _ sdk.Msg = &MsgMintObit{}
 
-func NewMsgMintObit(creator, serialNumberHash, manufacturer, pn, obdDid, ownerDID string) *MsgMintObit {
+func NewMsgMintObit(creator, snHash, manufacturer, pn, taToken, uri, uriHash string) *MsgMintObit {
 	return &MsgMintObit{
 		Creator:          creator,
-		SerialNumberHash: serialNumberHash,
+		SerialNumberHash: snHash,
 		Manufacturer:     manufacturer,
 		PartNumber:       pn,
-		ObdDid:           obdDid,
-		OwnerDid:         ownerDID,
+		TrustAnchorToken: taToken,
+		Uri:              uri,
+		UriHash:          uriHash,
 	}
 }
 

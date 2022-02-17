@@ -45,8 +45,8 @@ func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*typ
 	}
 
 	// Validate trust anchor
-	if len(msg.OwnerDid) > 0 {
-		isCompliant, err := k.CheckCompliance(msg.ObdDid, msg.OwnerDid)
+	if len(msg.TrustAnchorToken) > 0 {
+		isCompliant, err := k.CheckCompliance(msg.TrustAnchorToken, msg.TrustAnchorToken)
 		if err != nil {
 			return resp, err
 		}
@@ -88,10 +88,10 @@ func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*typ
 
 	// check URI hash
 	data, err := codectypes.NewAnyWithValue(&types.NFTData{
-		OwnerDid: obt.GetOwnerDID().GetValue(),
-		ObdDid:   msg.ObdDid,
-		RootHash: checksum.GetHash(),
-		Usn:      did.GetUsn(),
+		Documents:        make([]types.NFTDocument, 0),
+		TrustAnchorToken: msg.TrustAnchorToken,
+		Checksum:         checksum.GetHash(),
+		Usn:              did.GetUsn(),
 	})
 	if err != nil {
 		return resp, err
@@ -110,6 +110,6 @@ func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*typ
 	}
 
 	return &types.MsgMintObitResponse{
-		Did: obt.GetObdDID().GetValue(),
+		Did: did.GetDid(),
 	}, nil
 }

@@ -14,7 +14,7 @@ var _ = strconv.Itoa(0)
 
 func CmdMintObit() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "mint-obit [serial-number-hash] [manufacturer] [pn] [ta] [owner-did]",
+		Use:   "mint-obit [serial-number-hash] [manufacturer] [pn] [taToken] [uri] [uriHash]",
 		Short: "Broadcast message mint-obit",
 		Args:  cobra.ExactArgs(5),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
@@ -22,7 +22,8 @@ func CmdMintObit() *cobra.Command {
 			argMan := args[1]
 			argPn := args[2]
 			argTa := args[3]
-			argOwnerDid := args[4]
+			uri := args[4]
+			uriHash := args[5]
 
 			clientCtx, err := client.GetClientTxContext(cmd)
 			if err != nil {
@@ -35,7 +36,8 @@ func CmdMintObit() *cobra.Command {
 				argMan,
 				argPn,
 				argTa,
-				argOwnerDid,
+				uri,
+				uriHash,
 			)
 			if err := msg.ValidateBasic(); err != nil {
 				return err
