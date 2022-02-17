@@ -32,6 +32,22 @@
         <input type="text" class="sp-input" v-model="trust_anchor" placeholder="Trust Anchor (Registered Agent) ID" disabled />
       </div>
 
+      <SpButton type="secondary" v-on:click="addDocument">Add Document</SpButton>
+
+      <div v-for="(doc, index) in documents" v-bind:key="index">
+        <div class="sp-type-form__field sp-form-group">
+          <input type="text" class="sp-input" v-model="doc.name" :key="index" placeholder="Document name" />
+        </div>
+
+        <div class="sp-type-form__field sp-form-group">
+          <input type="text" class="sp-input" v-model="doc.uri" :key="index" placeholder="URI (IPFS)" />
+        </div>
+
+        <div class="sp-type-form__field sp-form-group">
+          <input type="text" class="sp-input" v-model="doc.hash" :key="index" placeholder="URI Hash" />
+        </div>
+      </div>
+
       <div class="sp-type-form__btns">
         <SpButton type="primary" v-on:click="submit">Mint OBT</SpButton>
       </div>
@@ -65,6 +81,7 @@ export default {
       uri: "",
       uri_hash: "",
       trust_anchor: "demoTrustAnchor",
+      documents: [],
     };
   },
   computed: {
@@ -89,6 +106,13 @@ export default {
     }
   },
   methods: {
+    addDocument() {
+      this.documents.push({
+        name: "",
+        uri: "",
+        hash: "",
+      })
+    },
     getToken() {
       axios.post("http://demo.ta.alpha.obada.io/api/v1/issue-token", {}, {
         headers: {
@@ -116,6 +140,7 @@ export default {
         trustAnchorToken: this.trust_anchor_token,
         uri: this.uri,
         uriHash: this.uri_hash,
+        documents: this.documents,
       };
 
       const resp = await this.$store.dispatch("obadafoundation.fullcore.obit/sendMsgMintObit", {

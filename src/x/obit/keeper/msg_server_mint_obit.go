@@ -87,7 +87,7 @@ func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*typ
 
 	// check URI hash
 	data, err := codectypes.NewAnyWithValue(&types.NFTData{
-		Documents:        make([]types.NFTDocument, 0),
+		Documents:        msg.Documents,
 		TrustAnchorToken: msg.TrustAnchorToken,
 		Checksum:         checksum.GetHash(),
 		Usn:              did.GetUsn(),
