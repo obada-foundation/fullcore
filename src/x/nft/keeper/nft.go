@@ -70,8 +70,8 @@ func (k Keeper) Transfer(ctx sdk.Context,
 	if !k.HasNFT(ctx, classID, nftID) {
 		return sdkerrors.Wrap(nft.ErrNFTNotExists, nftID)
 	}
-
 	owner := k.GetOwner(ctx, classID, nftID)
+
 	k.deleteOwner(ctx, classID, nftID, owner)
 	k.setOwner(ctx, classID, nftID, receiver)
 	return nil

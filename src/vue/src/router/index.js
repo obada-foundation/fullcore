@@ -4,6 +4,7 @@ import Types from '@/views/Types.vue'
 import NFT from '@/views/NFT.vue'
 import TrustAnchors from '@/views/TrustAnchors.vue'
 import Relayers from '@/views/Relayers.vue'
+import NFTDetails from '@/views/NFTDetails.vue'
 
 const routerHistory = createWebHistory()
 const routes = [
@@ -14,6 +15,7 @@ const routes = [
   { path: '/types', component: Types },
   { path: '/relayers', component: Relayers },
   { path: '/nfts', component: NFT },
+  { path: '/nfts/{did}', component: NFTDetails },
   { path: '/trust-anchors', component: TrustAnchors },
 ]
 

@@ -16,8 +16,8 @@
         <tr class="sp-blockdisplayline" v-for="nft in nfts" v-bind:key="nft.id">
           <td>{{ nft.data.usn }}</td>
           <td class="sp-blockdisplayline__height">
-            {{ nft.id.substr(0, 16) }}...
-            <a href="#" class="sp-accounts-list-item__copy" @click="copyDid(nft.id)">
+            {{ nft.id.substr(0, 22) }}...
+            <a href="#" class="sp-accounts-list-item__copy" @click="copyStr(nft.id)">
               <span class="sp-icon sp-icon-Copy" />
             </a>
           </td>
@@ -26,6 +26,9 @@
           </td>
           <td class="sp-blockdisplayline__timestamp">
             {{ nft.data.checksum.substr(0, 12) }}...
+            <a href="#" class="sp-accounts-list-item__copy" @click="copyStr(nft.data.checksum)">
+              <span class="sp-icon sp-icon-Copy" />
+            </a>
           </td>
         </tr>
       </tbody>
@@ -49,9 +52,9 @@ export default {
     this.initNFTs()
   },
   methods: {
-    copyDid(did) {
+    copyStr(str) {
         const el = document.createElement('textarea')
-        el.value = did
+        el.value = str
         document.body.appendChild(el)
         el.select()
         el.setSelectionRange(0, 999999)
