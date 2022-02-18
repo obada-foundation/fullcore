@@ -11,7 +11,7 @@
         </div>
 
         <div class="sp-type-form__btns">
-          <sp-button @click="submit">Transfer</sp-button>
+          <sp-button @click="transferNFT" :disabled="!isValid" :busy="inFlight">Transfer</sp-button>
         </div>
       </form>
     </div>
@@ -23,6 +23,7 @@ export default {
   name: "TransferNFT",
   data() {
     return {
+      inFlight: false,
       did: "",
       receiver: "",
     }
@@ -46,9 +47,14 @@ export default {
         return false
       }
     },
+    isValid() {
+      return this.did.length > 0 && this.receiver.length > 0
+    },
   },
   methods: {
-    async submit() {
+    async transferNFT() {
+      this.inFlight = true
+
       const value = {
         sender: this.currentAccount,
         receiver: this.receiver,
@@ -60,7 +66,9 @@ export default {
         fee: [],
       });
 
-      console.log(resp);
+      this.did      = ""
+      this.receiver = ""
+      this.inFlight = false
     },
   },
 }
