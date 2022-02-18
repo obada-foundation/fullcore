@@ -19,12 +19,7 @@ func (k msgServer) Send(goCtx context.Context, msg *types.MsgSend) (*types.MsgSe
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	receiver, err := sdk.AccAddressFromBech32(msg.Receiver)
-	if err != nil {
-		return resp, err
-	}
-
-	if err := k.nftKeeper.Transfer(ctx, "OBT", msg.Did, receiver); err != nil {
+	if err := k.nftKeeper.Transfer(ctx, "OBT", msg.Did, sdk.AccAddress(msg.Receiver)); err != nil {
 		return resp, err
 	}
 
