@@ -1,6 +1,6 @@
 <template>
   <div class="sp-type-form sp-box sp-shadow">
-    <form class="sp-type-form__main__form">
+    <form ref="mintForm" class="sp-type-form__main__form">
       <div class="sp-type-form__header sp-box-header">Create an NFT</div>
 
       <div class="sp-type-form__field sp-form-group">
@@ -26,7 +26,7 @@
       <div class="sp-type-form__field sp-form-group">
         <input type="text" class="sp-input" v-model="trust_anchor_token" placeholder="Physical Asset Owner ID" />
       </div>
-      <SpButton type="secondary" v-on:click="getToken">Get Token</SpButton>
+      <SpButton type="secondary" v-on:click="getToken" :busy="taTokenInFlight">Get Token</SpButton>
 
       <div class="sp-type-form__field sp-form-group">
         <input type="text" class="sp-input" v-model="trust_anchor" placeholder="Trust Anchor (Registered Agent) ID" disabled />
@@ -49,7 +49,7 @@
       </div>
 
       <div class="sp-type-form__btns">
-        <SpButton type="primary" v-on:click="submit">Mint OBT</SpButton>
+        <SpButton type="primary" v-on:click="mintNFT" :disabled="!isValid" :busy="inFlight">Mint OBT</SpButton>
       </div>
     </form>
   </div>
@@ -82,10 +82,16 @@ export default {
       uri_hash: "",
       trust_anchor: "demoTrustAnchor",
       documents: [],
+      inFlight: false,
+      taTokenInFlight: false,
     };
   },
   computed: {
-
+    isValid() {
+      return this.serial_number_hash.length > 0 &&
+        this.manufacturer.length > 0 &&
+        this.part_number.length > 0
+    },
     currentAccount() {
       if (this._depsLoaded) {
         if (this.loggedIn) {
@@ -114,6 +120,8 @@ export default {
       })
     },
     getToken() {
+      this.taTokenInFlight = true
+
       axios.post("http://demo.ta.alpha.obada.io/api/v1/issue-token", {}, {
         headers: {
           'Authorization': 'Bearer ' + this.taAuthToken,
@@ -121,17 +129,19 @@ export default {
         },
         withCredentials: false
       })
-          .then(response => {
-            this.trust_anchor_token = response.data.token
-          })
-          .catch(error => {
-            this.errorMessage = error.message;
-            console.error("There was an error!", error);
-          });
+      .then(response => {
+        this.trust_anchor_token = response.data.token
+      })
+      .catch(error => {
+        this.errorMessage = error.message;
+        console.error("There was an error!", error);
+      });
 
-      return ""
+      this.taTokenInFlight = false
     },
-    async submit() {
+    async mintNFT() {
+      this.inFlight = true
+
       const value = {
         creator: this.currentAccount,
         serialNumberHash: this.serial_number_hash,
@@ -148,7 +158,15 @@ export default {
         fee: [],
       });
 
-      console.log(resp);
+      this.serial_number_hash = ""
+      this.manufacturer = ""
+      this.part_number = ""
+      this.trust_anchor_token = ""
+      this.uri = ""
+      this.uri_hash = ""
+      this.documents.splice(0, this.documents.length)
+
+      this.inFlight = false
     },
   },
 };
