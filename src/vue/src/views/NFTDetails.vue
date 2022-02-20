@@ -44,7 +44,7 @@
               <td colspan="3">No Documents yet</td>
             </tr>
             <tr class="sp-blockdisplayline" v-for="doc in nft.data.documents" v-bind:key="doc.name">
-              <td><a href="{{ doc.uri }}">{{ doc.name }}</a></td>
+              <td><a :href="doc.uri">{{ doc.name }}</a></td>
               <td>{{ doc.hash }}</td>
             </tr>
           </tbody>
