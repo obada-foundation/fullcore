@@ -41,10 +41,10 @@
           </thead>
           <tbody>
             <tr class="sp-blockdisplayline" v-if="nft.data.documents.length === 0">
-              <td colspan="3">No Documents yet</td>
+              <td colspan="2">No Documents yet</td>
             </tr>
             <tr class="sp-blockdisplayline" v-for="doc in nft.data.documents" v-bind:key="doc.name">
-              <td><a :href="doc.uri">{{ doc.name }}</a></td>
+              <td><a :href="doc.uri" target="_blank">{{ doc.name }}</a></td>
               <td>{{ doc.hash }}</td>
             </tr>
           </tbody>
