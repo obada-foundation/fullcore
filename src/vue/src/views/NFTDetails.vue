@@ -35,8 +35,7 @@
         <table class="sp-blockstable">
           <thead>
             <tr>
-              <th class="sp-blockstable__height"><strong>Name</strong></th>
-              <th class="sp-blockstable__height"><strong>URI</strong></th>
+              <th class="sp-blockstable__height"><strong>Document</strong></th>
               <th class="sp-blockstable__hash"><strong>Hash</strong></th>
             </tr>
           </thead>
@@ -45,15 +44,11 @@
               <td colspan="3">No Documents yet</td>
             </tr>
             <tr class="sp-blockdisplayline" v-for="doc in nft.data.documents" v-bind:key="doc.name">
-              <td>{{ doc.name }}</td>
-              <td>{{ doc.uri }}</td>
+              <td><a href="{{ doc.uri }}">{{ doc.name }}</a></td>
               <td>{{ doc.hash }}</td>
             </tr>
           </tbody>
         </table>
-
-      
-
       </div>
     </div>
   </div>
@@ -64,7 +59,11 @@ export default {
   name: 'NFTDetails',
   data() {
     return {
-      nft: {}
+      nft: {
+        data: {
+          documents: []
+        }
+      }
     }
   },
   created() {

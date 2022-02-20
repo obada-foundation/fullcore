@@ -20,12 +20,8 @@ export const uploadBlob = async (file) => {
     return [ new Error(`Maximum file size to be upload is 50 MB`), detail ];
   }
 
-  console.log("test", detail)
-
   try {
     const cid = await client.storeBlob(file);
-
-    console.log("test2", cid)
 
     detail = getCidDetail({ cid, file });
     

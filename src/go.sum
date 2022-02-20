@@ -1068,7 +1068,7 @@ github.com/nishanths/predeclared v0.2.1/go.mod h1:HvkGJcA3naj4lOwnFXFDkFxVtSqQMB
 github.com/nxadm/tail v1.4.4/go.mod h1:kenIhsEOeOJmVchQTgglprH7qJGnHDVpk1VPCcaMI8A=
 github.com/nxadm/tail v1.4.8 h1:nPr65rt6Y5JFSKQO7qToXr7pePgD6Gwiw05lkbyAQTE=
 github.com/nxadm/tail v1.4.8/go.mod h1:+ncqLTQzXmGhMZNUePPaPqPvBxHAIsmXswZKocGu+AU=
-github.com/obada-foundation/sdkgo v0.1.0 h1:0c3Q58mYdqLCT6Igw94v12QGrjJkyZLvlYxUNRjQ15E=
+github.com/obada-foundation/sdkgo v0.1.0 h1:3/6AljPvSbKWpgrarfAmyQRDdYnCZUwTNKfnWi2kuUI=
 github.com/obada-foundation/sdkgo v0.1.0/go.mod h1:fI8afjsA9m4GP3N8+tFeKKPXGgw/d5mj0rUUPAUzpv8=
 github.com/oklog/oklog v0.3.2/go.mod h1:FCV+B7mhrz4o+ueLpx+KqkyXRGMWOYEvfiXtdGtbWGs=
 github.com/oklog/run v1.0.0/go.mod h1:dlhp/R75TPv97u0XWUtDeV/lRKWPKSdTuV0TZvrmrQA=

@@ -19,7 +19,7 @@ func (k msgServer) Send(goCtx context.Context, msg *types.MsgSend) (*types.MsgSe
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	if err := k.nftKeeper.Transfer(ctx, "OBT", msg.Did, sdk.AccAddress(msg.Receiver)); err != nil {
+	if err := k.nftKeeper.Transfer(ctx, types.OBTClass, msg.Did, sdk.AccAddress(msg.Receiver)); err != nil {
 		return resp, err
 	}
 
@@ -50,6 +50,18 @@ func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*typ
 		}
 	}
 
+	docs := make([]map[string]string, len(msg.Documents))
+	for _, doc := range msg.Documents {
+		d := make(map[string]string)
+		d["name"] = doc.Name
+
+		docs = append(docs, map[string]string{
+			"name": doc.Name,
+			"hash": doc.Hash,
+			"uri":  doc.Uri,
+		})
+	}
+
 	obt, err := osdk.NewObit(obadasdk.ObitDto{
 		ObitIDDto: obadasdk.ObitIDDto{
 			SerialNumberHash: msg.SerialNumberHash,
@@ -57,6 +69,7 @@ func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*typ
 			PartNumber:       msg.PartNumber,
 		},
 		TrustAnchorToken: msg.TrustAnchorToken,
+		Documents:        docs,
 	})
 
 	if err != nil {
@@ -64,11 +77,11 @@ func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*typ
 	}
 
 	// Find a right place for provisioning NFT class
-	if !k.nftKeeper.HasClass(ctx, "OBT") {
+	if !k.nftKeeper.HasClass(ctx, types.OBTClass) {
 		k.nftKeeper.SaveClass(ctx, nft.Class{
-			Id:     "OBT",
+			Id:     types.OBTClass,
 			Name:   "Obada network NFT Token",
-			Symbol: "OBT",
+			Symbol: types.OBTClass,
 			Uri:    "https://obada.io",
 		})
 	}
@@ -92,7 +105,7 @@ func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*typ
 	}
 
 	nftToken := nft.NFT{
-		ClassId: "OBT",
+		ClassId: types.OBTClass,
 		Id:      did.GetDid(),
 		Uri:     msg.Uri,
 		UriHash: msg.UriHash,

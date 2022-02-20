@@ -23,7 +23,7 @@ func (k Keeper) GetNft(c context.Context, req *types.QueryGetNftRequest) (*types
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	nft, ok := k.nftKeeper.GetNFT(ctx, "OBT", did)
+	nft, ok := k.nftKeeper.GetNFT(ctx, types.OBTClass, did)
 	if !ok {
 		return nil, status.Error(codes.NotFound, fmt.Sprintf("no %s with DID %s found", "OBT", req.Did))
 	}
