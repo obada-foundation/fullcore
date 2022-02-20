@@ -24,4 +24,5 @@ func KeyPrefix(p string) []byte {
 const (
 	TaKey      = "Ta-value-"
 	TaCountKey = "Ta-count-"
+	OBTClass   = "OBT"
 )

@@ -40,11 +40,15 @@
         </div>
 
         <div class="sp-type-form__field sp-form-group">
-          <input type="text" class="sp-input" v-model="doc.uri" :key="index" placeholder="URI (IPFS)" />
+          <input type="file" class="sp-input" placeholder="Document" @change="handleDocument(index)" ref="doc" />
         </div>
 
         <div class="sp-type-form__field sp-form-group">
-          <input type="text" class="sp-input" v-model="doc.hash" :key="index" placeholder="URI Hash" />
+          <input type="text" class="sp-input" v-model="doc.uri" :key="index" placeholder="URI (IPFS)" disabled />
+        </div>
+
+        <div class="sp-type-form__field sp-form-group">
+          <input type="text" class="sp-input" v-model="doc.hash" :key="index" placeholder="URI Hash" disabled />
         </div>
       </div>
 
@@ -63,13 +67,14 @@
 
 <script>
 import axios from 'axios'
+import { uploadBlob } from "../services/ipfs"
 
 export default {
   name: "MintNftForm",
   data() {
     return {
       // Until we not define trust-anchor spec with Denis and Joe we going to use sandbox service
-      taAuthToken: "eyJhbGciOiJFZERTQSIsInR5cCI6IkpXVCJ9.eyJ1c2VyX2lkIjoiZWU0MjRmN2QtODVjNi00MTM2LWJmMjQtYTgxYjA3ZGI2OTY5In0.3sl5tmp_BOmHSRpQbWMSK5CpDmHQLNOHpy1WzNgrkvDbEi4P3DdpiD-1iH9QsQajx_JZhkRq3S4-Ti1Cs390Bw",
+      taAuthToken: process.env.VUE_APP_TA_AUTH_TOKEN,
       trustAnchors: [{
         id: "demoTrustAnchor",
         name: "Demo Trust Anchor"
@@ -112,6 +117,14 @@ export default {
     }
   },
   methods: {
+    async handleDocument(index) {
+      const element = this.$refs.doc;
+
+      const data = await uploadBlob(element.files[0])
+
+      this.documents[index].hash = data.data.cid
+      this.documents[index].uri = process.env.VUE_APP_IPFS_URL + "/ipfs/" + data.data.cid
+    },
     addDocument() {
       this.documents.push({
         name: "",
@@ -122,7 +135,7 @@ export default {
     getToken() {
       this.taTokenInFlight = true
 
-      axios.post("http://demo.ta.alpha.obada.io/api/v1/issue-token", {}, {
+      axios.post(process.env.VUE_APP_TA_URL, {}, {
         headers: {
           'Authorization': 'Bearer ' + this.taAuthToken,
           'Content-Type': 'application/json'
