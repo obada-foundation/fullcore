@@ -27,7 +27,7 @@
             {{ nft.uri }}
           </td>
           <td class="sp-blockdisplayline__timestamp">
-            {{ nft.data.checksum.substr(0, 12) }}...
+            {{ shortHash(nft.data.checksum) }}
             <a href="#" class="sp-accounts-list-item__copy" @click="copyStr(nft.data.checksum)">
               <span class="sp-icon sp-icon-Copy" />
             </a>
@@ -64,6 +64,9 @@ export default {
         document.body.removeChild(el)
     // copyToClipboard(did)
     },
+    shortHash(string) {
+      return string.substr(0, 10) + '...' + string.slice(-5)
+    },
     initNFTs() {
       this.$store.dispatch("obadafoundation.fullcore.obit/QueryGetNftsByAddress", {
         params: {
@@ -76,7 +79,7 @@ export default {
       }).then(function (resp) {
         console.log(resp)
       });
-    }
+    },
   },
   computed: {
     currentAccount() {
@@ -103,7 +106,7 @@ export default {
           address: this.currentAccount
         }
       })?.NFT ?? []
-    }
+    },
   }
 }
 </script>
