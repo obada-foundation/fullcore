@@ -60,7 +60,7 @@
               </tr>
               <tr class="sp-blockdisplayline" v-for="doc in nft.data.documents" v-bind:key="doc.name">
                 <td class="text-wrap">
-                  <a :href="doc.uri" target="_blank">{{ doc.name }}</a>
+                  <a :href="doc.uri" class="sp-blockdisplayline__height__link" target="_blank">{{ doc.name }}</a>
                 </td>
                 <td class="text-wrap">
                   {{ shortHash(doc.hash) }}

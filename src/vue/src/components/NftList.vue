@@ -15,11 +15,13 @@
         </tr>
         <tr class="sp-blockdisplayline" v-for="nft in nfts" v-bind:key="nft.id">
           <td>
-            <router-link class="sp-blockdisplayline__height__link" :to="{ name: 'NFTDetails', params: { did: nft.id }}">{{ nft.data.usn }}</router-link>
+            <router-link
+                class="sp-blockdisplayline__height__link"
+                :to="{ name: 'NFTDetails', params: { did: nft.id }}">{{ nft.data.usn }}</router-link>
           </td>
           <td class="sp-blockdisplayline__height">
             {{ nft.id.substr(0, 22) }}...
-            <a href="#" class="sp-accounts-list-item__copy" @click="copyStr(nft.id)">
+            <a href="#" class="sp-copy-icon" @click="copyStr(nft.id)">
               <span class="sp-icon sp-icon-Copy" />
             </a>
           </td>
@@ -28,7 +30,7 @@
           </td>
           <td class="sp-blockdisplayline__timestamp">
             {{ shortHash(nft.data.checksum) }}
-            <a href="#" class="sp-accounts-list-item__copy" @click="copyStr(nft.data.checksum)">
+            <a href="#" class="sp-copy-icon" @click="copyStr(nft.data.checksum)">
               <span class="sp-icon sp-icon-Copy" />
             </a>
           </td>
@@ -46,7 +48,7 @@
 </style>
 
 <script>
-//import { copyToClipboard } from '@starport/vue/src/utils/helpers'
+import { copyToClipboard, shortenHash } from '@/utils/helpers'
 
 export default {
   name: 'NftList',
@@ -55,30 +57,25 @@ export default {
   },
   methods: {
     copyStr(str) {
-        const el = document.createElement('textarea')
-        el.value = str
-        document.body.appendChild(el)
-        el.select()
-        el.setSelectionRange(0, 999999)
-        document.execCommand('copy')
-        document.body.removeChild(el)
-    // copyToClipboard(did)
+      copyToClipboard(str)
     },
     shortHash(string) {
-      return string.substr(0, 10) + '...' + string.slice(-5)
+      return shortenHash(string)
     },
     initNFTs() {
-      this.$store.dispatch("obadafoundation.fullcore.obit/QueryGetNftsByAddress", {
-        params: {
-          address: this.currentAccount,
-        },
-        options: {
-          subscribe: true,
-          all: true
-        }
-      }).then(function (resp) {
-        console.log(resp)
-      });
+      this.$store
+        .dispatch('obadafoundation.fullcore.obit/QueryGetNftsByAddress', {
+          params: {
+            address: this.currentAccount,
+          },
+          options: {
+            subscribe: true,
+            all: true,
+          },
+        })
+        .then(function (resp) {
+          console.log(resp)
+        })
     },
   },
   computed: {
@@ -107,6 +104,6 @@ export default {
         }
       })?.NFT ?? []
     },
-  }
+  },
 }
 </script>

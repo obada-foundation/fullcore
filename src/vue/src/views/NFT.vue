@@ -1,6 +1,5 @@
 <template>
   <div class="container">
-
     <div class="sp-component sp-component--half">
       <div class="sp-component-title">
         <h3>OBT NFT</h3>
@@ -24,7 +23,6 @@
 
       <NftList />
     </div>
-
   </div>
 </template>
 
