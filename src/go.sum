@@ -1068,7 +1068,7 @@ github.com/nishanths/predeclared v0.2.1/go.mod h1:HvkGJcA3naj4lOwnFXFDkFxVtSqQMB
 github.com/nxadm/tail v1.4.4/go.mod h1:kenIhsEOeOJmVchQTgglprH7qJGnHDVpk1VPCcaMI8A=
 github.com/nxadm/tail v1.4.8 h1:nPr65rt6Y5JFSKQO7qToXr7pePgD6Gwiw05lkbyAQTE=
 github.com/nxadm/tail v1.4.8/go.mod h1:+ncqLTQzXmGhMZNUePPaPqPvBxHAIsmXswZKocGu+AU=
-github.com/obada-foundation/sdkgo v0.1.0 h1:3/6AljPvSbKWpgrarfAmyQRDdYnCZUwTNKfnWi2kuUI=
+github.com/obada-foundation/sdkgo v0.1.0 h1:0c3Q58mYdqLCT6Igw94v12QGrjJkyZLvlYxUNRjQ15E=
 github.com/obada-foundation/sdkgo v0.1.0/go.mod h1:fI8afjsA9m4GP3N8+tFeKKPXGgw/d5mj0rUUPAUzpv8=
 github.com/oklog/oklog v0.3.2/go.mod h1:FCV+B7mhrz4o+ueLpx+KqkyXRGMWOYEvfiXtdGtbWGs=
 github.com/oklog/run v1.0.0/go.mod h1:dlhp/R75TPv97u0XWUtDeV/lRKWPKSdTuV0TZvrmrQA=
@@ -1471,6 +1471,8 @@ github.com/yvasiyarov/gorelic v0.0.0-20141212073537-a9bba5b9ab50/go.mod h1:NUSPS
 github.com/yvasiyarov/newrelic_platform_go v0.0.0-20140908184405-b21fdbd4370f/go.mod h1:GlGEuHIJweS1mbCqG+7vt2nvWLzLLnRHbXz5JKd/Qbg=
 github.com/zondax/hid v0.9.0 h1:eiT3P6vNxAEVxXMw66eZUAAnU2zD33JBkfG/EnfAKl8=
 github.com/zondax/hid v0.9.0/go.mod h1:l5wttcP0jwtdLjqjMMWFVEE7d1zO0jvSPA9OPZxWpEM=
+go.buf.build/protocolbuffers/go/cosmos/cosmos-sdk v1.2.41 h1:6w1y/yjdC0hhFskCy0P9iqPpi9usOyh/LwlIL26ydEs=
+go.buf.build/protocolbuffers/go/cosmos/cosmos-sdk v1.2.41/go.mod h1:tY8p4Gu8wLae/3/hsDgdWHivC+DWc+Z8jNeV5v304R8=
 go.etcd.io/bbolt v1.3.2/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.3/go.mod h1:IbVyRI1SCnLcuJnV2u8VeU0CEYM7e686BmAb1XKL+uU=
 go.etcd.io/bbolt v1.3.4/go.mod h1:G5EMThwa9y8QZGBClrRx5EY+Yw9kAhnjy3bSjsnlVTQ=

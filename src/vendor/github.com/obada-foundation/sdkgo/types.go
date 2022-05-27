@@ -16,7 +16,6 @@ type ObitIDDto struct {
 type ObitDto struct {
 	ObitIDDto
 	TrustAnchorToken string
-	Documents        []map[string]string
 }
 
 // Obit represent asset data structure
