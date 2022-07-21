@@ -21,6 +21,10 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 			res, err := msgServer.MintObit(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 
+		case *types.MsgEditMetadata:
+			res, err := msgServer.EditMetadata(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+
 		case *types.MsgSend:
 			res, err := msgServer.Send(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)

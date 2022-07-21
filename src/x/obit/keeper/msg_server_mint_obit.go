@@ -3,6 +3,7 @@ package keeper
 import (
 	"context"
 	"errors"
+	"fmt"
 	"log"
 	"os"
 
@@ -13,6 +14,36 @@ import (
 	"github.com/obada-foundation/fullcore/x/nft"
 	"github.com/obada-foundation/fullcore/x/obit/types"
 )
+
+func (k msgServer) EditMetadata(goCtx context.Context, msg *types.MsgEditMetadata) (*types.MsgEditMetadataResponse, error) {
+	resp := &types.MsgEditMetadataResponse{}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	nft, ok := k.nftKeeper.GetNFT(ctx, types.OBTClass, msg.Did)
+	if !ok {
+		return resp, fmt.Errorf("NFT %s doesn't exists", msg.Did)
+	}
+
+	ownerAddress := k.nftKeeper.GetOwner(ctx, types.OBTClass, msg.Did)
+	if !ownerAddress.Equals(sdk.AccAddress(msg.Editor)) {
+		return resp, fmt.Errorf("permission denied")
+	}
+
+	data, err := codectypes.NewAnyWithValue(msg.NFTData)
+	if err != nil {
+		return resp, err
+	}
+
+	nft.Data = data
+	if err := k.nftKeeper.Update(ctx, nft); err != nil {
+		return resp, err
+	}
+
+	resp.NFT = (*types.NFT)(&nft)
+
+	return resp, nil
+}
 
 func (k msgServer) Send(goCtx context.Context, msg *types.MsgSend) (*types.MsgSendResponse, error) {
 	resp := &types.MsgSendResponse{}
@@ -69,7 +100,7 @@ func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*typ
 			PartNumber:       msg.PartNumber,
 		},
 		TrustAnchorToken: msg.TrustAnchorToken,
-		Documents:        docs,
+		//	Documents:        docs,
 	})
 
 	if err != nil {
@@ -78,12 +109,16 @@ func (k msgServer) MintObit(goCtx context.Context, msg *types.MsgMintObit) (*typ
 
 	// Find a right place for provisioning NFT class
 	if !k.nftKeeper.HasClass(ctx, types.OBTClass) {
-		k.nftKeeper.SaveClass(ctx, nft.Class{
+		err := k.nftKeeper.SaveClass(ctx, nft.Class{
 			Id:     types.OBTClass,
 			Name:   "Obada network NFT Token",
 			Symbol: types.OBTClass,
 			Uri:    "https://obada.io",
 		})
+
+		if err != nil {
+			return resp, err
+		}
 	}
 
 	did := obt.GetObitID()
