@@ -31,6 +31,7 @@ func GetTxCmd() *cobra.Command {
 	}
 
 	cmd.AddCommand(CmdMintObit())
+	cmd.AddCommand(CmdEditMetadata())
 	cmd.AddCommand(CmdCreateTa())
 	cmd.AddCommand(CmdUpdateTa())
 	cmd.AddCommand(CmdDeleteTa())

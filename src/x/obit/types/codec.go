@@ -10,7 +10,7 @@ import (
 
 func RegisterCodec(cdc *codec.LegacyAmino) {
 	cdc.RegisterConcrete(&MsgMintObit{}, "obit/MintObit", nil)
-	cdc.RegisterConcrete(&MsgEditMetadata{}, "obit/MsgEditMetadata", nil)
+	cdc.RegisterConcrete(&MsgEditMetadata{}, "obit/EditMetadata", nil)
 	cdc.RegisterConcrete(&MsgSend{}, "obit/MsgSend", nil)
 	cdc.RegisterConcrete(&MsgCreateTa{}, "obit/CreateTa", nil)
 	cdc.RegisterConcrete(&MsgUpdateTa{}, "obit/UpdateTa", nil)
