@@ -73,6 +73,11 @@ func (msg *MsgEditMetadata) ValidateBasic() error {
 	return nil
 }
 
+func (msg *MsgEditMetadata) GetSignBytes() []byte {
+	bz := ModuleCdc.MustMarshalJSON(msg)
+	return sdk.MustSortJSON(bz)
+}
+
 func (msg *MsgEditMetadata) GetSigners() []sdk.AccAddress {
 	editor, err := sdk.AccAddressFromBech32(msg.Editor)
 	if err != nil {
