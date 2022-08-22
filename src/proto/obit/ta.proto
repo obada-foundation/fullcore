@@ -1,0 +1,11 @@
+syntax = "proto3";
+package obadafoundation.fullcore.obit;
+
+option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
+
+message Ta {
+  uint64 id = 1;
+  string title = 2; 
+  string pubkey = 3; 
+  string creator = 4;
+}

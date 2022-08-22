@@ -2,6 +2,7 @@
   <div>
     <div class="container">
       <!-- this line is used by starport scaffolding # 4 -->
+		<SpType modulePath="obada-foundation.fullcore.obit" moduleType="Ta"  />
     </div>
   </div>
 </template>
