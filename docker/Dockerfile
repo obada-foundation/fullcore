@@ -22,7 +22,7 @@ WORKDIR /home/obada
 
 COPY --from=builder --chown=obada /fullcored /home/obada
 
-COPY --chown=obada ./docker/node/entrypoint.sh /home/obada/
+COPY --chown=obada ./docker/entrypoint.sh /home/obada/
 
 CMD ["/home/obada/entrypoint.sh"]
 

@@ -7,7 +7,7 @@ SHELL := /bin/sh
 .DEFAULT_GOAL := help
 
 docker/build:
-	docker build -t $(CONTAINER_IMAGE) -f docker/node/Dockerfile .
+	docker build -t $(CONTAINER_IMAGE) -f docker/Dockerfile .
 
 docker/publish:
 	docker push $(CONTAINER_IMAGE)

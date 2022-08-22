@@ -28,6 +28,7 @@ import (
 	authtx "github.com/cosmos/cosmos-sdk/x/auth/tx"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/vesting"
+	vestingtypes "github.com/cosmos/cosmos-sdk/x/auth/vesting/types"
 	"github.com/cosmos/cosmos-sdk/x/bank"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
@@ -93,8 +94,6 @@ import (
 	"github.com/tendermint/tendermint/libs/log"
 	tmos "github.com/tendermint/tendermint/libs/os"
 	dbm "github.com/tendermint/tm-db"
-
-	"github.com/tendermint/starport/starport/pkg/cosmoscmd"
 
 	obadaparams "github.com/obada-foundation/fullcore/app/params"
 	obitmodule "github.com/obada-foundation/fullcore/x/obit"
@@ -169,7 +168,6 @@ var (
 )
 
 var (
-	_ cosmoscmd.App           = (*App)(nil)
 	_ servertypes.Application = (*App)(nil)
 	_ simapp.App              = (*App)(nil)
 )
@@ -457,12 +455,48 @@ func New(
 	// CanWithdrawInvariant invariant.
 	// NOTE: staking module is required if HistoricalEntries param > 0
 	app.mm.SetOrderBeginBlockers(
-		upgradetypes.ModuleName, capabilitytypes.ModuleName, minttypes.ModuleName, distrtypes.ModuleName, slashingtypes.ModuleName,
-		evidencetypes.ModuleName, stakingtypes.ModuleName, ibchost.ModuleName, nft.ModuleName,
+		upgradetypes.ModuleName,
+		capabilitytypes.ModuleName,
+		minttypes.ModuleName,
+		distrtypes.ModuleName,
+		slashingtypes.ModuleName,
+		evidencetypes.ModuleName,
+		stakingtypes.ModuleName,
+		authtypes.ModuleName,
+		banktypes.ModuleName,
+		govtypes.ModuleName,
+		ibchost.ModuleName,
+		nft.ModuleName,
+		obitmoduletypes.ModuleName,
+		crisistypes.ModuleName,
+		ibctransfertypes.ModuleName,
+		genutiltypes.ModuleName,
 		feegrant.ModuleName,
+		paramstypes.ModuleName,
+		vestingtypes.ModuleName,
 	)
 
-	app.mm.SetOrderEndBlockers(crisistypes.ModuleName, govtypes.ModuleName, stakingtypes.ModuleName, nft.ModuleName)
+	app.mm.SetOrderEndBlockers(
+		upgradetypes.ModuleName,
+		paramstypes.ModuleName,
+		authtypes.ModuleName,
+		vestingtypes.ModuleName,
+		slashingtypes.ModuleName,
+		ibctransfertypes.ModuleName,
+		genutiltypes.ModuleName,
+		feegrant.ModuleName,
+		minttypes.ModuleName,
+		evidencetypes.ModuleName,
+		banktypes.ModuleName,
+		capabilitytypes.ModuleName,
+		distrtypes.ModuleName,
+		ibchost.ModuleName,
+		obitmoduletypes.ModuleName,
+		crisistypes.ModuleName,
+		govtypes.ModuleName,
+		stakingtypes.ModuleName,
+		nft.ModuleName,
+	)
 
 	// NOTE: The genutils module must occur after staking so that pools are
 	// properly initialized with tokens from genesis accounts.
@@ -485,7 +519,10 @@ func New(
 		nft.ModuleName,
 		ibctransfertypes.ModuleName,
 		obitmoduletypes.ModuleName,
-		// this line is used by starport scaffolding # stargate/app/initGenesis
+		feegrant.ModuleName,
+		paramstypes.ModuleName,
+		upgradetypes.ModuleName,
+		vestingtypes.ModuleName,
 	)
 
 	app.mm.RegisterInvariants(&app.CrisisKeeper)
