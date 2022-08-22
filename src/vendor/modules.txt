@@ -806,7 +806,6 @@ github.com/tendermint/go-amino
 # github.com/tendermint/starport v0.19.2
 ## explicit; go 1.16
 github.com/tendermint/starport/starport/pkg/cosmoscmd
-github.com/tendermint/starport/starport/pkg/openapiconsole
 # github.com/tendermint/tendermint v0.34.20
 ## explicit; go 1.16
 github.com/tendermint/tendermint/abci/client
