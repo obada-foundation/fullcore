@@ -285,7 +285,7 @@ func TransactionIdentifier(
 
 // Operations returns an error if any *types.Operation
 // in a []*types.Operation is invalid.
-func (a *Asserter) Operations(
+func (a *Asserter) Operations( // nolint:gocognit
 	operations []*types.Operation,
 	construction bool,
 ) error {
@@ -293,10 +293,50 @@ func (a *Asserter) Operations(
 		return ErrNoOperationsForConstruction
 	}
 
+	paymentTotal := big.NewInt(0)
+	feeTotal := big.NewInt(0)
+	paymentCount := 0
+	feeCount := 0
+	relatedOpsExists := false
 	for i, op := range operations {
 		// Ensure operations are sorted
 		if err := a.Operation(op, int64(i), construction); err != nil {
 			return err
+		}
+
+		if a.validations.Enabled {
+			if op.Type == a.validations.Payment.Name {
+				val, _ := new(big.Int).SetString(op.Amount.Value, 10)
+				paymentTotal.Add(paymentTotal, val)
+				paymentCount++
+			}
+
+			if op.Type == a.validations.Fee.Name {
+				if op.RelatedOperations != nil {
+					return fmt.Errorf(
+						"%w: operation index %d",
+						ErrRelatedOperationInFeeNotAllowed,
+						op.OperationIdentifier.Index,
+					)
+				}
+
+				val, err := types.BigInt(op.Amount.Value)
+				if err != nil {
+					return err
+				}
+
+				// Validate that fee operation amount is negative
+				if val.Sign() != -1 {
+					return fmt.Errorf(
+						"%w: operation index %d",
+						ErrFeeAmountNotNegative,
+						op.OperationIdentifier.Index,
+					)
+				}
+
+				feeTotal.Add(feeTotal, val)
+				feeCount++
+			}
 		}
 
 		// Ensure an operation's related_operations are only
@@ -304,6 +344,7 @@ func (a *Asserter) Operations(
 		// and that there are no duplicates.
 		relatedIndexes := []int64{}
 		for _, relatedOp := range op.RelatedOperations {
+			relatedOpsExists = true
 			if relatedOp.Index >= op.OperationIdentifier.Index {
 				return fmt.Errorf(
 					"%w: related operation index %d >= operation index %d",
@@ -323,6 +364,44 @@ func (a *Asserter) Operations(
 			}
 			relatedIndexes = append(relatedIndexes, relatedOp.Index)
 		}
+	}
+	// throw an error if relatedOps is not implemented and relatedOps is supported
+	if !relatedOpsExists {
+		if a.validations.Enabled && a.validations.RelatedOpsExists {
+			return ErrRelatedOperationMissing
+		}
+	}
+
+	// only account based validation
+	if a.validations.Enabled && a.validations.ChainType == Account {
+		return a.ValidatePaymentAndFee(paymentTotal, paymentCount, feeTotal, feeCount)
+	}
+
+	return nil
+}
+
+func (a *Asserter) ValidatePaymentAndFee(
+	paymentTotal *big.Int,
+	paymentCount int,
+	feeTotal *big.Int,
+	feeCount int,
+) error {
+	zero := big.NewInt(0)
+	if a.validations.Payment.Operation.Count != -1 &&
+		a.validations.Payment.Operation.Count != paymentCount {
+		return ErrPaymentCountMismatch
+	}
+
+	if a.validations.Payment.Operation.ShouldBalance && paymentTotal.Cmp(zero) != 0 {
+		return ErrPaymentAmountNotBalancing
+	}
+
+	if a.validations.Fee.Operation.Count != -1 && a.validations.Fee.Operation.Count != feeCount {
+		return ErrFeeCountMismatch
+	}
+
+	if a.validations.Fee.Operation.ShouldBalance && feeTotal.Cmp(zero) != 0 {
+		return ErrPaymentAmountNotBalancing
 	}
 
 	return nil
