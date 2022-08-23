@@ -174,7 +174,8 @@ func (m *MsgMintObitResponse) GetDid() string {
 	return ""
 }
 
-// MsgSend represents a message to send a nft from one account to another account.
+// MsgSend represents a message to send a nft from one account to another
+// account.
 type MsgSend struct {
 	// did defines the unique identification of nft
 	Did string `protobuf:"bytes,1,opt,name=did,proto3" json:"did,omitempty"`
@@ -443,8 +444,8 @@ const _ = grpc.SupportPackageIsVersion4
 //
 // For semantics around ctx use and closing/ending streaming RPCs, please refer to https://godoc.org/google.golang.org/grpc#ClientConn.NewStream.
 type MsgClient interface {
-	// MintObit mint a new OBADA NFT (Obit)
 	EditMetadata(ctx context.Context, in *MsgEditMetadata, opts ...grpc.CallOption) (*MsgEditMetadataResponse, error)
+	// MintObit mint a new OBADA NFT (Obit)
 	MintObit(ctx context.Context, in *MsgMintObit, opts ...grpc.CallOption) (*MsgMintObitResponse, error)
 	Send(ctx context.Context, in *MsgSend, opts ...grpc.CallOption) (*MsgSendResponse, error)
 }
@@ -486,8 +487,8 @@ func (c *msgClient) Send(ctx context.Context, in *MsgSend, opts ...grpc.CallOpti
 
 // MsgServer is the server API for Msg service.
 type MsgServer interface {
-	// MintObit mint a new OBADA NFT (Obit)
 	EditMetadata(context.Context, *MsgEditMetadata) (*MsgEditMetadataResponse, error)
+	// MintObit mint a new OBADA NFT (Obit)
 	MintObit(context.Context, *MsgMintObit) (*MsgMintObitResponse, error)
 	Send(context.Context, *MsgSend) (*MsgSendResponse, error)
 }

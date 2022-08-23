@@ -3,17 +3,17 @@ package obadafoundation.fullcore.obit;
 
 import "obit/v1/nft.proto";
 import "gogoproto/gogo.proto";
-// this line is used by starport scaffolding # proto/tx/import
 
 option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
 
 // Msg defines the Msg service.
 service Msg {
+  rpc EditMetadata(MsgEditMetadata) returns (MsgEditMetadataResponse);
+
   // MintObit mint a new OBADA NFT (Obit)
-  rpc EditMetadata(MsgEditMetadata) returns (MsgEditMetadataResponse); 
   rpc MintObit(MsgMintObit) returns (MsgMintObitResponse);
+
   rpc Send(MsgSend) returns (MsgSendResponse);
-// this line is used by starport scaffolding # proto/tx/rpcxf
 }
 
 // MsgMintObit handles obit information
@@ -25,15 +25,14 @@ message MsgMintObit {
   string trust_anchor_token = 5;
   string uri = 6;
   string uri_hash = 7;
-  repeated NFTDocument documents = 10 [(gogoproto.nullable) = false];
+  repeated NFTDocument documents = 10 [ (gogoproto.nullable) = false ];
 }
 
 // MsgMintObitResponse success minting response
-message MsgMintObitResponse {
-  string did = 1;
-}
+message MsgMintObitResponse { string did = 1; }
 
-// MsgSend represents a message to send a nft from one account to another account.
+// MsgSend represents a message to send a nft from one account to another
+// account.
 message MsgSend {
   // did defines the unique identification of nft
   string did = 1;
@@ -44,6 +43,7 @@ message MsgSend {
   // receiver is the receiver address of nft
   string receiver = 3;
 }
+
 // MsgSendResponse defines the Msg/Send response type.
 message MsgSendResponse {}
 
@@ -55,11 +55,7 @@ message MsgEditMetadata {
   string editor = 2;
 
   // NFTData represent NFT metadata
-  NFTData NFTData = 3; 
+  NFTData NFTData = 3;
 }
 
-message MsgEditMetadataResponse {
-  NFT NFT = 1; 
-}
-
-// this line is used by starport scaffolding # proto/tx/message
+message MsgEditMetadataResponse { NFT NFT = 1; }

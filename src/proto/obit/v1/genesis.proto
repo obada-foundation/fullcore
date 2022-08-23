@@ -6,5 +6,4 @@ import "gogoproto/gogo.proto";
 option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
 
 // GenesisState defines the obit module's genesis state.
-message GenesisState {
-}
+message GenesisState {}
