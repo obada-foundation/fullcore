@@ -1,8 +1,7 @@
 syntax = "proto3";
 package obadafoundation.fullcore.obit;
 
-import "obit/ta.proto";
-import "obit/nft.proto";
+import "obit/v1/nft.proto";
 import "gogoproto/gogo.proto";
 // this line is used by starport scaffolding # proto/tx/import
 
@@ -14,10 +13,6 @@ service Msg {
   rpc EditMetadata(MsgEditMetadata) returns (MsgEditMetadataResponse); 
   rpc MintObit(MsgMintObit) returns (MsgMintObitResponse);
   rpc Send(MsgSend) returns (MsgSendResponse);
-
-  rpc CreateTa(MsgCreateTa) returns (MsgCreateTaResponse);
-  rpc UpdateTa(MsgUpdateTa) returns (MsgUpdateTaResponse);
-  rpc DeleteTa(MsgDeleteTa) returns (MsgDeleteTaResponse);
 // this line is used by starport scaffolding # proto/tx/rpcxf
 }
 
@@ -37,32 +32,6 @@ message MsgMintObit {
 message MsgMintObitResponse {
   string did = 1;
 }
-
-message MsgCreateTa {
-  string creator = 1;
-  string title = 2;
-  string pubkey = 3;
-}
-
-message MsgCreateTaResponse {
-  uint64 id = 1;
-}
-
-message MsgUpdateTa {
-  string creator = 1;
-  uint64 id = 2;
-  string title = 3;
-  string pubkey = 4;
-}
-
-message MsgUpdateTaResponse {}
-
-message MsgDeleteTa {
-  string creator = 1;
-  uint64 id = 2;
-}
-
-message MsgDeleteTaResponse {}
 
 // MsgSend represents a message to send a nft from one account to another account.
 message MsgSend {
