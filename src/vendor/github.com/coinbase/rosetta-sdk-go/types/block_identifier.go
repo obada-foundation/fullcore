@@ -1,4 +1,4 @@
-// Copyright 2021 Coinbase, Inc.
+// Copyright 2022 Coinbase, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -19,6 +19,8 @@ package types
 // BlockIdentifier The block_identifier uniquely identifies a block in a particular network.
 type BlockIdentifier struct {
 	// This is also known as the block height.
-	Index int64  `json:"index"`
-	Hash  string `json:"hash"`
+	Index int64 `json:"index"`
+	// This should be normalized according to the case specified in the block_hash_case network
+	// options.
+	Hash string `json:"hash"`
 }

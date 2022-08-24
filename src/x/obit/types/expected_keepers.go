@@ -3,7 +3,7 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
-	nft "github.com/obada-foundation/fullcore/x/nft"
+	nft "github.com/cosmos/cosmos-sdk/x/nft"
 )
 
 type NftKeeper interface {

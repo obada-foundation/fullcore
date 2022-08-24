@@ -5,7 +5,6 @@ import (
 	"io"
 	"sort"
 	"sync"
-	"time"
 
 	dbm "github.com/tendermint/tm-db"
 
@@ -13,18 +12,19 @@ import (
 	"github.com/cosmos/cosmos-sdk/store/listenkv"
 	"github.com/cosmos/cosmos-sdk/store/tracekv"
 	"github.com/cosmos/cosmos-sdk/store/types"
-	"github.com/cosmos/cosmos-sdk/telemetry"
 	"github.com/cosmos/cosmos-sdk/types/kv"
 )
 
-// If value is nil but deleted is false, it means the parent doesn't have the
-// key.  (No need to delete upon Write())
+// cValue represents a cached value.
+// If dirty is true, it indicates the cached value is different from the underlying value.
 type cValue struct {
 	value []byte
 	dirty bool
 }
 
 // Store wraps an in-memory cache around an underlying types.KVStore.
+// If a cached value is nil but deleted is defined for the corresponding key,
+// it means the parent doesn't have the key. (No need to delete upon Write())
 type Store struct {
 	mtx           sync.Mutex
 	cache         map[string]*cValue
@@ -91,7 +91,6 @@ func (store *Store) Has(key []byte) bool {
 func (store *Store) Delete(key []byte) {
 	store.mtx.Lock()
 	defer store.mtx.Unlock()
-	defer telemetry.MeasureSince(time.Now(), "store", "cachekv", "delete")
 
 	types.AssertValidKey(key)
 	store.setCacheValue(key, nil, true, true)
@@ -101,7 +100,6 @@ func (store *Store) Delete(key []byte) {
 func (store *Store) Write() {
 	store.mtx.Lock()
 	defer store.mtx.Unlock()
-	defer telemetry.MeasureSince(time.Now(), "store", "cachekv", "write")
 
 	// We need a copy of all of the keys.
 	// Not the best, but probably not a bottleneck depending.
@@ -118,22 +116,34 @@ func (store *Store) Write() {
 	// TODO: Consider allowing usage of Batch, which would allow the write to
 	// at least happen atomically.
 	for _, key := range keys {
-		cacheValue := store.cache[key]
-
-		switch {
-		case store.isDeleted(key):
+		if store.isDeleted(key) {
+			// We use []byte(key) instead of conv.UnsafeStrToBytes because we cannot
+			// be sure if the underlying store might do a save with the byteslice or
+			// not. Once we get confirmation that .Delete is guaranteed not to
+			// save the byteslice, then we can assume only a read-only copy is sufficient.
 			store.parent.Delete([]byte(key))
-		case cacheValue.value == nil:
-			// Skip, it already doesn't exist in parent.
-		default:
+			continue
+		}
+
+		cacheValue := store.cache[key]
+		if cacheValue.value != nil {
+			// It already exists in the parent, hence delete it.
 			store.parent.Set([]byte(key), cacheValue.value)
 		}
 	}
 
-	// Clear the cache
-	store.cache = make(map[string]*cValue)
-	store.deleted = make(map[string]struct{})
-	store.unsortedCache = make(map[string]struct{})
+	// Clear the cache using the map clearing idiom
+	// and not allocating fresh objects.
+	// Please see https://bencher.orijtech.com/perfclinic/mapclearing/
+	for key := range store.cache {
+		delete(store.cache, key)
+	}
+	for key := range store.deleted {
+		delete(store.deleted, key)
+	}
+	for key := range store.unsortedCache {
+		delete(store.unsortedCache, key)
+	}
 	store.sortedCache = dbm.NewMemDB()
 }
 
@@ -369,7 +379,7 @@ func (store *Store) setCacheValue(key, value []byte, deleted bool, dirty bool) {
 		delete(store.deleted, keyStr)
 	}
 	if dirty {
-		store.unsortedCache[conv.UnsafeBytesToStr(key)] = struct{}{}
+		store.unsortedCache[keyStr] = struct{}{}
 	}
 }
 

@@ -1,0 +1,32 @@
+syntax = "proto3";
+package obadafoundation.fullcore.obit;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "obit/v1/nft.proto";
+// this line is used by starport scaffolding # 1
+
+option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // GetNftsByAddress returns a list of NFTs ownerd by given address
+  rpc GetNftsByAddress(QueryGetNftsByAddressRequest)
+      returns (QueryGetNftsByAddressResponse) {
+    option (google.api.http).get = "/obada-foundation/fullcore/nfts/{address}";
+  }
+
+  // GetNft returns single NFT by DID
+  rpc GetNft(QueryGetNftRequest) returns (NFT) {
+    option (google.api.http).get = "/obada-foundation/fullcore/nft/{did}";
+  }
+}
+
+message QueryGetNftRequest { string did = 1; }
+
+message QueryGetNftsByAddressRequest { string address = 1; }
+
+message QueryGetNftsByAddressResponse {
+  repeated NFT NFT = 1 [ (gogoproto.nullable) = false ];
+}

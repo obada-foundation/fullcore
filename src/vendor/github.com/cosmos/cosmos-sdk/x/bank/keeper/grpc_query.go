@@ -59,21 +59,55 @@ func (k BaseKeeper) AllBalances(ctx context.Context, req *types.QueryAllBalances
 	balances := sdk.NewCoins()
 	accountStore := k.getAccountStore(sdkCtx, addr)
 
-	pageRes, err := query.Paginate(accountStore, req.Pagination, func(_, value []byte) error {
-		var result sdk.Coin
-		err := k.cdc.Unmarshal(value, &result)
-		if err != nil {
+	pageRes, err := query.Paginate(accountStore, req.Pagination, func(key, value []byte) error {
+		var amount sdk.Int
+		if err := amount.Unmarshal(value); err != nil {
 			return err
 		}
-		balances = append(balances, result)
+		balances = append(balances, sdk.NewCoin(string(key), amount))
 		return nil
 	})
-
 	if err != nil {
 		return nil, status.Errorf(codes.InvalidArgument, "paginate: %v", err)
 	}
 
 	return &types.QueryAllBalancesResponse{Balances: balances, Pagination: pageRes}, nil
+}
+
+// SpendableBalances implements a gRPC query handler for retrieving an account's
+// spendable balances.
+func (k BaseKeeper) SpendableBalances(ctx context.Context, req *types.QuerySpendableBalancesRequest) (*types.QuerySpendableBalancesResponse, error) {
+	if req == nil {
+		return nil, status.Error(codes.InvalidArgument, "empty request")
+	}
+
+	addr, err := sdk.AccAddressFromBech32(req.Address)
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "invalid address: %s", err.Error())
+	}
+
+	sdkCtx := sdk.UnwrapSDKContext(ctx)
+
+	balances := sdk.NewCoins()
+	accountStore := k.getAccountStore(sdkCtx, addr)
+	zeroAmt := sdk.ZeroInt()
+
+	pageRes, err := query.Paginate(accountStore, req.Pagination, func(key, value []byte) error {
+		balances = append(balances, sdk.NewCoin(string(key), zeroAmt))
+		return nil
+	})
+	if err != nil {
+		return nil, status.Errorf(codes.InvalidArgument, "paginate: %v", err)
+	}
+
+	result := sdk.NewCoins()
+	spendable := k.SpendableCoins(sdkCtx, addr)
+
+	for _, c := range balances {
+		result = append(result, sdk.NewCoin(c.Denom, spendable.AmountOf(c.Denom)))
+	}
+
+	return &types.QuerySpendableBalancesResponse{Balances: result, Pagination: pageRes}, nil
 }
 
 // TotalSupply implements the Query/TotalSupply gRPC method
@@ -132,7 +166,6 @@ func (k BaseKeeper) DenomsMetadata(c context.Context, req *types.QueryDenomsMeta
 		metadatas = append(metadatas, metadata)
 		return nil
 	})
-
 	if err != nil {
 		return nil, status.Error(codes.Internal, err.Error())
 	}
@@ -163,4 +196,49 @@ func (k BaseKeeper) DenomMetadata(c context.Context, req *types.QueryDenomMetada
 	return &types.QueryDenomMetadataResponse{
 		Metadata: metadata,
 	}, nil
+}
+
+func (k BaseKeeper) DenomOwners(
+	goCtx context.Context,
+	req *types.QueryDenomOwnersRequest,
+) (*types.QueryDenomOwnersResponse, error) {
+	if req == nil {
+		return nil, status.Errorf(codes.InvalidArgument, "empty request")
+	}
+
+	if req.Denom == "" {
+		return nil, status.Error(codes.InvalidArgument, "empty denom")
+	}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+	denomPrefixStore := k.getDenomAddressPrefixStore(ctx, req.Denom)
+
+	var denomOwners []*types.DenomOwner
+	pageRes, err := query.FilteredPaginate(
+		denomPrefixStore,
+		req.Pagination,
+		func(key []byte, _ []byte, accumulate bool) (bool, error) {
+			if accumulate {
+				address, _, err := types.AddressAndDenomFromBalancesStore(key)
+				if err != nil {
+					return false, err
+				}
+
+				denomOwners = append(
+					denomOwners,
+					&types.DenomOwner{
+						Address: address.String(),
+						Balance: k.GetBalance(ctx, address, req.Denom),
+					},
+				)
+			}
+
+			return true, nil
+		},
+	)
+	if err != nil {
+		return nil, status.Error(codes.Internal, err.Error())
+	}
+
+	return &types.QueryDenomOwnersResponse{DenomOwners: denomOwners, Pagination: pageRes}, nil
 }

@@ -11,7 +11,7 @@ import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	obadasdk "github.com/obada-foundation/sdkgo"
 
-	"github.com/obada-foundation/fullcore/x/nft"
+	"github.com/cosmos/cosmos-sdk/x/nft"
 	"github.com/obada-foundation/fullcore/x/obit/types"
 )
 

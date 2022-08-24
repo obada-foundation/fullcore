@@ -143,6 +143,46 @@ func SubtractValues(
 	return newVal.String(), nil
 }
 
+// MultiplyValues multiplies a*b using
+// big.Int.
+func MultiplyValues(
+	a string,
+	b string,
+) (string, error) {
+	aVal, err := BigInt(a)
+	if err != nil {
+		return "", err
+	}
+
+	bVal, err := BigInt(b)
+	if err != nil {
+		return "", err
+	}
+
+	newVal := new(big.Int).Mul(aVal, bVal)
+	return newVal.String(), nil
+}
+
+// DivideValues divides a/b using
+// big.Int.
+func DivideValues(
+	a string,
+	b string,
+) (string, error) {
+	aVal, err := BigInt(a)
+	if err != nil {
+		return "", err
+	}
+
+	bVal, err := BigInt(b)
+	if err != nil {
+		return "", err
+	}
+
+	newVal := new(big.Int).Div(aVal, bVal)
+	return newVal.String(), nil
+}
+
 // NegateValue flips the sign of a value.
 func NegateValue(
 	val string,
@@ -265,19 +305,17 @@ func UnmarshalMap(metadata map[string]interface{}, output interface{}) error {
 func ExtractAmount(
 	balances []*Amount,
 	currency *Currency,
-) (*Amount, error) {
+) *Amount {
 	for _, b := range balances {
 		if Hash(b.Currency) != Hash(currency) {
 			continue
 		}
 
-		return b, nil
+		return b
 	}
 
-	return nil, fmt.Errorf(
-		"account balance response does not contain currency %s",
-		PrettyPrintStruct(currency),
-	)
+	// return a 0 amount if currency isn't found in balances
+	return &Amount{Value: "0", Currency: currency}
 }
 
 // String returns a pointer to the
