@@ -8,34 +8,33 @@ option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
 
 // Msg defines the Msg service.
 service Msg {
-  rpc EditMetadata(MsgEditMetadata) returns (MsgEditMetadataResponse);
+  // UpdateNFT updates NFT properties (definition will come in future)
+  rpc UpdateNFT(MsgUpdateNFT) returns (MsgUpdateNFTResponse);
 
-  // MintObit mint a new OBADA NFT (Obit)
-  rpc MintObit(MsgMintObit) returns (MsgMintObitResponse);
+  // MintNFT mint a new OBADA NFT (Obit)
+  rpc MintNFT(MsgMintNFT) returns (MsgMintNFTResponse);
 
-  rpc Send(MsgSend) returns (MsgSendResponse);
+  // TransferNFT send NFT to the new owner address
+  rpc TransferNFT(MsgTransferNFT) returns (MsgTransferNFTResponse);
 }
 
-// MsgMintObit handles obit information
-message MsgMintObit {
+// MsgMintNFT handles obit information
+message MsgMintNFT {
   string creator = 1;
-  string serial_number_hash = 2;
-  string manufacturer = 3;
-  string part_number = 4;
-  string trust_anchor_token = 5;
-  string uri = 6;
-  string uri_hash = 7;
-  repeated NFTDocument documents = 10 [ (gogoproto.nullable) = false ];
+  string id = 2;
+  string uri = 3;
+  string uri_hash = 4;
+  string usn = 5;
 }
 
-// MsgMintObitResponse success minting response
-message MsgMintObitResponse { string did = 1; }
+// MsgMintNFTResponse success minting response
+message MsgMintNFTResponse { string id = 1; }
 
-// MsgSend represents a message to send a nft from one account to another
+// MsgTransferNFT represents a message to send a nft from one account to another
 // account.
-message MsgSend {
+message MsgTransferNFT {
   // did defines the unique identification of nft
-  string did = 1;
+  string id = 1;
 
   // sender is the address of the owner of nft
   string sender = 2;
@@ -44,12 +43,13 @@ message MsgSend {
   string receiver = 3;
 }
 
-// MsgSendResponse defines the Msg/Send response type.
-message MsgSendResponse {}
+// MsgTransferNFTResponse defines the Msg/Send response type.
+message MsgTransferNFTResponse {}
 
-message MsgEditMetadata {
+// MsgUpdateNFT
+message MsgUpdateNFT {
   // did defines the unique identification of nft
-  string did = 1;
+  string id = 1;
 
   // editor is the address of the editor of nft metadata
   string editor = 2;
@@ -58,4 +58,5 @@ message MsgEditMetadata {
   NFTData NFTData = 3;
 }
 
-message MsgEditMetadataResponse { NFT NFT = 1; }
+// MsgUpdateNFTResponse
+message MsgUpdateNFTResponse { NFT NFT = 1; }

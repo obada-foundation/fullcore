@@ -15,14 +15,5 @@ message NFT {
 }
 
 message NFTData {
-  string trust_anchor_token = 1;
-  string usn = 2;
-  string checksum = 3;
-  repeated NFTDocument documents = 4 [ (gogoproto.nullable) = false ];
-}
-
-message NFTDocument {
-  string name = 1;
-  string uri = 2;
-  string hash = 3;
+  string usn = 1;
 }
