@@ -11,21 +11,21 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) GetNft(c context.Context, req *types.QueryGetNftRequest) (*types.NFT, error) {
+func (k Keeper) GetNft(c context.Context, req *types.QueryGetNFTRequest) (*types.NFT, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	ctx := sdk.UnwrapSDKContext(c)
 
-	did, err := url.QueryUnescape(req.Did)
+	did, err := url.QueryUnescape(req.Id)
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
 	nft, ok := k.nftKeeper.GetNFT(ctx, types.OBTClass, did)
 	if !ok {
-		return nil, status.Error(codes.NotFound, fmt.Sprintf("no %s with DID %s found", "OBT", req.Did))
+		return nil, status.Error(codes.NotFound, fmt.Sprintf("no %s with DID %s found", "OBT", did))
 	}
 
 	obt := types.NFT(nft)
@@ -34,7 +34,7 @@ func (k Keeper) GetNft(c context.Context, req *types.QueryGetNftRequest) (*types
 
 }
 
-func (k Keeper) GetNftsByAddress(c context.Context, req *types.QueryGetNftsByAddressRequest) (*types.QueryGetNftsByAddressResponse, error) {
+func (k Keeper) GetNftsByAddress(c context.Context, req *types.QueryGetAllNFTByAddressRequest) (*types.QueryGetAllNFTByAddressResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -58,5 +58,5 @@ func (k Keeper) GetNftsByAddress(c context.Context, req *types.QueryGetNftsByAdd
 		}
 	}
 
-	return &types.QueryGetNftsByAddressResponse{NFT: localNfts}, nil
+	return &types.QueryGetAllNFTByAddressResponse{NFT: localNfts}, nil
 }
