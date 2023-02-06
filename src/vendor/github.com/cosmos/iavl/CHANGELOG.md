@@ -2,16 +2,27 @@
 
 ## Unreleased
 
+## 0.19.1 (August 3, 2022)
+
+### Improvements
+
+- [#525](https://github.com/cosmos/iavl/pull/525) Optimization: use fast unsafe bytes->string conversion.
+- [#506](https://github.com/cosmos/iavl/pull/506) Implement cache abstraction.
+
+### Bug Fixes
+
+- [#524](https://github.com/cosmos/iavl/pull/524) Fix: `MutableTree.Get`.
+
 ## 0.19.0 (July 6, 2022)
 
 ### Breaking Changes
 
-- [\514](https://github.com/cosmos/iavl/pull/514) Downgrade Tendermint to 0.34.x
-- [\500](https://github.com/cosmos/iavl/pull/500) Return errors instead of panicking. 
+- [#514](https://github.com/cosmos/iavl/pull/514) Downgrade Tendermint to 0.34.x
+- [#500](https://github.com/cosmos/iavl/pull/500) Return errors instead of panicking.
 
 ### Improvements
 
-- [\514](https://github.com/cosmos/iavl/pull/514) Use Go v1.18
+- [#514](https://github.com/cosmos/iavl/pull/514) Use Go v1.18
 
 ## 0.18.0 (March 10, 2022)
 
