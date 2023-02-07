@@ -249,7 +249,7 @@ type QueryServer interface {
 	// QueryGetAllNFTByAddressRequest returns a list of NFTs ownerd by given address
 	GetAllNFTByAddress(context.Context, *QueryGetAllNFTByAddressRequest) (*QueryGetAllNFTByAddressResponse, error)
 	// GetNft returns single NFT by DID
-	GetNft(context.Context, *QueryGetNFTRequest) (*NFT, error)
+	GetNFT(context.Context, *QueryGetNFTRequest) (*NFT, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.

@@ -31,18 +31,11 @@ func NewKeeper(
 
 	nftKeeper types.NftKeeper,
 ) *Keeper {
-	// set KeyTable if it has not already been set
-	if !ps.HasKeyTable() {
-		ps = ps.WithKeyTable(types.ParamKeyTable())
-	}
-
 	return &Keeper{
-
-		cdc:        cdc,
-		storeKey:   storeKey,
-		memKey:     memKey,
-		paramstore: ps,
-		nftKeeper:  nftKeeper,
+		cdc:       cdc,
+		storeKey:  storeKey,
+		memKey:    memKey,
+		nftKeeper: nftKeeper,
 	}
 }
 

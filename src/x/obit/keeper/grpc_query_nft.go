@@ -11,7 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
-func (k Keeper) GetNft(c context.Context, req *types.QueryGetNFTRequest) (*types.NFT, error) {
+func (k Keeper) GetNFT(c context.Context, req *types.QueryGetNFTRequest) (*types.NFT, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -34,7 +34,7 @@ func (k Keeper) GetNft(c context.Context, req *types.QueryGetNFTRequest) (*types
 
 }
 
-func (k Keeper) GetNftsByAddress(c context.Context, req *types.QueryGetAllNFTByAddressRequest) (*types.QueryGetAllNFTByAddressResponse, error) {
+func (k Keeper) GetNFTByAddress(c context.Context, req *types.QueryGetAllNFTByAddressRequest) (*types.QueryGetAllNFTByAddressResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}

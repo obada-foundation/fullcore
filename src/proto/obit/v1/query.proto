@@ -18,7 +18,7 @@ service Query {
   }
 
   // GetNft returns single NFT by DID
-  rpc GetNft(QueryGetNFTRequest) returns (NFT) {
+  rpc GetNFT(QueryGetNFTRequest) returns (NFT) {
     option (google.api.http).get = "/obada-foundation/fullcore/nft/{id}";
   }
 }
