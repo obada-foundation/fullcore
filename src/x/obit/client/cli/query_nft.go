@@ -25,7 +25,7 @@ func CmdShowNFT() *cobra.Command {
 				Id: did,
 			}
 
-			res, err := queryClient.GetNft(context.Background(), params)
+			res, err := queryClient.GetNFT(context.Background(), params)
 			if err != nil {
 				return err
 			}
@@ -51,11 +51,11 @@ func CmdShowByOwner() *cobra.Command {
 
 			address := args[0]
 
-			params := &types.QueryGetAllNFTByAddressRequest{
+			params := &types.QueryGetNFTByAddressRequest{
 				Address: address,
 			}
 
-			res, err := queryClient.GetAllNFTByAddress(context.Background(), params)
+			res, err := queryClient.GetNFTByAddress(context.Background(), params)
 			if err != nil {
 				return err
 			}

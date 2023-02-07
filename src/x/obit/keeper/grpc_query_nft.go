@@ -34,7 +34,7 @@ func (k Keeper) GetNFT(c context.Context, req *types.QueryGetNFTRequest) (*types
 
 }
 
-func (k Keeper) GetNFTByAddress(c context.Context, req *types.QueryGetAllNFTByAddressRequest) (*types.QueryGetAllNFTByAddressResponse, error) {
+func (k Keeper) GetNFTByAddress(c context.Context, req *types.QueryGetNFTByAddressRequest) (*types.QueryGetNFTByAddressResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
@@ -58,5 +58,5 @@ func (k Keeper) GetNFTByAddress(c context.Context, req *types.QueryGetAllNFTByAd
 		}
 	}
 
-	return &types.QueryGetAllNFTByAddressResponse{NFT: localNfts}, nil
+	return &types.QueryGetNFTByAddressResponse{NFT: localNfts}, nil
 }

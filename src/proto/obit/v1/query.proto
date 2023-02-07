@@ -13,8 +13,8 @@ option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
 service Query {
   // QueryGetAllNFTByAddressRequest returns a list of NFTs ownerd by given
   // address
-  rpc GetAllNFTByAddress(QueryGetAllNFTByAddressRequest)
-      returns (QueryGetAllNFTByAddressResponse) {
+  rpc GetNFTByAddress(QueryGetNFTByAddressRequest)
+      returns (QueryGetNFTByAddressResponse) {
     option (google.api.http).get =
         "/obada-foundation/fullcore/nft/{address}/all";
   }
@@ -27,8 +27,8 @@ service Query {
 
 message QueryGetNFTRequest { string id = 1; }
 
-message QueryGetAllNFTByAddressRequest { string address = 1; }
+message QueryGetNFTByAddressRequest { string address = 1; }
 
-message QueryGetAllNFTByAddressResponse {
+message QueryGetNFTByAddressResponse {
   repeated NFT NFT = 1 [ (gogoproto.nullable) = false ];
 }

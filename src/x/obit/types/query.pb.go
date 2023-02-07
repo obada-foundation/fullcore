@@ -74,22 +74,22 @@ func (m *QueryGetNFTRequest) GetId() string {
 	return ""
 }
 
-type QueryGetAllNFTByAddressRequest struct {
+type QueryGetNFTByAddressRequest struct {
 	Address string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
 }
 
-func (m *QueryGetAllNFTByAddressRequest) Reset()         { *m = QueryGetAllNFTByAddressRequest{} }
-func (m *QueryGetAllNFTByAddressRequest) String() string { return proto.CompactTextString(m) }
-func (*QueryGetAllNFTByAddressRequest) ProtoMessage()    {}
-func (*QueryGetAllNFTByAddressRequest) Descriptor() ([]byte, []int) {
+func (m *QueryGetNFTByAddressRequest) Reset()         { *m = QueryGetNFTByAddressRequest{} }
+func (m *QueryGetNFTByAddressRequest) String() string { return proto.CompactTextString(m) }
+func (*QueryGetNFTByAddressRequest) ProtoMessage()    {}
+func (*QueryGetNFTByAddressRequest) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7d914ae44f4cacdc, []int{1}
 }
-func (m *QueryGetAllNFTByAddressRequest) XXX_Unmarshal(b []byte) error {
+func (m *QueryGetNFTByAddressRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetAllNFTByAddressRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGetNFTByAddressRequest) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetAllNFTByAddressRequest.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGetNFTByAddressRequest.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -99,41 +99,41 @@ func (m *QueryGetAllNFTByAddressRequest) XXX_Marshal(b []byte, deterministic boo
 		return b[:n], nil
 	}
 }
-func (m *QueryGetAllNFTByAddressRequest) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetAllNFTByAddressRequest.Merge(m, src)
+func (m *QueryGetNFTByAddressRequest) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetNFTByAddressRequest.Merge(m, src)
 }
-func (m *QueryGetAllNFTByAddressRequest) XXX_Size() int {
+func (m *QueryGetNFTByAddressRequest) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetAllNFTByAddressRequest) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetAllNFTByAddressRequest.DiscardUnknown(m)
+func (m *QueryGetNFTByAddressRequest) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetNFTByAddressRequest.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetAllNFTByAddressRequest proto.InternalMessageInfo
+var xxx_messageInfo_QueryGetNFTByAddressRequest proto.InternalMessageInfo
 
-func (m *QueryGetAllNFTByAddressRequest) GetAddress() string {
+func (m *QueryGetNFTByAddressRequest) GetAddress() string {
 	if m != nil {
 		return m.Address
 	}
 	return ""
 }
 
-type QueryGetAllNFTByAddressResponse struct {
+type QueryGetNFTByAddressResponse struct {
 	NFT []NFT `protobuf:"bytes,1,rep,name=NFT,proto3" json:"NFT"`
 }
 
-func (m *QueryGetAllNFTByAddressResponse) Reset()         { *m = QueryGetAllNFTByAddressResponse{} }
-func (m *QueryGetAllNFTByAddressResponse) String() string { return proto.CompactTextString(m) }
-func (*QueryGetAllNFTByAddressResponse) ProtoMessage()    {}
-func (*QueryGetAllNFTByAddressResponse) Descriptor() ([]byte, []int) {
+func (m *QueryGetNFTByAddressResponse) Reset()         { *m = QueryGetNFTByAddressResponse{} }
+func (m *QueryGetNFTByAddressResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetNFTByAddressResponse) ProtoMessage()    {}
+func (*QueryGetNFTByAddressResponse) Descriptor() ([]byte, []int) {
 	return fileDescriptor_7d914ae44f4cacdc, []int{2}
 }
-func (m *QueryGetAllNFTByAddressResponse) XXX_Unmarshal(b []byte) error {
+func (m *QueryGetNFTByAddressResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
 }
-func (m *QueryGetAllNFTByAddressResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+func (m *QueryGetNFTByAddressResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
 	if deterministic {
-		return xxx_messageInfo_QueryGetAllNFTByAddressResponse.Marshal(b, m, deterministic)
+		return xxx_messageInfo_QueryGetNFTByAddressResponse.Marshal(b, m, deterministic)
 	} else {
 		b = b[:cap(b)]
 		n, err := m.MarshalToSizedBuffer(b)
@@ -143,19 +143,19 @@ func (m *QueryGetAllNFTByAddressResponse) XXX_Marshal(b []byte, deterministic bo
 		return b[:n], nil
 	}
 }
-func (m *QueryGetAllNFTByAddressResponse) XXX_Merge(src proto.Message) {
-	xxx_messageInfo_QueryGetAllNFTByAddressResponse.Merge(m, src)
+func (m *QueryGetNFTByAddressResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetNFTByAddressResponse.Merge(m, src)
 }
-func (m *QueryGetAllNFTByAddressResponse) XXX_Size() int {
+func (m *QueryGetNFTByAddressResponse) XXX_Size() int {
 	return m.Size()
 }
-func (m *QueryGetAllNFTByAddressResponse) XXX_DiscardUnknown() {
-	xxx_messageInfo_QueryGetAllNFTByAddressResponse.DiscardUnknown(m)
+func (m *QueryGetNFTByAddressResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetNFTByAddressResponse.DiscardUnknown(m)
 }
 
-var xxx_messageInfo_QueryGetAllNFTByAddressResponse proto.InternalMessageInfo
+var xxx_messageInfo_QueryGetNFTByAddressResponse proto.InternalMessageInfo
 
-func (m *QueryGetAllNFTByAddressResponse) GetNFT() []NFT {
+func (m *QueryGetNFTByAddressResponse) GetNFT() []NFT {
 	if m != nil {
 		return m.NFT
 	}
@@ -164,40 +164,40 @@ func (m *QueryGetAllNFTByAddressResponse) GetNFT() []NFT {
 
 func init() {
 	proto.RegisterType((*QueryGetNFTRequest)(nil), "obadafoundation.fullcore.obit.QueryGetNFTRequest")
-	proto.RegisterType((*QueryGetAllNFTByAddressRequest)(nil), "obadafoundation.fullcore.obit.QueryGetAllNFTByAddressRequest")
-	proto.RegisterType((*QueryGetAllNFTByAddressResponse)(nil), "obadafoundation.fullcore.obit.QueryGetAllNFTByAddressResponse")
+	proto.RegisterType((*QueryGetNFTByAddressRequest)(nil), "obadafoundation.fullcore.obit.QueryGetNFTByAddressRequest")
+	proto.RegisterType((*QueryGetNFTByAddressResponse)(nil), "obadafoundation.fullcore.obit.QueryGetNFTByAddressResponse")
 }
 
 func init() { proto.RegisterFile("obit/v1/query.proto", fileDescriptor_7d914ae44f4cacdc) }
 
 var fileDescriptor_7d914ae44f4cacdc = []byte{
-	// 406 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x9c, 0x92, 0xcf, 0x8b, 0xd3, 0x40,
-	0x14, 0xc7, 0x33, 0xa9, 0x56, 0x1c, 0x41, 0x70, 0xf4, 0x50, 0x82, 0xa6, 0x25, 0x2a, 0x14, 0x7f,
-	0x64, 0x48, 0xf5, 0x54, 0x50, 0x68, 0x0f, 0xf5, 0x20, 0x14, 0x2c, 0x3d, 0x09, 0x1e, 0x26, 0xcd,
-	0x34, 0x0e, 0xa4, 0x79, 0x69, 0x66, 0x52, 0x2c, 0xd2, 0x8b, 0x67, 0x0f, 0x82, 0xff, 0x54, 0xbd,
-	0x15, 0xbc, 0xec, 0x69, 0x59, 0xd2, 0xfd, 0x43, 0x96, 0x64, 0x1a, 0x7a, 0x58, 0xb6, 0x2d, 0x7b,
-	0x4b, 0x66, 0xbe, 0x9f, 0xef, 0xfb, 0xce, 0x7b, 0x0f, 0x3f, 0x06, 0x5f, 0x28, 0xba, 0xf0, 0xe8,
-	0x3c, 0xe3, 0xe9, 0xd2, 0x4d, 0x52, 0x50, 0x40, 0x9e, 0x81, 0xcf, 0x02, 0x36, 0x85, 0x2c, 0x0e,
-	0x98, 0x12, 0x10, 0xbb, 0xd3, 0x2c, 0x8a, 0x26, 0x90, 0x72, 0xb7, 0x50, 0x5b, 0x4f, 0x42, 0x08,
-	0xa1, 0x54, 0xd2, 0xe2, 0x4b, 0x43, 0xd6, 0xd3, 0x10, 0x20, 0x8c, 0x38, 0x65, 0x89, 0xa0, 0x2c,
-	0x8e, 0x41, 0x95, 0xa8, 0xdc, 0xdd, 0xbe, 0x9a, 0x80, 0x9c, 0x81, 0xa4, 0x3e, 0x93, 0x5c, 0xd7,
-	0xa2, 0x0b, 0xcf, 0xe7, 0x8a, 0x79, 0x34, 0x61, 0xa1, 0x88, 0x75, 0x1d, 0xad, 0x7d, 0x54, 0x65,
-	0x8a, 0xa7, 0x4a, 0x1f, 0x39, 0x2f, 0x30, 0xf9, 0x52, 0x40, 0x9f, 0xb8, 0x1a, 0x0e, 0xc6, 0x23,
-	0x3e, 0xcf, 0xb8, 0x54, 0xe4, 0x21, 0x36, 0x45, 0xd0, 0x40, 0x2d, 0xd4, 0xbe, 0x3f, 0x32, 0x45,
-	0xe0, 0x74, 0xb1, 0x5d, 0xa9, 0x7a, 0x51, 0x34, 0x1c, 0x8c, 0xfb, 0xcb, 0x5e, 0x10, 0xa4, 0x5c,
-	0xca, 0x8a, 0x68, 0xe0, 0x7b, 0x4c, 0x9f, 0xec, 0xb0, 0xea, 0xd7, 0xf9, 0x86, 0x9b, 0x37, 0xb2,
-	0x32, 0x81, 0x58, 0x72, 0xd2, 0xc5, 0xb5, 0xe1, 0x60, 0xdc, 0x40, 0xad, 0x5a, 0xfb, 0x41, 0xc7,
-	0x71, 0x0f, 0x36, 0xc9, 0x2d, 0x1c, 0xee, 0xac, 0xcf, 0x9b, 0xc6, 0xa8, 0x80, 0x3a, 0xb9, 0x89,
-	0xef, 0x96, 0xfe, 0xe4, 0x1f, 0xc2, 0xe4, 0x7a, 0x11, 0xf2, 0xe1, 0x88, 0xdf, 0xe1, 0x87, 0x59,
-	0x1f, 0x6f, 0x8b, 0xeb, 0xb7, 0x39, 0xef, 0x7f, 0xfd, 0xbf, 0xfc, 0x6b, 0xba, 0xe4, 0x0d, 0x2d,
-	0x7d, 0xde, 0xee, 0x8d, 0x68, 0x65, 0x54, 0x8c, 0x83, 0xfe, 0xdc, 0xf5, 0x6b, 0x45, 0x59, 0x14,
-	0x91, 0xdf, 0x08, 0xd7, 0xf5, 0x48, 0x88, 0x77, 0x62, 0x80, 0xfd, 0xf8, 0xac, 0x13, 0x5a, 0xe8,
-	0xbc, 0x2e, 0x73, 0xbd, 0x24, 0xcf, 0x8f, 0xe5, 0x12, 0xc1, 0xaa, 0xff, 0x79, 0x9d, 0xdb, 0x68,
-	0x93, 0xdb, 0xe8, 0x22, 0xb7, 0xd1, 0x9f, 0xad, 0x6d, 0x6c, 0xb6, 0xb6, 0x71, 0xb6, 0xb5, 0x8d,
-	0xaf, 0x5e, 0x28, 0xd4, 0xf7, 0xcc, 0x77, 0x27, 0x30, 0x3b, 0x60, 0xf4, 0x83, 0x96, 0x9b, 0xa7,
-	0x96, 0x09, 0x97, 0x7e, 0xbd, 0xdc, 0xbc, 0x77, 0x57, 0x01, 0x00, 0x00, 0xff, 0xff, 0xf5, 0x91,
-	0x96, 0xc2, 0x22, 0x03, 0x00, 0x00,
+	// 401 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x12, 0xce, 0x4f, 0xca, 0x2c,
+	0xd1, 0x2f, 0x33, 0xd4, 0x2f, 0x2c, 0x4d, 0x2d, 0xaa, 0xd4, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17,
+	0x92, 0xcd, 0x4f, 0x4a, 0x4c, 0x49, 0x4c, 0xcb, 0x2f, 0xcd, 0x4b, 0x49, 0x2c, 0xc9, 0xcc, 0xcf,
+	0xd3, 0x4b, 0x2b, 0xcd, 0xc9, 0x49, 0xce, 0x2f, 0x4a, 0xd5, 0x03, 0xa9, 0x96, 0x12, 0x49, 0xcf,
+	0x4f, 0xcf, 0x07, 0xab, 0xd4, 0x07, 0xb1, 0x20, 0x9a, 0xa4, 0x64, 0xd2, 0xf3, 0xf3, 0xd3, 0x73,
+	0x52, 0xf5, 0x13, 0x0b, 0x32, 0xf5, 0x13, 0xf3, 0xf2, 0xf2, 0x4b, 0xc0, 0x5a, 0x8b, 0xa1, 0xb2,
+	0x5a, 0xc9, 0xf9, 0xc5, 0xb9, 0xf9, 0xc5, 0xfa, 0x49, 0x89, 0xc5, 0xa9, 0x10, 0xbb, 0xf4, 0xcb,
+	0x0c, 0x93, 0x52, 0x4b, 0x12, 0x0d, 0xf5, 0x0b, 0x12, 0xd3, 0x33, 0xf3, 0x20, 0xf6, 0x40, 0xd4,
+	0x0a, 0xc2, 0xdc, 0x94, 0x97, 0x56, 0x02, 0x11, 0x52, 0x52, 0xe1, 0x12, 0x0a, 0x04, 0x69, 0x72,
+	0x4f, 0x2d, 0xf1, 0x73, 0x0b, 0x09, 0x4a, 0x2d, 0x2c, 0x4d, 0x2d, 0x2e, 0x11, 0xe2, 0xe3, 0x62,
+	0xca, 0x4c, 0x91, 0x60, 0x54, 0x60, 0xd4, 0xe0, 0x0c, 0x62, 0xca, 0x4c, 0x51, 0x32, 0xe7, 0x92,
+	0x46, 0x52, 0xe5, 0x54, 0xe9, 0x98, 0x92, 0x52, 0x94, 0x5a, 0x5c, 0x0c, 0x53, 0x2e, 0xc1, 0xc5,
+	0x9e, 0x08, 0x11, 0x81, 0xea, 0x81, 0x71, 0x95, 0xa2, 0xb8, 0x64, 0xb0, 0x6b, 0x2c, 0x2e, 0xc8,
+	0xcf, 0x2b, 0x4e, 0x15, 0xb2, 0xe2, 0x62, 0xf6, 0x73, 0x0b, 0x91, 0x60, 0x54, 0x60, 0xd6, 0xe0,
+	0x36, 0x52, 0xd2, 0xc3, 0x1b, 0x3c, 0x7a, 0x20, 0x13, 0x58, 0x4e, 0xdc, 0x93, 0x67, 0x08, 0x02,
+	0x69, 0x32, 0xba, 0xc9, 0xc4, 0xc5, 0x0a, 0x36, 0x5c, 0xe8, 0x00, 0x23, 0x17, 0x3f, 0x9a, 0x0d,
+	0x42, 0x56, 0x04, 0x0c, 0xc3, 0xe3, 0x1f, 0x29, 0x6b, 0xb2, 0xf4, 0x42, 0xbc, 0xa4, 0x64, 0xd2,
+	0x74, 0xf9, 0xc9, 0x64, 0x26, 0x3d, 0x21, 0x1d, 0x7d, 0xb0, 0x21, 0xba, 0x08, 0x53, 0xf4, 0x61,
+	0xa6, 0x80, 0xc2, 0x5f, 0xbf, 0x1a, 0x1a, 0x46, 0xb5, 0xfa, 0x89, 0x39, 0x39, 0x42, 0x3d, 0x8c,
+	0x5c, 0x6c, 0x10, 0x13, 0x85, 0x0c, 0x89, 0xb7, 0x1d, 0xe6, 0x60, 0x22, 0x42, 0x4e, 0x49, 0x1b,
+	0xec, 0x2e, 0x55, 0x21, 0x65, 0x42, 0xee, 0xca, 0x4c, 0xa9, 0x75, 0xf2, 0x3e, 0xf1, 0x48, 0x8e,
+	0xf1, 0xc2, 0x23, 0x39, 0xc6, 0x07, 0x8f, 0xe4, 0x18, 0x27, 0x3c, 0x96, 0x63, 0xb8, 0xf0, 0x58,
+	0x8e, 0xe1, 0xc6, 0x63, 0x39, 0x86, 0x28, 0xc3, 0xf4, 0xcc, 0x92, 0x8c, 0xd2, 0x24, 0xbd, 0xe4,
+	0xfc, 0x5c, 0x3c, 0x06, 0x55, 0xe8, 0x83, 0x93, 0x5a, 0x49, 0x65, 0x41, 0x6a, 0x71, 0x12, 0x1b,
+	0x38, 0xa9, 0x19, 0x03, 0x02, 0x00, 0x00, 0xff, 0xff, 0x8f, 0x1b, 0xab, 0x09, 0x13, 0x03, 0x00,
+	0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -214,7 +214,7 @@ const _ = grpc.SupportPackageIsVersion4
 type QueryClient interface {
 	// QueryGetAllNFTByAddressRequest returns a list of NFTs ownerd by given
 	// address
-	GetAllNFTByAddress(ctx context.Context, in *QueryGetAllNFTByAddressRequest, opts ...grpc.CallOption) (*QueryGetAllNFTByAddressResponse, error)
+	GetNFTByAddress(ctx context.Context, in *QueryGetNFTByAddressRequest, opts ...grpc.CallOption) (*QueryGetNFTByAddressResponse, error)
 	// GetNft returns single NFT by DID
 	GetNFT(ctx context.Context, in *QueryGetNFTRequest, opts ...grpc.CallOption) (*NFT, error)
 }
@@ -227,9 +227,9 @@ func NewQueryClient(cc grpc1.ClientConn) QueryClient {
 	return &queryClient{cc}
 }
 
-func (c *queryClient) GetAllNFTByAddress(ctx context.Context, in *QueryGetAllNFTByAddressRequest, opts ...grpc.CallOption) (*QueryGetAllNFTByAddressResponse, error) {
-	out := new(QueryGetAllNFTByAddressResponse)
-	err := c.cc.Invoke(ctx, "/obadafoundation.fullcore.obit.Query/GetAllNFTByAddress", in, out, opts...)
+func (c *queryClient) GetNFTByAddress(ctx context.Context, in *QueryGetNFTByAddressRequest, opts ...grpc.CallOption) (*QueryGetNFTByAddressResponse, error) {
+	out := new(QueryGetNFTByAddressResponse)
+	err := c.cc.Invoke(ctx, "/obadafoundation.fullcore.obit.Query/GetNFTByAddress", in, out, opts...)
 	if err != nil {
 		return nil, err
 	}
@@ -249,7 +249,7 @@ func (c *queryClient) GetNFT(ctx context.Context, in *QueryGetNFTRequest, opts .
 type QueryServer interface {
 	// QueryGetAllNFTByAddressRequest returns a list of NFTs ownerd by given
 	// address
-	GetAllNFTByAddress(context.Context, *QueryGetAllNFTByAddressRequest) (*QueryGetAllNFTByAddressResponse, error)
+	GetNFTByAddress(context.Context, *QueryGetNFTByAddressRequest) (*QueryGetNFTByAddressResponse, error)
 	// GetNft returns single NFT by DID
 	GetNFT(context.Context, *QueryGetNFTRequest) (*NFT, error)
 }
@@ -258,8 +258,8 @@ type QueryServer interface {
 type UnimplementedQueryServer struct {
 }
 
-func (*UnimplementedQueryServer) GetAllNFTByAddress(ctx context.Context, req *QueryGetAllNFTByAddressRequest) (*QueryGetAllNFTByAddressResponse, error) {
-	return nil, status.Errorf(codes.Unimplemented, "method GetAllNFTByAddress not implemented")
+func (*UnimplementedQueryServer) GetNFTByAddress(ctx context.Context, req *QueryGetNFTByAddressRequest) (*QueryGetNFTByAddressResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method GetNFTByAddress not implemented")
 }
 func (*UnimplementedQueryServer) GetNFT(ctx context.Context, req *QueryGetNFTRequest) (*NFT, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetNFT not implemented")
@@ -269,20 +269,20 @@ func RegisterQueryServer(s grpc1.Server, srv QueryServer) {
 	s.RegisterService(&_Query_serviceDesc, srv)
 }
 
-func _Query_GetAllNFTByAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
-	in := new(QueryGetAllNFTByAddressRequest)
+func _Query_GetNFTByAddress_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(QueryGetNFTByAddressRequest)
 	if err := dec(in); err != nil {
 		return nil, err
 	}
 	if interceptor == nil {
-		return srv.(QueryServer).GetAllNFTByAddress(ctx, in)
+		return srv.(QueryServer).GetNFTByAddress(ctx, in)
 	}
 	info := &grpc.UnaryServerInfo{
 		Server:     srv,
-		FullMethod: "/obadafoundation.fullcore.obit.Query/GetAllNFTByAddress",
+		FullMethod: "/obadafoundation.fullcore.obit.Query/GetNFTByAddress",
 	}
 	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
-		return srv.(QueryServer).GetAllNFTByAddress(ctx, req.(*QueryGetAllNFTByAddressRequest))
+		return srv.(QueryServer).GetNFTByAddress(ctx, req.(*QueryGetNFTByAddressRequest))
 	}
 	return interceptor(ctx, in, info, handler)
 }
@@ -310,8 +310,8 @@ var _Query_serviceDesc = grpc.ServiceDesc{
 	HandlerType: (*QueryServer)(nil),
 	Methods: []grpc.MethodDesc{
 		{
-			MethodName: "GetAllNFTByAddress",
-			Handler:    _Query_GetAllNFTByAddress_Handler,
+			MethodName: "GetNFTByAddress",
+			Handler:    _Query_GetNFTByAddress_Handler,
 		},
 		{
 			MethodName: "GetNFT",
@@ -352,7 +352,7 @@ func (m *QueryGetNFTRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetAllNFTByAddressRequest) Marshal() (dAtA []byte, err error) {
+func (m *QueryGetNFTByAddressRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -362,12 +362,12 @@ func (m *QueryGetAllNFTByAddressRequest) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetAllNFTByAddressRequest) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGetNFTByAddressRequest) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetAllNFTByAddressRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGetNFTByAddressRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -382,7 +382,7 @@ func (m *QueryGetAllNFTByAddressRequest) MarshalToSizedBuffer(dAtA []byte) (int,
 	return len(dAtA) - i, nil
 }
 
-func (m *QueryGetAllNFTByAddressResponse) Marshal() (dAtA []byte, err error) {
+func (m *QueryGetNFTByAddressResponse) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
 	n, err := m.MarshalToSizedBuffer(dAtA[:size])
@@ -392,12 +392,12 @@ func (m *QueryGetAllNFTByAddressResponse) Marshal() (dAtA []byte, err error) {
 	return dAtA[:n], nil
 }
 
-func (m *QueryGetAllNFTByAddressResponse) MarshalTo(dAtA []byte) (int, error) {
+func (m *QueryGetNFTByAddressResponse) MarshalTo(dAtA []byte) (int, error) {
 	size := m.Size()
 	return m.MarshalToSizedBuffer(dAtA[:size])
 }
 
-func (m *QueryGetAllNFTByAddressResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+func (m *QueryGetNFTByAddressResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	i := len(dAtA)
 	_ = i
 	var l int
@@ -443,7 +443,7 @@ func (m *QueryGetNFTRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryGetAllNFTByAddressRequest) Size() (n int) {
+func (m *QueryGetNFTByAddressRequest) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -456,7 +456,7 @@ func (m *QueryGetAllNFTByAddressRequest) Size() (n int) {
 	return n
 }
 
-func (m *QueryGetAllNFTByAddressResponse) Size() (n int) {
+func (m *QueryGetNFTByAddressResponse) Size() (n int) {
 	if m == nil {
 		return 0
 	}
@@ -559,7 +559,7 @@ func (m *QueryGetNFTRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetAllNFTByAddressRequest) Unmarshal(dAtA []byte) error {
+func (m *QueryGetNFTByAddressRequest) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -582,10 +582,10 @@ func (m *QueryGetAllNFTByAddressRequest) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetAllNFTByAddressRequest: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGetNFTByAddressRequest: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetAllNFTByAddressRequest: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGetNFTByAddressRequest: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
@@ -641,7 +641,7 @@ func (m *QueryGetAllNFTByAddressRequest) Unmarshal(dAtA []byte) error {
 	}
 	return nil
 }
-func (m *QueryGetAllNFTByAddressResponse) Unmarshal(dAtA []byte) error {
+func (m *QueryGetNFTByAddressResponse) Unmarshal(dAtA []byte) error {
 	l := len(dAtA)
 	iNdEx := 0
 	for iNdEx < l {
@@ -664,10 +664,10 @@ func (m *QueryGetAllNFTByAddressResponse) Unmarshal(dAtA []byte) error {
 		fieldNum := int32(wire >> 3)
 		wireType := int(wire & 0x7)
 		if wireType == 4 {
-			return fmt.Errorf("proto: QueryGetAllNFTByAddressResponse: wiretype end group for non-group")
+			return fmt.Errorf("proto: QueryGetNFTByAddressResponse: wiretype end group for non-group")
 		}
 		if fieldNum <= 0 {
-			return fmt.Errorf("proto: QueryGetAllNFTByAddressResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+			return fmt.Errorf("proto: QueryGetNFTByAddressResponse: illegal tag %d (wire type %d)", fieldNum, wire)
 		}
 		switch fieldNum {
 		case 1:
