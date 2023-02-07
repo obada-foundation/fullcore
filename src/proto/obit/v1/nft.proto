@@ -14,6 +14,4 @@ message NFT {
   google.protobuf.Any data = 10;
 }
 
-message NFTData {
-  string usn = 1;
-}
+message NFTData { string usn = 1; }

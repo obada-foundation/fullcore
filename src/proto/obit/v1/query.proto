@@ -11,10 +11,12 @@ option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
 
 // Query defines the gRPC querier service.
 service Query {
-  // QueryGetAllNFTByAddressRequest returns a list of NFTs ownerd by given address
+  // QueryGetAllNFTByAddressRequest returns a list of NFTs ownerd by given
+  // address
   rpc GetAllNFTByAddress(QueryGetAllNFTByAddressRequest)
       returns (QueryGetAllNFTByAddressResponse) {
-    option (google.api.http).get = "/obada-foundation/fullcore/nft/{address}/all";
+    option (google.api.http).get =
+        "/obada-foundation/fullcore/nft/{address}/all";
   }
 
   // GetNft returns single NFT by DID
