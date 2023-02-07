@@ -5,6 +5,8 @@ import (
 	"testing"
 	"time"
 
+	"github.com/obada-foundation/fullcore/app"
+
 	"github.com/cosmos/cosmos-sdk/baseapp"
 	"github.com/cosmos/cosmos-sdk/crypto/hd"
 	"github.com/cosmos/cosmos-sdk/crypto/keyring"
@@ -14,11 +16,9 @@ import (
 	"github.com/cosmos/cosmos-sdk/testutil/network"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
+	"github.com/stretchr/testify/require"
 	tmrand "github.com/tendermint/tendermint/libs/rand"
 	tmdb "github.com/tendermint/tm-db"
-
-	"github.com/obada-foundation/fullcore/app"
-	"github.com/obada-foundation/fullcore/app/params"
 )
 
 type (
@@ -38,7 +38,8 @@ func New(t *testing.T, configs ...network.Config) *network.Network {
 	} else {
 		cfg = configs[0]
 	}
-	net, _ := network.New(t, cfg)
+	net, err := network.New(t, t.TempDir(), cfg)
+	require.NoError(t, err)
 	t.Cleanup(net.Cleanup)
 	return net
 }
@@ -46,7 +47,7 @@ func New(t *testing.T, configs ...network.Config) *network.Network {
 // DefaultConfig will initialize config for the network with custom application,
 // genesis and single validator. All other parameters are inherited from cosmos-sdk/testutil/network.DefaultConfig
 func DefaultConfig() network.Config {
-	encoding := params.MakeTestEncodingConfig()
+	encoding := app.MakeEncodingConfig()
 	return network.Config{
 		Codec:             encoding.Codec,
 		TxConfig:          encoding.TxConfig,
