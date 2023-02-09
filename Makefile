@@ -41,3 +41,6 @@ export GOPRIVATE=github.com/obada-foundation
 src/vendor:
 	cd src && go mod tidy && go mod vendor
 
+mockgen:
+	cd src && ./scripts/mockgen.sh
+

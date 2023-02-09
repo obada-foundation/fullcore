@@ -41,7 +41,7 @@ github.com/ChainSafe/go-schnorrkel
 # github.com/Workiva/go-datastructures v1.0.53
 ## explicit; go 1.15
 github.com/Workiva/go-datastructures/queue
-# github.com/armon/go-metrics v0.4.0
+# github.com/armon/go-metrics v0.4.1
 ## explicit; go 1.12
 github.com/armon/go-metrics
 github.com/armon/go-metrics/prometheus
@@ -135,8 +135,8 @@ github.com/confio/ics23/go
 # github.com/cosmos/btcutil v1.0.5
 ## explicit; go 1.19
 github.com/cosmos/btcutil/bech32
-# github.com/cosmos/cosmos-proto v1.0.0-alpha7
-## explicit; go 1.16
+# github.com/cosmos/cosmos-proto v1.0.0-alpha8
+## explicit; go 1.18
 github.com/cosmos/cosmos-proto
 # github.com/cosmos/cosmos-sdk v0.46.8
 ## explicit; go 1.18
@@ -384,7 +384,7 @@ github.com/cosmos/iavl/internal/bytes
 github.com/cosmos/iavl/internal/encoding
 github.com/cosmos/iavl/internal/logger
 github.com/cosmos/iavl/proto
-# github.com/cosmos/ibc-go/v5 v5.0.0-beta1
+# github.com/cosmos/ibc-go/v5 v5.2.0
 ## explicit; go 1.18
 github.com/cosmos/ibc-go/v5/modules/apps/transfer
 github.com/cosmos/ibc-go/v5/modules/apps/transfer/client/cli
@@ -536,6 +536,9 @@ github.com/golang/glog
 # github.com/golang/groupcache v0.0.0-20210331224755-41bb18bfe9da
 ## explicit
 github.com/golang/groupcache/lru
+# github.com/golang/mock v1.6.0
+## explicit; go 1.11
+github.com/golang/mock/gomock
 # github.com/golang/protobuf v1.5.2
 ## explicit; go 1.9
 github.com/golang/protobuf/descriptor
@@ -561,6 +564,8 @@ github.com/google/go-cmp/cmp/internal/diff
 github.com/google/go-cmp/cmp/internal/flags
 github.com/google/go-cmp/cmp/internal/function
 github.com/google/go-cmp/cmp/internal/value
+# github.com/google/gofuzz v1.2.0
+## explicit; go 1.12
 # github.com/google/orderedcode v0.0.1
 ## explicit
 github.com/google/orderedcode
@@ -707,6 +712,10 @@ github.com/mitchellh/mapstructure
 # github.com/mtibben/percent v0.2.1
 ## explicit; go 1.14
 github.com/mtibben/percent
+# github.com/onsi/ginkgo v1.16.4
+## explicit; go 1.15
+# github.com/onsi/gomega v1.13.0
+## explicit; go 1.14
 # github.com/pelletier/go-toml v1.9.5
 ## explicit; go 1.12
 github.com/pelletier/go-toml
@@ -755,6 +764,8 @@ github.com/rcrowley/go-metrics
 github.com/regen-network/cosmos-proto
 github.com/regen-network/cosmos-proto/interfacetype
 github.com/regen-network/cosmos-proto/protoc-gen-gocosmos
+# github.com/rogpeppe/go-internal v1.6.2
+## explicit; go 1.11
 # github.com/rs/cors v1.8.2
 ## explicit; go 1.13
 github.com/rs/cors
@@ -798,6 +809,7 @@ github.com/spf13/viper/internal/encoding/yaml
 ## explicit; go 1.13
 github.com/stretchr/testify/assert
 github.com/stretchr/testify/require
+github.com/stretchr/testify/suite
 # github.com/subosito/gotenv v1.4.1
 ## explicit; go 1.18
 github.com/subosito/gotenv
@@ -818,9 +830,6 @@ github.com/syndtr/goleveldb/leveldb/util
 # github.com/tendermint/go-amino v0.16.0
 ## explicit; go 1.12
 github.com/tendermint/go-amino
-# github.com/tendermint/starport v0.19.2
-## explicit; go 1.16
-github.com/tendermint/starport/starport/pkg/cosmoscmd
 # github.com/tendermint/tendermint v0.34.24
 ## explicit; go 1.18
 github.com/tendermint/tendermint/abci/client

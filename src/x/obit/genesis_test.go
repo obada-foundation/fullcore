@@ -11,8 +11,16 @@ import (
 )
 
 func TestGenesis(t *testing.T) {
+
 	genesisState := types.GenesisState{
-		// this line is used by starport scaffolding # genesis/test/state
+		Classes: []*types.Class{
+			{
+				Id:     types.OBTClass,
+				Name:   "Obada network NFT Token",
+				Symbol: types.OBTClass,
+				Uri:    "https://obada.io",
+			},
+		},
 	}
 
 	k, ctx := keepertest.ObitKeeper(t)
@@ -22,5 +30,6 @@ func TestGenesis(t *testing.T) {
 
 	nullify.Fill(&genesisState)
 	nullify.Fill(got)
-	// this line is used by starport scaffolding # genesis/test/assert
+
+	require.Equal(t, genesisState, got)
 }

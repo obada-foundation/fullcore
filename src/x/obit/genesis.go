@@ -10,6 +10,11 @@ import (
 // state.
 func InitGenesis(ctx sdk.Context, k keeper.Keeper, genState types.GenesisState) {
 
+	for _, class := range genState.Classes {
+		if err := k.SaveClass(ctx, *class); err != nil {
+			panic(err)
+		}
+	}
 }
 
 // ExportGenesis returns the capability module's exported genesis.
