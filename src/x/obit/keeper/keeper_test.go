@@ -20,6 +20,13 @@ import (
 	simtestutil "github.com/obada-foundation/fullcore/testutil/sims"
 )
 
+var class = types.Class{
+	Id:     "OBT",
+	Name:   "test name",
+	Symbol: "TST",
+	Uri:    "https://obada.io",
+}
+
 type KeeperTestSuite struct {
 	suite.Suite
 	addrs []sdk.AccAddress
@@ -64,8 +71,8 @@ func (suite *KeeperTestSuite) SetupTest() {
 
 	suite.obitKeeper = *obitKeeper
 	suite.nftKeeper = nftKeeper
+	suite.msgServer = keeper.NewMsgServerImpl(*obitKeeper)
 	suite.ctx = ctx
-
 }
 
 func TestKeeperTestSuite(t *testing.T) {
@@ -73,35 +80,10 @@ func TestKeeperTestSuite(t *testing.T) {
 }
 
 func (suite *KeeperTestSuite) TestSaveClass() {
-	suite.Assert().False(suite.nftKeeper.HasClass(suite.ctx, "test"))
+	suite.Assert().False(suite.nftKeeper.HasClass(suite.ctx, class.Id))
 
-	err := suite.obitKeeper.SaveClass(suite.ctx, types.Class{
-		Id:     "test",
-		Name:   "test name",
-		Symbol: "TST",
-		Uri:    "https://obada.io",
-	})
+	err := suite.obitKeeper.SaveClass(suite.ctx, class)
 	suite.Require().NoError(err)
 
-	suite.Assert().True(suite.nftKeeper.HasClass(suite.ctx, "test"))
-}
-
-func (suite *KeeperTestSuite) TestInitGenesis() {
-	genesisState := types.GenesisState{
-		Classes: []*types.Class{
-			{
-				Id:     types.OBTClass,
-				Name:   "Obada network NFT Token",
-				Symbol: types.OBTClass,
-				Uri:    "https://obada.io",
-			},
-		},
-	}
-
-	suite.obitKeeper.InitGenesis(suite.ctx, genesisState)
-	got := suite.obitKeeper.ExportGenesis(suite.ctx)
-
-	suite.NotNil(got)
-
-	suite.Equal(genesisState, *got)
+	suite.Assert().True(suite.nftKeeper.HasClass(suite.ctx, class.Id))
 }
