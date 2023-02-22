@@ -401,8 +401,6 @@ func New(
 		appCodec,
 		keys[obitmoduletypes.StoreKey],
 		keys[obitmoduletypes.MemStoreKey],
-		app.GetSubspace(obitmoduletypes.ModuleName),
-
 		app.NftKeeper,
 	)
 	obitModule := obitmodule.NewAppModule(appCodec, app.ObitKeeper, app.AccountKeeper, app.BankKeeper)
