@@ -21,6 +21,8 @@ type NftKeeper interface {
 
 	SaveClass(ctx sdk.Context, class nft.Class) error
 
+	GetClasses(ctx sdk.Context) (classes []*nft.Class)
+
 	HasClass(ctx sdk.Context, classID string) bool
 	// Methods imported from nft should be defined here
 }
