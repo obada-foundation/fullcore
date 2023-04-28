@@ -3,25 +3,23 @@ package main
 import (
 	"os"
 
+	"github.com/cosmos/cosmos-sdk/server"
 	svrcmd "github.com/cosmos/cosmos-sdk/server/cmd"
-	banktypes "github.com/cosmos/cosmos-sdk/x/bank/types"
-	"github.com/obada-foundation/fullcore/app"
+
+	obada "github.com/obada-foundation/fullcore/app"
 	"github.com/obada-foundation/fullcore/cmd/fullcored/cmd"
-	"github.com/tendermint/starport/starport/pkg/cosmoscmd"
 )
 
 func main() {
-	rootCmd, _ := cosmoscmd.NewRootCmd(
-		app.Name,
-		app.AccountAddressPrefix,
-		app.DefaultNodeHome,
-		app.Name,
-		app.ModuleBasics,
-		app.New,
-		// this line is used by starport scaffolding # root/arguments
-	)
-	rootCmd.AddCommand(cmd.NewTestnetCmd(app.ModuleBasics, banktypes.GenesisBalancesIterator{}))
-	if err := svrcmd.Execute(rootCmd, app.DefaultNodeHome); err != nil {
-		os.Exit(1)
+	rootCmd, _ := cmd.NewRootCmd()
+
+	if err := svrcmd.Execute(rootCmd, "", obada.DefaultNodeHome); err != nil {
+		switch e := err.(type) {
+		case server.ErrorCode:
+			os.Exit(e.Code)
+
+		default:
+			os.Exit(1)
+		}
 	}
 }

@@ -10,6 +10,7 @@ import (
 	"os"
 	"path/filepath"
 
+	"cosmossdk.io/math"
 	"github.com/spf13/cobra"
 	tmconfig "github.com/tendermint/tendermint/config"
 	tmos "github.com/tendermint/tendermint/libs/os"
@@ -25,6 +26,7 @@ import (
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	"github.com/cosmos/cosmos-sdk/server"
 	srvconfig "github.com/cosmos/cosmos-sdk/server/config"
+	"github.com/cosmos/cosmos-sdk/testutil"
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/types/module"
 	authtypes "github.com/cosmos/cosmos-sdk/x/auth/types"
@@ -32,6 +34,11 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	stakingtypes "github.com/cosmos/cosmos-sdk/x/staking/types"
+
+	// ibcclienttypes "github.com/cosmos/ibc-go/v5/modules/core/02-client/types"
+	// ibcchanneltypes "github.com/cosmos/ibc-go/v5/modules/core/04-channel/types"
+
+	"github.com/obada-foundation/fullcore/app/params"
 )
 
 var (
@@ -40,10 +47,11 @@ var (
 	flagOutputDir         = "output-dir"
 	flagNodeDaemonHome    = "node-daemon-home"
 	flagStartingIPAddress = "starting-ip-address"
+	flagDenom             = "denom"
 )
 
 // get cmd to initialize all files for tendermint testnet and application
-func NewTestnetCmd(mbm module.BasicManager, genBalIterator banktypes.GenesisBalancesIterator) *cobra.Command {
+func testnetCmd(mbm module.BasicManager, genBalIterator banktypes.GenesisBalancesIterator) *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "testnet",
 		Short: "Initialize files for a simapp testnet",
@@ -53,14 +61,13 @@ necessary files (private validator, genesis, config, etc.).
 Note, strict routability for addresses is turned off in the config file.
 
 Example:
-	cored testnet --v 4 --output-dir ./output
+	gaiad testnet --v 4 --output-dir ./output --starting-ip-address 192.168.10.2
 	`,
 		RunE: func(cmd *cobra.Command, _ []string) error {
 			clientCtx, err := client.GetClientQueryContext(cmd)
 			if err != nil {
 				return err
 			}
-
 			serverCtx := server.GetServerContextFromCmd(cmd)
 			config := serverCtx.Config
 
@@ -72,11 +79,13 @@ Example:
 			nodeDaemonHome, _ := cmd.Flags().GetString(flagNodeDaemonHome)
 			startingIPAddress, _ := cmd.Flags().GetString(flagStartingIPAddress)
 			numValidators, _ := cmd.Flags().GetInt(flagNumValidators)
+			denom, _ := cmd.Flags().GetString(flagDenom)
 			algo, _ := cmd.Flags().GetString(flags.FlagKeyAlgorithm)
 
 			return InitTestnet(
 				clientCtx, cmd, config, mbm, genBalIterator, outputDir, chainID, minGasPrices,
 				nodeDirPrefix, nodeDaemonHome, startingIPAddress, keyringBackend, algo, numValidators,
+				denom,
 			)
 		},
 	}
@@ -87,6 +96,7 @@ Example:
 	cmd.Flags().String(flagNodeDaemonHome, "cored", "Home directory of the node's daemon configuration")
 	cmd.Flags().String(flagStartingIPAddress, "192.168.0.1", "Starting IP address (192.168.0.1 results in persistent peers list ID0@192.168.0.1:46656, ID1@192.168.0.2:46656, ...)")
 	cmd.Flags().String(flags.FlagChainID, "", "genesis file chain-id, if left blank will be randomly created")
+	cmd.Flags().String(flagDenom, "", "Fungible token denomination")
 	cmd.Flags().String(server.FlagMinGasPrices, fmt.Sprintf("0.000006%s", sdk.DefaultBondDenom), "Minimum gas prices to accept for transactions; All fees in a tx must meet this minimum (e.g. 0.01photino,0.001stake)")
 	cmd.Flags().String(flags.FlagKeyringBackend, flags.DefaultKeyringBackend, "Select keyring's backend (os|file|test)")
 	cmd.Flags().String(flags.FlagKeyAlgorithm, string(hd.Secp256k1Type), "Key signing algorithm to generate keys for")
@@ -94,7 +104,7 @@ Example:
 	return cmd
 }
 
-const nodeDirPerm = 0755
+const nodeDirPerm = 0o755
 
 // Initialize the testnet
 func InitTestnet(
@@ -112,22 +122,30 @@ func InitTestnet(
 	keyringBackend,
 	algoStr string,
 	numValidators int,
+	denom string,
 ) error {
-
 	if chainID == "" {
-		chainID = "chain-" + tmrand.NewRand().Str(6)
+		chainID = "chain-" + tmrand.Str(6)
 	}
 
 	nodeIDs := make([]string, numValidators)
 	valPubKeys := make([]cryptotypes.PubKey, numValidators)
 
-	simappConfig := srvconfig.DefaultConfig()
+	simappConfig := params.CustomAppConfig{
+		Config: *srvconfig.DefaultConfig(),
+	}
+
 	simappConfig.MinGasPrices = minGasPrices
 	simappConfig.API.Enable = true
 	simappConfig.Telemetry.Enabled = true
 	simappConfig.Telemetry.PrometheusRetentionTime = 60
 	simappConfig.Telemetry.EnableHostnameLabel = false
 	simappConfig.Telemetry.GlobalLabels = [][]string{{"chain_id", chainID}}
+	// simappConfig.BypassMinFeeMsgTypes = []string{
+	// 	sdk.MsgTypeURL(&ibcchanneltypes.MsgRecvPacket{}),
+	// 	sdk.MsgTypeURL(&ibcchanneltypes.MsgAcknowledgement{}),
+	// 	sdk.MsgTypeURL(&ibcclienttypes.MsgUpdateClient{}),
+	// }
 
 	var (
 		genAccounts []authtypes.GenesisAccount
@@ -167,7 +185,7 @@ func InitTestnet(
 		memo := fmt.Sprintf("%s@%s:26656", nodeIDs[i], ip)
 		genFiles = append(genFiles, nodeConfig.GenesisFile())
 
-		kb, err := keyring.New(sdk.KeyringServiceName(), keyringBackend, nodeDir, inBuf)
+		kb, err := keyring.New(sdk.KeyringServiceName(), keyringBackend, nodeDir, inBuf, clientCtx.Codec)
 		if err != nil {
 			return err
 		}
@@ -178,7 +196,7 @@ func InitTestnet(
 			return err
 		}
 
-		addr, secret, err := server.GenerateSaveCoinKey(kb, nodeDirName, true, algo)
+		addr, secret, err := testutil.GenerateSaveCoinKey(kb, nodeDirName, "", true, algo)
 		if err != nil {
 			_ = os.RemoveAll(outputDir)
 			return err
@@ -199,8 +217,13 @@ func InitTestnet(
 		accTokens := sdk.TokensFromConsensusPower(1000, sdk.DefaultPowerReduction)
 		accStakingTokens := sdk.TokensFromConsensusPower(500, sdk.DefaultPowerReduction)
 		coins := sdk.Coins{
-			sdk.NewCoin("obd", accTokens),
+			sdk.NewCoin(fmt.Sprintf("%stoken", nodeDirName), accTokens),
 			sdk.NewCoin(sdk.DefaultBondDenom, accStakingTokens),
+		}
+
+		if denom != "" {
+			denomTokens := sdk.TokensFromConsensusPower(1000, math.NewIntFromUint64(1000000000000000000))
+			coins = append(coins, sdk.NewCoin(denom, denomTokens))
 		}
 
 		genBalances = append(genBalances, banktypes.Balance{Address: addr.String(), Coins: coins.Sort()})
@@ -270,7 +293,6 @@ func initGenFiles(
 	genAccounts []authtypes.GenesisAccount, genBalances []banktypes.Balance,
 	genFiles []string, numValidators int,
 ) error {
-
 	appGenState := mbm.DefaultGenesis(clientCtx.Codec)
 
 	// set the accounts in the genesis state
@@ -288,12 +310,12 @@ func initGenFiles(
 	// set the balances in the genesis state
 	var bankGenState banktypes.GenesisState
 	clientCtx.Codec.MustUnmarshalJSON(appGenState[banktypes.ModuleName], &bankGenState)
-
 	bankGenState.Balances = banktypes.SanitizeGenesisBalances(genBalances)
 	for _, bal := range bankGenState.Balances {
 		bankGenState.Supply = bankGenState.Supply.Add(bal.Coins...)
 	}
 	appGenState[banktypes.ModuleName] = clientCtx.Codec.MustMarshalJSON(&bankGenState)
+
 	appGenStateJSON, err := json.MarshalIndent(appGenState, "", "  ")
 	if err != nil {
 		return err
@@ -319,7 +341,6 @@ func collectGenFiles(
 	nodeIDs []string, valPubKeys []cryptotypes.PubKey, numValidators int,
 	outputDir, nodeDirPrefix, nodeDaemonHome string, genBalIterator banktypes.GenesisBalancesIterator,
 ) error {
-
 	var appState json.RawMessage
 	genTime := tmtime.Now()
 
@@ -384,16 +405,15 @@ func calculateIP(ip string, i int) (string, error) {
 	return ipv4.String(), nil
 }
 
-func writeFile(name string, dir string, contents []byte) error {
-	writePath := filepath.Join(dir)
-	file := filepath.Join(writePath, name)
+func writeFile(name, dir string, contents []byte) error {
+	file := filepath.Join(dir, name)
 
-	err := tmos.EnsureDir(writePath, 0755)
+	err := tmos.EnsureDir(dir, 0o755)
 	if err != nil {
 		return err
 	}
 
-	err = tmos.WriteFile(file, contents, 0644)
+	err = os.WriteFile(file, contents, 0o600)
 	if err != nil {
 		return err
 	}

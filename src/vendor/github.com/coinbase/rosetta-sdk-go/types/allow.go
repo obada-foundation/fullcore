@@ -1,4 +1,4 @@
-// Copyright 2021 Coinbase, Inc.
+// Copyright 2022 Coinbase, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -51,5 +51,7 @@ type Allow struct {
 	// Any Rosetta implementation that can update an AccountIdentifier's unspent coins based on the
 	// contents of the mempool should populate this field as true. If false, requests to
 	// `/account/coins` that set `include_mempool` as true will be automatically rejected.
-	MempoolCoins bool `json:"mempool_coins"`
+	MempoolCoins        bool `json:"mempool_coins"`
+	BlockHashCase       Case `json:"block_hash_case,omitempty"`
+	TransactionHashCase Case `json:"transaction_hash_case,omitempty"`
 }

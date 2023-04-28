@@ -1,4 +1,4 @@
-// Copyright 2021 Coinbase, Inc.
+// Copyright 2022 Coinbase, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -32,7 +32,7 @@ type SyncStatus struct {
 	TargetIndex *int64 `json:"target_index,omitempty"`
 	// Stage is the phase of the sync process.
 	Stage *string `json:"stage,omitempty"`
-	// sycned is a boolean that indicates if an implementation has synced up to the most recent
+	// synced is a boolean that indicates if an implementation has synced up to the most recent
 	// block. If this field is not populated, the caller should rely on a traditional tip timestamp
 	// comparison to determine if an implementation is synced. This field is particularly useful for
 	// quiescent blockchains (blocks only produced when there are pending transactions). In these

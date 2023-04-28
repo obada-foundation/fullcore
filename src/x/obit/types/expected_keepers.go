@@ -3,7 +3,7 @@ package types
 import (
 	sdk "github.com/cosmos/cosmos-sdk/types"
 	"github.com/cosmos/cosmos-sdk/x/auth/types"
-	nft "github.com/obada-foundation/fullcore/x/nft"
+	nft "github.com/cosmos/cosmos-sdk/x/nft"
 )
 
 type NftKeeper interface {
@@ -20,6 +20,8 @@ type NftKeeper interface {
 	GetNFT(ctx sdk.Context, classID, nftID string) (nft.NFT, bool)
 
 	SaveClass(ctx sdk.Context, class nft.Class) error
+
+	GetClasses(ctx sdk.Context) (classes []*nft.Class)
 
 	HasClass(ctx sdk.Context, classID string) bool
 	// Methods imported from nft should be defined here

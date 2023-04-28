@@ -12,10 +12,10 @@ import (
 
 var _ = strconv.Itoa(0)
 
-func CmdEditMetadata() *cobra.Command {
+func CmdUpdateNFT() *cobra.Command {
 	cmd := &cobra.Command{
-		Use:   "update metadata [did]",
-		Short: "Broadcast message edit-metadata",
+		Use:   "update nft [did]",
+		Short: "Broadcast message update-nft",
 		Args:  cobra.ExactArgs(1),
 		RunE: func(cmd *cobra.Command, args []string) (err error) {
 			argDID := args[0]
@@ -27,7 +27,7 @@ func CmdEditMetadata() *cobra.Command {
 
 			nftData := types.NFTData{}
 
-			msg := types.NewMsgEditMetadata(
+			msg := types.NewMsgUpdateNFT(
 				argDID,
 				clientCtx.GetFromAddress().String(),
 				nftData,

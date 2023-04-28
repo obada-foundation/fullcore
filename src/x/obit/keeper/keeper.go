@@ -3,21 +3,19 @@ package keeper
 import (
 	"fmt"
 
-	"github.com/tendermint/tendermint/libs/log"
-
 	"github.com/cosmos/cosmos-sdk/codec"
+	storetypes "github.com/cosmos/cosmos-sdk/store/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	paramtypes "github.com/cosmos/cosmos-sdk/x/params/types"
+	"github.com/cosmos/cosmos-sdk/x/nft"
 	"github.com/obada-foundation/fullcore/x/obit/types"
+	"github.com/tendermint/tendermint/libs/log"
 )
 
 type (
 	Keeper struct {
-		cdc        codec.BinaryCodec
-		storeKey   sdk.StoreKey
-		memKey     sdk.StoreKey
-		paramstore paramtypes.Subspace
-
+		cdc       codec.BinaryCodec
+		storeKey  storetypes.StoreKey
+		memKey    storetypes.StoreKey
 		nftKeeper types.NftKeeper
 	}
 )
@@ -25,26 +23,31 @@ type (
 func NewKeeper(
 	cdc codec.BinaryCodec,
 	storeKey,
-	memKey sdk.StoreKey,
-	ps paramtypes.Subspace,
-
+	memKey storetypes.StoreKey,
 	nftKeeper types.NftKeeper,
 ) *Keeper {
-	// set KeyTable if it has not already been set
-	if !ps.HasKeyTable() {
-		ps = ps.WithKeyTable(types.ParamKeyTable())
-	}
-
 	return &Keeper{
-
-		cdc:        cdc,
-		storeKey:   storeKey,
-		memKey:     memKey,
-		paramstore: ps,
-		nftKeeper:  nftKeeper,
+		cdc:       cdc,
+		storeKey:  storeKey,
+		memKey:    memKey,
+		nftKeeper: nftKeeper,
 	}
 }
 
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
+}
+
+// SaveClass saves a class to the store
+func (k Keeper) SaveClass(ctx sdk.Context, class types.Class) error {
+	if !k.nftKeeper.HasClass(ctx, class.Id) {
+		return k.nftKeeper.SaveClass(ctx, nft.Class{
+			Id:     class.Id,
+			Name:   class.Name,
+			Symbol: class.Symbol,
+			Uri:    class.Uri,
+		})
+	}
+
+	return nil
 }

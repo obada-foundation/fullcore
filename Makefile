@@ -1,31 +1,38 @@
 PROJECT = obada/fullcore
 CI_COMMIT_REF_SLUG ?= develop
 CONTAINER_IMAGE = $(PROJECT):$(CI_COMMIT_REF_SLUG)
+CONTAINER_TESTNET_IMAGE = $(CONTAINER_IMAGE)-testnet
 CONTAINER_TAG_IMAGE = $(PROJECT):$(CI_COMMIT_TAG)
-UI_CONTAINER_IMAGE =  $(PROJECT)-ui:$(CI_COMMIT_REF_SLUG)
-UI_CONTAINER_TAG_IMAGE = $(PROJECT)-ui:$(CI_COMMIT_TAG)
 COMMIT_HASH = $(CI_COMMIT_SHA)
 SHELL := /bin/sh
+SRC_DIR = $(CURDIR)/src
+protoVer = v0.7
+protoImageName = tendermintdev/sdk-proto-gen:$(protoVer)
+containerProtoGen = cosmos-sdk-proto-gen-$(protoVer)
+containerProtoFmt = cosmos-sdk-proto-fmt-$(protoVer)
 .DEFAULT_GOAL := help
 
+docker/build:
+	docker build -t $(CONTAINER_IMAGE) -f docker/Dockerfile .
+	docker build -t $(CONTAINER_TESTNET_IMAGE) -f docker/testnet/Dockerfile .
 
-docker/node/build:
-	docker build -t $(CONTAINER_IMAGE) -f docker/node/Dockerfile .
-
-docker/node/publish:
+docker/publish:
 	docker push $(CONTAINER_IMAGE)
+	docker push $(CONTAINER_TESTNET_IMAGE)
 
-docker/node: docker/node/build docker/node/publish
+docker: docker/build docker/publish
 
-docker/ui/build:
-	docker build -t $(UI_CONTAINER_IMAGE) -f docker/ui/Dockerfile .
+proto: proto/format proto/gen
 
-docker/ui/publish:
-	docker push $(UI_CONTAINER_IMAGE)
+proto/format:
+	@echo "Formatting Protobuf files"
+	@if docker ps -a --format '{{.Names}}' | grep -Eq "^${containerProtoFmt}$$"; then docker start -a $(containerProtoFmt); else docker run --name $(containerProtoFmt) -v $(SRC_DIR):/workspace --workdir /workspace tendermintdev/docker-build-proto \
+		find .  -name "*.proto" -not -path "./third_party/*" -exec clang-format -i {} \; ; fi
 
-docker/ui: docker/ui/build docker/ui/publish
-
-docker: docker/node docker/ui
+proto/gen:
+	@echo "Generating Protobuf files"
+	@if docker ps -a --format '{{.Names}}' | grep -Eq "^${containerProtoGen}$$"; then docker start -a $(containerProtoGen); else docker run --name $(containerProtoGen) -v $(SRC_DIR):/workspace --workdir /workspace $(protoImageName) \
+		sh ./scripts/protocgen.sh; fi
 
 src/protogen:
 	cd src && starport generate proto-go
@@ -37,3 +44,8 @@ export GOPRIVATE=github.com/obada-foundation
 src/vendor:
 	cd src && go mod tidy && go mod vendor
 
+mockgen:
+	cd src && ./scripts/mockgen.sh
+
+swagger: proto-swagger-gen
+.PHONY: swagger

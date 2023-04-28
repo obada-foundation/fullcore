@@ -4,6 +4,7 @@ import (
 	"fmt"
 	"time"
 
+	"cosmossdk.io/math"
 	gogotypes "github.com/gogo/protobuf/types"
 
 	sdk "github.com/cosmos/cosmos-sdk/types"
@@ -96,7 +97,8 @@ func (k Keeper) SetNewValidatorByPowerIndex(ctx sdk.Context, validator types.Val
 
 // Update the tokens of an existing validator, update the validators power index key
 func (k Keeper) AddValidatorTokensAndShares(ctx sdk.Context, validator types.Validator,
-	tokensToAdd sdk.Int) (valOut types.Validator, addedShares sdk.Dec) {
+	tokensToAdd math.Int,
+) (valOut types.Validator, addedShares sdk.Dec) {
 	k.DeleteValidatorByPowerIndex(ctx, validator)
 	validator, addedShares = validator.AddTokensFromDel(tokensToAdd)
 	k.SetValidator(ctx, validator)
@@ -107,7 +109,8 @@ func (k Keeper) AddValidatorTokensAndShares(ctx sdk.Context, validator types.Val
 
 // Update the tokens of an existing validator, update the validators power index key
 func (k Keeper) RemoveValidatorTokensAndShares(ctx sdk.Context, validator types.Validator,
-	sharesToRemove sdk.Dec) (valOut types.Validator, removedTokens sdk.Int) {
+	sharesToRemove sdk.Dec,
+) (valOut types.Validator, removedTokens math.Int) {
 	k.DeleteValidatorByPowerIndex(ctx, validator)
 	validator, removedTokens = validator.RemoveDelShares(sharesToRemove)
 	k.SetValidator(ctx, validator)
@@ -118,7 +121,8 @@ func (k Keeper) RemoveValidatorTokensAndShares(ctx sdk.Context, validator types.
 
 // Update the tokens of an existing validator, update the validators power index key
 func (k Keeper) RemoveValidatorTokens(ctx sdk.Context,
-	validator types.Validator, tokensToRemove sdk.Int) types.Validator {
+	validator types.Validator, tokensToRemove math.Int,
+) types.Validator {
 	k.DeleteValidatorByPowerIndex(ctx, validator)
 	validator = validator.RemoveTokens(tokensToRemove)
 	k.SetValidator(ctx, validator)
@@ -130,12 +134,17 @@ func (k Keeper) RemoveValidatorTokens(ctx sdk.Context,
 // UpdateValidatorCommission attempts to update a validator's commission rate.
 // An error is returned if the new commission rate is invalid.
 func (k Keeper) UpdateValidatorCommission(ctx sdk.Context,
-	validator types.Validator, newRate sdk.Dec) (types.Commission, error) {
+	validator types.Validator, newRate sdk.Dec,
+) (types.Commission, error) {
 	commission := validator.Commission
 	blockTime := ctx.BlockHeader().Time
 
 	if err := commission.ValidateNewRate(newRate, blockTime); err != nil {
 		return commission, err
+	}
+
+	if newRate.LT(k.MinCommissionRate(ctx)) {
+		return commission, fmt.Errorf("cannot set validator commission to less than minimum rate of %s", k.MinCommissionRate(ctx))
 	}
 
 	commission.Rate = newRate

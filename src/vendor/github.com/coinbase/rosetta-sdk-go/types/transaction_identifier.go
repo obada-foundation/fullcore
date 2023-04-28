@@ -1,4 +1,4 @@
-// Copyright 2021 Coinbase, Inc.
+// Copyright 2022 Coinbase, Inc.
 //
 // Licensed under the Apache License, Version 2.0 (the "License");
 // you may not use this file except in compliance with the License.
@@ -20,6 +20,7 @@ package types
 // particular network and block or in the mempool.
 type TransactionIdentifier struct {
 	// Any transactions that are attributable only to a block (ex: a block event) should use the
-	// hash of the block as the identifier.
+	// hash of the block as the identifier.  This should be normalized according to the case
+	// specified in the transaction_hash_case in network options.
 	Hash string `json:"hash"`
 }
