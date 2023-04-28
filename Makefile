@@ -1,6 +1,7 @@
 PROJECT = obada/fullcore
 CI_COMMIT_REF_SLUG ?= develop
 CONTAINER_IMAGE = $(PROJECT):$(CI_COMMIT_REF_SLUG)
+CONTAINER_TESTNET_IMAGE = $(CONTAINER_IMAGE)-testnet
 CONTAINER_TAG_IMAGE = $(PROJECT):$(CI_COMMIT_TAG)
 COMMIT_HASH = $(CI_COMMIT_SHA)
 SHELL := /bin/sh
@@ -13,9 +14,11 @@ containerProtoFmt = cosmos-sdk-proto-fmt-$(protoVer)
 
 docker/build:
 	docker build -t $(CONTAINER_IMAGE) -f docker/Dockerfile .
+	docker build -t $(CONTAINER_TESTNET_IMAGE) -f docker/testnet/Dockerfile .
 
 docker/publish:
 	docker push $(CONTAINER_IMAGE)
+	docker push $(CONTAINER_TESTNET_IMAGE)
 
 docker: docker/build docker/publish
 
@@ -44,3 +47,5 @@ src/vendor:
 mockgen:
 	cd src && ./scripts/mockgen.sh
 
+swagger: proto-swagger-gen
+.PHONY: swagger
