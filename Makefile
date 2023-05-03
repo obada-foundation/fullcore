@@ -35,17 +35,17 @@ proto/gen:
 		sh ./scripts/protocgen.sh; fi
 
 src/protogen:
-	cd src && starport generate proto-go
+	starport generate proto-go
 
 src/run:
-	cd src && go run ./src/cmd/fullcored/main.go
+	go run ./src/cmd/fullcored/main.go
 
 export GOPRIVATE=github.com/obada-foundation
 src/vendor:
-	cd src && go mod tidy && go mod vendor
+	go mod tidy && go mod vendor
 
 mockgen:
-	cd src && ./scripts/mockgen.sh
+	./scripts/mockgen.sh
 
 swagger: proto-swagger-gen
 .PHONY: swagger
