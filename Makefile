@@ -22,6 +22,15 @@ docker/publish:
 
 docker: docker/build docker/publish
 
+ci/coverage:
+	go test $(cd src && go list ./... | grep -v /vendor/) -v -coverprofile .testCoverage.txt
+
+ci/test:
+	go test -v ./... -cover
+
+ci/lint:
+	golangci-lint --config .golangci.yml run --print-issued-lines --out-format=github-actions ./...
+
 proto: proto/format proto/gen
 
 proto/format:

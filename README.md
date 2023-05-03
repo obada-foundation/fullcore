@@ -1,5 +1,11 @@
 # fullcore: Ledger code for obada network
 
+<div align="center">
+
+[![build](https://github.com/obada-foundation/fullcore/actions/workflows/build.yml/badge.svg)](https://github.com/obada-foundation/fullcore/actions/workflows/build.yml)&nbsp;[![Coverage Status](https://coveralls.io/repos/github/obada-foundation/fullcore/badge.svg?branch=main)](https://coveralls.io/github/obada-foundation/fullcore?branch=main)&nbsp;[![Go Report Card](https://goreportcard.com/badge/github.com/obada-foundation/fullcore)](https://goreportcard.com/report/github.com/obada-foundation/fullcore)
+
+</div>
+
 ## ℹ️ Overview
 
 `fullcore` is the ledger/node component of the OBADA network tech stack, built using [Cosmos SDK](https://github.com/cosmos/cosmos-sdk) and [Tendermint](https://github.com/tendermint/tendermint).
