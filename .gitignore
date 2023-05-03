@@ -1,2 +1,6 @@
-.idea
-src/cmd/fullcored/fullcored
+vue/node_modules
+vue/dist
+release/
+.idea/
+.vscode/
+.DS_Store
