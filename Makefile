@@ -1,4 +1,17 @@
 PROJECT = obada/fullcore
+
+BUILD_DIR ?= $(CURDIR)/build
+
+BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
+COMMIT := $(shell git log -1 --format='%H')
+
+ifeq (,$(VERSION))
+  VERSION := $(shell git describe --exact-match 2>/dev/null)
+  ifeq (,$(VERSION))
+    VERSION := $(BRANCH)-$(COMMIT)
+  endif
+endif
+
 CI_COMMIT_REF_SLUG ?= develop
 CONTAINER_IMAGE = $(PROJECT):$(CI_COMMIT_REF_SLUG)
 CONTAINER_TESTNET_IMAGE = $(CONTAINER_IMAGE)-testnet
@@ -58,3 +71,6 @@ mockgen:
 
 swagger: proto-swagger-gen
 .PHONY: swagger
+
+clean:
+	rm -rf $(BUILD_DIR)

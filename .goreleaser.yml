@@ -1,0 +1,120 @@
+# Goreleaser configuration file
+
+project_name: fullcore
+
+env:
+  - GO111MODULE=on
+
+before:
+  hooks:
+    - make clean
+    - make src/vendor
+    - make src/protogen
+    - make swagger
+
+builds:
+  - id: linux-amd64
+    main: ./cmd/fullcored
+    binary: fullcored
+    targets:
+      - "linux_amd64"
+    env:
+      - CGO_ENABLED=1
+    flags:
+      - -mod=readonly
+      - -tags="netgo ledger goleveldb"
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X github.com/cosmos/cosmos-sdk/version.Name=fullcored
+      - -X github.com/cosmos/cosmos-sdk/version.AppName=fullcored
+      - -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }}
+      - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,goleveldb
+
+  - id: linux-arm64
+    main: ./cmd/fullcored
+    binary: fullcored
+    targets:
+      - "linux_arm64"
+    env:
+      - CGO_ENABLED=0
+    flags:
+      - -mod=readonly
+      - -tags="netgo ledger goleveldb"
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X github.com/cosmos/cosmos-sdk/version.Name=fullcored
+      - -X github.com/cosmos/cosmos-sdk/version.AppName=fullcored
+      - -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }}
+      - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,goleveldb
+
+  - id: darwin
+    env:
+      - CGO_ENABLED=0
+    main: ./cmd/fullcored
+    binary: fullcored
+    goos:
+      - darwin
+    goarch:
+      - amd64
+      - arm64
+    flags:
+      - -mod=readonly
+      - -tags="netgo ledger goleveldb"
+      - -trimpath
+    ldflags:
+      - -s -w
+      - -X github.com/cosmos/cosmos-sdk/version.Name=fullcored 
+      - -X github.com/cosmos/cosmos-sdk/version.AppName=fullcored 
+      - -X github.com/cosmos/cosmos-sdk/version.Version={{ .Version }}
+      - -X github.com/cosmos/cosmos-sdk/version.Commit={{ .Commit }}
+      - -X github.com/cosmos/cosmos-sdk/version.BuildTags=netgo,ledger,goleveldb
+
+archives:
+  - id: release-archives
+    rlcp: true
+    format: tar.gz
+    wrap_in_directory: false
+    name_template: "{{ .Binary }}-{{ .Version }}-{{ .Os }}-{{ .Arch }}{{ if .Arm }}v{{ .Arm }}{{ end }}"
+    files:
+      - LICENSE
+      - README.md
+
+checksum:
+  algorithm: sha256
+
+changelog:
+  use: github-native
+  groups:
+  - title: Features
+    regexp: "^.*feat[(\\w)]*:+.*$"
+    order: 0
+  - title: 'Fixes'
+    regexp: "^.*fix[(\\w)]*:+.*$"
+    order: 1
+  - title: 'Performance Improvements'
+    regexp: "^.*perf[(\\w)]*:+.*$"
+    order: 2
+  - title: 'Build Improvements'
+    regexp: "^.*build[(\\w)]*:+.*$"
+    order: 3
+  - title: 'Security'
+    regexp: "^.*build[(\\w)]*:+.*$"
+    order: 4
+  - title: 'Other changes'
+    order: 999
+
+
+release:
+  github:
+    owner: obada-foundation
+    name: fullcore
+  
+  draft: false
+  prerelease: "true"
+  mode: keep-existing
+  header: |
+    Release Notes for {{.ProjectName}} v{{.Version}}
