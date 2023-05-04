@@ -9,7 +9,7 @@ before:
   hooks:
     - make clean
     - make src/vendor
-    - make src/protogen
+    - make proto
     - make swagger
 
 builds:
