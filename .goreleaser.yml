@@ -10,7 +10,6 @@ before:
     - make clean
     - make src/vendor
     - make proto
-    - make swagger
 
 builds:
   - id: linux-amd64
