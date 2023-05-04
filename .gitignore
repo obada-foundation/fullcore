@@ -1,2 +1,5 @@
-.idea
-src/cmd/fullcored/fullcored
+release/
+.idea/
+.vscode/
+.DS_Store
+build
