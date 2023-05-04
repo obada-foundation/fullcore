@@ -1,4 +1,10 @@
-# fullcore: Ledger code for obada network
+<div align="center">
+  <img class="logo" src="https://www.obada.io/assets/logo/obada-logo-light.svg" alt="OBADA | Node"/>
+</div>
+
+`fullcore` is the ledger/node component of the OBADA network tech stack, built using [Cosmos SDK](https://github.com/cosmos/cosmos-sdk) and [Tendermint](https://github.com/tendermint/tendermint).
+
+---
 
 <div align="center">
 
@@ -6,9 +12,7 @@
 
 </div>
 
-## ℹ️ Overview
-
-`fullcore` is the ledger/node component of the OBADA network tech stack, built using [Cosmos SDK](https://github.com/cosmos/cosmos-sdk) and [Tendermint](https://github.com/tendermint/tendermint).
+# fullcore: Ledger code for obada network
 
 ### 🚧 Testnet
 
