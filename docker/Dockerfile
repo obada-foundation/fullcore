@@ -1,14 +1,13 @@
-FROM alpine:edge AS builder
+FROM golang:1.18-alpine AS builder
 
-RUN apk update && apk upgrade && apk add go
+RUN apk update && apk add --no-cache curl make git libc-dev bash gcc linux-headers findutils
+WORKDIR /go/src/github.com/obada-foundation/fullcore
 
-COPY . /fullcore
+COPY . .
 
-WORKDIR fullcore
+RUN make vendor && make bin
 
-RUN go build -o /fullcored cmd/fullcored/main.go
-
-FROM alpine:3.14
+FROM alpine:3.17
 
 ENV CHAINID "obadatestnet"
 ENV DAEMON_HOME "/home/obada/fullcored"
@@ -20,7 +19,7 @@ USER obada
 
 WORKDIR /home/obada
 
-COPY --from=builder --chown=obada /fullcored /home/obada
+COPY --from=builder --chown=obada /go/src/github.com/obada-foundation/fullcore/build/fullcored /home/obada
 
 COPY --chown=obada ./docker/entrypoint.sh /home/obada/
 

@@ -1,7 +1,5 @@
 PROJECT = obada/fullcore
 
-BUILD_DIR ?= $(CURDIR)/build
-
 BRANCH := $(shell git rev-parse --abbrev-ref HEAD)
 COMMIT := $(shell git log -1 --format='%H')
 
@@ -11,6 +9,8 @@ ifeq (,$(VERSION))
     VERSION := $(BRANCH)-$(COMMIT)
   endif
 endif
+
+BUILD_DIR ?= $(CURDIR)/build
 
 CI_COMMIT_REF_SLUG ?= develop
 CONTAINER_IMAGE = $(PROJECT):$(CI_COMMIT_REF_SLUG)
@@ -55,9 +55,6 @@ proto/gen:
 	@if docker ps -a --format '{{.Names}}' | grep -Eq "^${containerProtoGen}$$"; then docker start -a $(containerProtoGen); else docker run --name $(containerProtoGen) -v $(CURDIR):/workspace --workdir /workspace $(protoImageName) \
 		sh ./scripts/protocgen.sh; fi
 
-src/protogen:
-	starport generate proto-go
-
 src/run:
 	go run ./src/cmd/fullcored/main.go
 
@@ -73,3 +70,7 @@ swagger: proto-swagger-gen
 
 clean:
 	rm -rf $(BUILD_DIR)
+
+bin:
+	@mkdir -p $(BUILD_DIR)
+	GOOS=linux GOARCH=amd64 go build -o $(BUILD_DIR) $(CURDIR)/cmd/fullcored
