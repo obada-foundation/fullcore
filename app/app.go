@@ -173,6 +173,7 @@ var (
 	_ simapp.App              = (*App)(nil)
 )
 
+// nolint:gochecknoinits // don't know how to refactor
 func init() {
 	userHomeDir, err := os.UserHomeDir()
 	if err != nil {

@@ -12,6 +12,7 @@ import (
 
 var _ = strconv.Itoa(0)
 
+// CmdUpdateNFT defines the command to update a nft
 func CmdUpdateNFT() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "update nft [did]",

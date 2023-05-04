@@ -101,7 +101,7 @@ func CreateRandomAccounts(accNum int) []sdk.AccAddress {
 }
 
 // TestAddr constructs a new sdk.AccAddress with the provided bytes and prefix.
-func TestAddr(addr string, bech string) (sdk.AccAddress, error) {
+func TestAddr(addr, bech string) (sdk.AccAddress, error) {
 	res, err := sdk.AccAddressFromHexUnsafe(addr)
 	if err != nil {
 		return nil, err

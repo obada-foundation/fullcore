@@ -2,7 +2,7 @@ FROM alpine:edge AS builder
 
 RUN apk update && apk upgrade && apk add go
 
-COPY ./src /fullcore
+COPY . /fullcore
 
 WORKDIR fullcore
 

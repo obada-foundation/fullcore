@@ -1,4 +1,5 @@
 // Package nullify provides methods to init nil values structs for test assertion.
+// nolint:all
 package nullify
 
 import (

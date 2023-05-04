@@ -12,6 +12,7 @@ import (
 )
 
 var (
+	// DefaultRelativePacketTimeoutTimestamp relative packet timeout timestamp
 	DefaultRelativePacketTimeoutTimestamp = uint64((time.Duration(10) * time.Minute).Nanoseconds())
 )
 
