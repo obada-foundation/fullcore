@@ -9,6 +9,7 @@ import (
 	"github.com/spf13/cobra"
 )
 
+// CmdShowNFT implements the query NFT command.
 func CmdShowNFT() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "show-nft [did]",
@@ -39,6 +40,7 @@ func CmdShowNFT() *cobra.Command {
 	return cmd
 }
 
+// CmdShowByOwner implements the query NFT command.
 func CmdShowByOwner() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "show-nfts-by-owner [owner-address]",

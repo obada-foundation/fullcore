@@ -106,7 +106,7 @@ Example:
 
 const nodeDirPerm = 0o755
 
-// Initialize the testnet
+// InitTestnet initialize the testnet
 func InitTestnet(
 	clientCtx client.Context,
 	cmd *cobra.Command,
@@ -141,11 +141,6 @@ func InitTestnet(
 	simappConfig.Telemetry.PrometheusRetentionTime = 60
 	simappConfig.Telemetry.EnableHostnameLabel = false
 	simappConfig.Telemetry.GlobalLabels = [][]string{{"chain_id", chainID}}
-	// simappConfig.BypassMinFeeMsgTypes = []string{
-	// 	sdk.MsgTypeURL(&ibcchanneltypes.MsgRecvPacket{}),
-	// 	sdk.MsgTypeURL(&ibcchanneltypes.MsgAcknowledgement{}),
-	// 	sdk.MsgTypeURL(&ibcclienttypes.MsgUpdateClient{}),
-	// }
 
 	var (
 		genAccounts []authtypes.GenesisAccount
@@ -210,8 +205,8 @@ func InitTestnet(
 		}
 
 		// save private key seed words
-		if err := writeFile(fmt.Sprintf("%v.json", "key_seed"), nodeDir, cliPrint); err != nil {
-			return err
+		if er := writeFile(fmt.Sprintf("%v.json", "key_seed"), nodeDir, cliPrint); er != nil {
+			return er
 		}
 
 		accTokens := sdk.TokensFromConsensusPower(1000, sdk.DefaultPowerReduction)
@@ -243,8 +238,8 @@ func InitTestnet(
 		}
 
 		txBuilder := clientCtx.TxConfig.NewTxBuilder()
-		if err := txBuilder.SetMsgs(createValMsg); err != nil {
-			return err
+		if er := txBuilder.SetMsgs(createValMsg); er != nil {
+			return er
 		}
 
 		txBuilder.SetMemo(memo)
@@ -256,8 +251,8 @@ func InitTestnet(
 			WithKeybase(kb).
 			WithTxConfig(clientCtx.TxConfig)
 
-		if err := tx.Sign(txFactory, nodeDirName, txBuilder, true); err != nil {
-			return err
+		if er := tx.Sign(txFactory, nodeDirName, txBuilder, true); er != nil {
+			return er
 		}
 
 		txBz, err := clientCtx.TxConfig.TxJSONEncoder()(txBuilder.GetTx())
@@ -382,7 +377,7 @@ func collectGenFiles(
 }
 
 func getIP(i int, startingIPAddr string) (ip string, err error) {
-	if len(startingIPAddr) == 0 {
+	if startingIPAddr == "" {
 		ip, err = server.ExternalIP()
 		if err != nil {
 			return "", err

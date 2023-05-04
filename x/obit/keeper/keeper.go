@@ -12,6 +12,7 @@ import (
 )
 
 type (
+	// Keeper defines the obit module's keeper. It is responsible for managing
 	Keeper struct {
 		cdc       codec.BinaryCodec
 		storeKey  storetypes.StoreKey
@@ -20,20 +21,17 @@ type (
 	}
 )
 
-func NewKeeper(
-	cdc codec.BinaryCodec,
-	storeKey,
-	memKey storetypes.StoreKey,
-	nftKeeper types.NftKeeper,
-) *Keeper {
+// NewKeeper constructor for Keeper
+func NewKeeper(cdc codec.BinaryCodec, sk, mk storetypes.StoreKey, nftKeeper types.NftKeeper) *Keeper {
 	return &Keeper{
 		cdc:       cdc,
-		storeKey:  storeKey,
-		memKey:    memKey,
+		storeKey:  sk,
+		memKey:    mk,
 		nftKeeper: nftKeeper,
 	}
 }
 
+// Logger returns a module-specific logger.
 func (k Keeper) Logger(ctx sdk.Context) log.Logger {
 	return ctx.Logger().With("module", fmt.Sprintf("x/%s", types.ModuleName))
 }

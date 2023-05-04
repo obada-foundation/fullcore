@@ -4,7 +4,8 @@ import (
 	"github.com/obada-foundation/fullcore/x/obit/types"
 )
 
-func (suite *KeeperTestSuite) TestInitGenesis() {
+// TestInitGenesis test init genesis
+func (s *KeeperTestSuite) TestInitGenesis() {
 	genesisState := types.GenesisState{
 		Classes: []*types.Class{
 			{
@@ -16,10 +17,10 @@ func (suite *KeeperTestSuite) TestInitGenesis() {
 		},
 	}
 
-	suite.obitKeeper.InitGenesis(suite.ctx, genesisState)
-	got := suite.obitKeeper.ExportGenesis(suite.ctx)
+	s.obitKeeper.InitGenesis(s.ctx, genesisState)
+	got := s.obitKeeper.ExportGenesis(s.ctx)
 
-	suite.NotNil(got)
+	s.NotNil(got)
 
-	suite.Equal(genesisState, *got)
+	s.Equal(genesisState, *got)
 }

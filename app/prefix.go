@@ -5,17 +5,28 @@ import (
 )
 
 const (
+	// AccountAddressPrefix defines the prefix of account address
 	AccountAddressPrefix = "obada"
 )
 
 var (
-	AccountPubKeyPrefix    = AccountAddressPrefix + "pub"
+	// AccountPubKeyPrefix defines the prefix of account public key
+	AccountPubKeyPrefix = AccountAddressPrefix + "pub"
+
+	// ValidatorAddressPrefix defines the prefix of validator address
 	ValidatorAddressPrefix = AccountAddressPrefix + "valoper"
-	ValidatorPubKeyPrefix  = AccountAddressPrefix + "valoperpub"
-	ConsNodeAddressPrefix  = AccountAddressPrefix + "valcons"
-	ConsNodePubKeyPrefix   = AccountAddressPrefix + "valconspub"
+
+	// ValidatorPubKeyPrefix defines the prefix of validator public key
+	ValidatorPubKeyPrefix = AccountAddressPrefix + "valoperpub"
+
+	// ConsNodeAddressPrefix defines the prefix of consensus node address
+	ConsNodeAddressPrefix = AccountAddressPrefix + "valcons"
+
+	// ConsNodePubKeyPrefix defines the prefix of consensus node public key
+	ConsNodePubKeyPrefix = AccountAddressPrefix + "valconspub"
 )
 
+// SetConfig sets the global sdk config.
 func SetConfig() {
 	config := sdk.GetConfig()
 	config.SetBech32PrefixForAccount(AccountAddressPrefix, AccountPubKeyPrefix)

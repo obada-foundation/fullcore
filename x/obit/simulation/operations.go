@@ -18,19 +18,20 @@ import (
 
 const (
 	// OpWeightMsgMintNFT Simulation operation weights constants
-	OpWeightMsgMintNFT = "op_weight_msg_mint_nft" //nolint:gosec
+	OpWeightMsgMintNFT = "op_weight_msg_mint_nft" //nolint:gosec //refactor for the future
 
 	// WeightMsgMintNFT operations weights
 	WeightMsgMintNFT = 100
 )
 
+// TypeMsgMintNFT defines the type string for the MsgMintNFT
 var TypeMsgMintNFT = sdk.MsgTypeURL(&types.MsgMintNFT{})
 
 // WeightedOperations returns all the operations from the module with their respective weights
 func WeightedOperations(
 	registry cdctypes.InterfaceRegistry,
-	appParams simtypes.AppParams,
-	cdc codec.JSONCodec,
+	_ simtypes.AppParams,
+	_ codec.JSONCodec,
 	ak nft.AccountKeeper,
 	bk nft.BankKeeper,
 	k keeper.Keeper,
@@ -50,7 +51,7 @@ func SimulateMsgMintNFT(
 	cdc *codec.ProtoCodec,
 	ak nft.AccountKeeper,
 	bk nft.BankKeeper,
-	k keeper.Keeper,
+	_ keeper.Keeper,
 ) simtypes.Operation {
 	return func(
 		r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
@@ -71,7 +72,7 @@ func SimulateMsgMintNFT(
 		}
 
 		txCfg := tx.NewTxConfig(cdc, tx.DefaultSignModes)
-		tx, err := simtestutil.GenSignedMockTx(
+		txn, err := simtestutil.GenSignedMockTx(
 			r,
 			txCfg,
 			[]sdk.Msg{msg},
@@ -86,7 +87,7 @@ func SimulateMsgMintNFT(
 			return simtypes.NoOpMsg(types.ModuleName, TypeMsgMintNFT, "unable to generate mock tx"), nil, err
 		}
 
-		if _, _, err = app.SimDeliver(txCfg.TxEncoder(), tx); err != nil {
+		if _, _, err = app.SimDeliver(txCfg.TxEncoder(), txn); err != nil {
 			return simtypes.NoOpMsg(types.ModuleName, sdk.MsgTypeURL(msg), "unable to deliver tx"), nil, err
 		}
 

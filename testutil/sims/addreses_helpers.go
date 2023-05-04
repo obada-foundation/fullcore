@@ -6,15 +6,17 @@ import (
 	"fmt"
 	"strconv"
 
+	"cosmossdk.io/errors"
 	"cosmossdk.io/math"
 	"github.com/cosmos/cosmos-sdk/crypto/keys/ed25519"
 	cryptotypes "github.com/cosmos/cosmos-sdk/crypto/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/types/errors"
+	errtypes "github.com/cosmos/cosmos-sdk/types/errors"
 	bankkeeper "github.com/cosmos/cosmos-sdk/x/bank/keeper"
 	minttypes "github.com/cosmos/cosmos-sdk/x/mint/types"
 )
 
+// GenerateAccountStrategy defines a function type which can be used for accounts generation
 type GenerateAccountStrategy func(int) []sdk.AccAddress
 
 // BondDenomProvider is a subset of the staking keeper's public interface that
@@ -98,6 +100,7 @@ func CreateRandomAccounts(accNum int) []sdk.AccAddress {
 	return testAddrs
 }
 
+// TestAddr constructs a new sdk.AccAddress with the provided bytes and prefix.
 func TestAddr(addr string, bech string) (sdk.AccAddress, error) {
 	res, err := sdk.AccAddressFromHexUnsafe(addr)
 	if err != nil {
@@ -154,7 +157,7 @@ func NewPubKeyFromHex(pk string) (res cryptotypes.PubKey) {
 		panic(err)
 	}
 	if len(pkBytes) != ed25519.PubKeySize {
-		panic(errors.Wrap(errors.ErrInvalidPubKey, "invalid pubkey size"))
+		panic(errors.Wrap(errtypes.ErrInvalidPubKey, "invalid pubkey size"))
 	}
 	return &ed25519.PubKey{Key: pkBytes}
 }

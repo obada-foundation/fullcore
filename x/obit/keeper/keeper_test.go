@@ -26,6 +26,7 @@ var class = types.Class{
 	Uri:    "https://obada.io",
 }
 
+// KeeperTestSuite is the keeper test suite
 type KeeperTestSuite struct {
 	suite.Suite
 	addrs []sdk.AccAddress
@@ -38,51 +39,54 @@ type KeeperTestSuite struct {
 	encCfg testutilcodec.TestEncodingConfig
 }
 
-func (suite *KeeperTestSuite) SetupTest() {
-	suite.addrs = simtestutil.CreateIncrementalAccounts(3)
+// SetupTest creates a test suite to test the obit module
+func (s *KeeperTestSuite) SetupTest() {
+	s.addrs = simtestutil.CreateIncrementalAccounts(3)
 	key := sdk.NewKVStoreKey(types.StoreKey)
 	memKey := sdk.NewKVStoreKey(types.MemStoreKey)
 
-	suite.encCfg = testutilcodec.MakeTestEncodingConfig(module.AppModuleBasic{})
+	s.encCfg = testutilcodec.MakeTestEncodingConfig(module.AppModuleBasic{})
 	nftKey := sdk.NewKVStoreKey(nft.StoreKey)
 
 	ctx := testutilctx.DefaultContextWithDB(
-		suite.T(),
+		s.T(),
 		nftKey,
 		sdk.NewTransientStoreKey("transient_test"),
 	).Ctx.WithBlockHeader(tmproto.Header{Time: tmtime.Now()})
 
 	// gomock initializations
-	ctrl := gomock.NewController(suite.T())
+	ctrl := gomock.NewController(s.T())
 	accountKeeper := testutilkeepers.NewMockAccountKeeper(ctrl)
 	bankKeeper := testutilkeepers.NewMockBankKeeper(ctrl)
 
-	accountKeeper.EXPECT().GetModuleAddress("nft").Return(suite.addrs[0]).AnyTimes()
+	accountKeeper.EXPECT().GetModuleAddress("nft").Return(s.addrs[0]).AnyTimes()
 
 	nftKeeper := nftkeeper.NewKeeper(
 		nftKey,
-		suite.encCfg.Codec,
+		s.encCfg.Codec,
 		accountKeeper,
 		bankKeeper,
 	)
 
-	obitKeeper := keeper.NewKeeper(suite.encCfg.Codec, key, memKey, nftKeeper)
+	obitKeeper := keeper.NewKeeper(s.encCfg.Codec, key, memKey, nftKeeper)
 
-	suite.obitKeeper = *obitKeeper
-	suite.nftKeeper = nftKeeper
-	suite.msgServer = keeper.NewMsgServerImpl(*obitKeeper)
-	suite.ctx = ctx
+	s.obitKeeper = *obitKeeper
+	s.nftKeeper = nftKeeper
+	s.msgServer = keeper.NewMsgServerImpl(*obitKeeper)
+	s.ctx = ctx
 }
 
+// TestKeeperTestSuite runs the keeper test suite
 func TestKeeperTestSuite(t *testing.T) {
 	suite.Run(t, new(KeeperTestSuite))
 }
 
-func (suite *KeeperTestSuite) TestSaveClass() {
-	suite.Assert().False(suite.nftKeeper.HasClass(suite.ctx, class.Id))
+// TestSaveClass tests saving a class
+func (s *KeeperTestSuite) TestSaveClass() {
+	s.Assert().False(s.nftKeeper.HasClass(s.ctx, class.Id))
 
-	err := suite.obitKeeper.SaveClass(suite.ctx, class)
-	suite.Require().NoError(err)
+	err := s.obitKeeper.SaveClass(s.ctx, class)
+	s.Require().NoError(err)
 
-	suite.Assert().True(suite.nftKeeper.HasClass(suite.ctx, class.Id))
+	s.Assert().True(s.nftKeeper.HasClass(s.ctx, class.Id))
 }

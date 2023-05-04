@@ -11,6 +11,7 @@ import (
 	"google.golang.org/grpc/status"
 )
 
+// GetNFT implements gRPC query handler method
 func (k Keeper) GetNFT(c context.Context, req *types.QueryGetNFTRequest) (*types.NFT, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
@@ -34,6 +35,7 @@ func (k Keeper) GetNFT(c context.Context, req *types.QueryGetNFTRequest) (*types
 
 }
 
+// GetNFTByAddress implements gRPC query handler method
 func (k Keeper) GetNFTByAddress(c context.Context, req *types.QueryGetNFTByAddressRequest) (*types.QueryGetNFTByAddressResponse, error) {
 	if req == nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")

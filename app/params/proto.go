@@ -6,17 +6,17 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/auth/tx"
 )
 
-// MakeEncodingConfig creates an EncodingConfig for an amino based test configuration.
+// MakeTestEncodingConfig creates an EncodingConfig for an amino based test configuration.
 func MakeTestEncodingConfig() EncodingConfig {
 	amino := codec.NewLegacyAmino()
 	interfaceRegistry := types.NewInterfaceRegistry()
-	codec := codec.NewProtoCodec(interfaceRegistry)
+	pc := codec.NewProtoCodec(interfaceRegistry)
 
-	txCfg := tx.NewTxConfig(codec, tx.DefaultSignModes)
+	txCfg := tx.NewTxConfig(pc, tx.DefaultSignModes)
 
 	return EncodingConfig{
 		InterfaceRegistry: interfaceRegistry,
-		Codec:             codec,
+		Codec:             pc,
 		TxConfig:          txCfg,
 		Amino:             amino,
 	}

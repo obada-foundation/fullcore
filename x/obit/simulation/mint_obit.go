@@ -10,10 +10,11 @@ import (
 	"github.com/obada-foundation/fullcore/x/obit/types"
 )
 
+// SimulateMsgMintObit generates a MsgMintObit with random values.
 func SimulateMsgMintObit(
-	ak types.AccountKeeper,
-	bk types.BankKeeper,
-	k keeper.Keeper,
+	_ types.AccountKeeper,
+	_ types.BankKeeper,
+	_ keeper.Keeper,
 ) simtypes.Operation {
 	return func(r *rand.Rand, app *baseapp.BaseApp, ctx sdk.Context, accs []simtypes.Account, chainID string,
 	) (simtypes.OperationMsg, []simtypes.FutureOperation, error) {

@@ -14,7 +14,7 @@ import (
 )
 
 // DefaultContext creates a sdk.Context with a fresh MemDB that can be used in tests.
-func DefaultContext(key storetypes.StoreKey, tkey storetypes.StoreKey) sdk.Context {
+func DefaultContext(key, tkey storetypes.StoreKey) sdk.Context {
 	db := dbm.NewMemDB()
 	cms := store.NewCommitMultiStore(db)
 	cms.MountStoreWithDB(key, storetypes.StoreTypeIAVL, db)
@@ -28,13 +28,15 @@ func DefaultContext(key storetypes.StoreKey, tkey storetypes.StoreKey) sdk.Conte
 	return ctx
 }
 
+// TestContext is a wrapper around sdk.Context that provides a db and a commit multi-store.
 type TestContext struct {
 	Ctx sdk.Context
 	DB  *dbm.MemDB
 	CMS store.CommitMultiStore
 }
 
-func DefaultContextWithDB(t *testing.T, key storetypes.StoreKey, tkey storetypes.StoreKey) TestContext {
+// DefaultContextWithDB creates a sdk.Context with a fresh MemDB that can be used in tests.
+func DefaultContextWithDB(t *testing.T, key, tkey storetypes.StoreKey) TestContext {
 	db := dbm.NewMemDB()
 	cms := store.NewCommitMultiStore(db)
 	cms.MountStoreWithDB(key, storetypes.StoreTypeIAVL, db)

@@ -4,7 +4,7 @@ import (
 	"context"
 	"encoding/json"
 	"fmt"
-	// this line is used by starport scaffolding # 1
+	"log"
 
 	"github.com/gorilla/mux"
 	"github.com/grpc-ecosystem/grpc-gateway/runtime"
@@ -36,6 +36,7 @@ type AppModuleBasic struct {
 	cdc codec.BinaryCodec
 }
 
+// NewAppModuleBasic creates a new AppModuleBasic
 func NewAppModuleBasic(cdc codec.BinaryCodec) AppModuleBasic {
 	return AppModuleBasic{cdc: cdc}
 }
@@ -45,10 +46,12 @@ func (AppModuleBasic) Name() string {
 	return types.ModuleName
 }
 
+// RegisterCodec registers the capability module's types for the given codec.
 func (AppModuleBasic) RegisterCodec(cdc *codec.LegacyAmino) {
 	types.RegisterCodec(cdc)
 }
 
+// RegisterLegacyAminoCodec registers the capability module's types on the given LegacyAmino codec.
 func (AppModuleBasic) RegisterLegacyAminoCodec(cdc *codec.LegacyAmino) {
 	types.RegisterCodec(cdc)
 }
@@ -64,7 +67,7 @@ func (AppModuleBasic) DefaultGenesis(cdc codec.JSONCodec) json.RawMessage {
 }
 
 // ValidateGenesis performs genesis state validation for the capability module.
-func (AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEncodingConfig, bz json.RawMessage) error {
+func (AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, _ client.TxEncodingConfig, bz json.RawMessage) error {
 	var genState types.GenesisState
 	if err := cdc.UnmarshalJSON(bz, &genState); err != nil {
 		return fmt.Errorf("failed to unmarshal %s genesis state: %w", types.ModuleName, err)
@@ -73,13 +76,15 @@ func (AppModuleBasic) ValidateGenesis(cdc codec.JSONCodec, config client.TxEncod
 }
 
 // RegisterRESTRoutes registers the capability module's REST service handlers.
-func (AppModuleBasic) RegisterRESTRoutes(clientCtx client.Context, rtr *mux.Router) {
+func (AppModuleBasic) RegisterRESTRoutes(_ client.Context, _ *mux.Router) {
 }
 
 // RegisterGRPCGatewayRoutes registers the gRPC Gateway routes for the module.
-func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, mux *runtime.ServeMux) {
-	types.RegisterQueryHandlerClient(context.Background(), mux, types.NewQueryClient(clientCtx))
-	// this line is used by starport scaffolding # 2
+func (AppModuleBasic) RegisterGRPCGatewayRoutes(clientCtx client.Context, m *runtime.ServeMux) {
+	err := types.RegisterQueryHandlerClient(context.Background(), m, types.NewQueryClient(clientCtx))
+	if err != nil {
+		log.Fatal(err)
+	}
 }
 
 // GetTxCmd returns the capability module's root tx command.
@@ -105,17 +110,13 @@ type AppModule struct {
 	bankKeeper    types.BankKeeper
 }
 
-func NewAppModule(
-	cdc codec.Codec,
-	keeper keeper.Keeper,
-	accountKeeper types.AccountKeeper,
-	bankKeeper types.BankKeeper,
-) AppModule {
+// NewAppModule creates a new AppModule object
+func NewAppModule(cdc codec.Codec, k keeper.Keeper, ak types.AccountKeeper, bk types.BankKeeper) AppModule {
 	return AppModule{
 		AppModuleBasic: NewAppModuleBasic(cdc),
-		keeper:         keeper,
-		accountKeeper:  accountKeeper,
-		bankKeeper:     bankKeeper,
+		keeper:         k,
+		accountKeeper:  ak,
+		bankKeeper:     bk,
 	}
 }
 
@@ -133,7 +134,7 @@ func (am AppModule) Route() sdk.Route {
 func (AppModule) QuerierRoute() string { return types.QuerierRoute }
 
 // LegacyQuerierHandler returns the capability module's Querier.
-func (am AppModule) LegacyQuerierHandler(legacyQuerierCdc *codec.LegacyAmino) sdk.Querier {
+func (am AppModule) LegacyQuerierHandler(_ *codec.LegacyAmino) sdk.Querier {
 	return nil
 }
 

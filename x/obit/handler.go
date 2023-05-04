@@ -3,13 +3,14 @@ package obit
 import (
 	"fmt"
 
+	"cosmossdk.io/errors"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/obada-foundation/fullcore/x/obit/keeper"
 	"github.com/obada-foundation/fullcore/x/obit/types"
 )
 
-// NewHandler ...
+// NewHandler creates an sdk.Handler for all the obit type messages
 func NewHandler(k keeper.Keeper) sdk.Handler {
 	msgServer := keeper.NewMsgServerImpl(k)
 
@@ -32,7 +33,7 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 			// this line is used by starport scaffolding # 1
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)
-			return nil, sdkerrors.Wrap(sdkerrors.ErrUnknownRequest, errMsg)
+			return nil, errors.Wrap(errortypes.ErrUnknownRequest, errMsg)
 		}
 	}
 }

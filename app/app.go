@@ -103,6 +103,7 @@ import (
 )
 
 const (
+	// Name for the executor app
 	Name = "fullcore"
 )
 
@@ -376,7 +377,7 @@ func New(
 	transferModule := transfer.NewAppModule(app.TransferKeeper)
 	transferIBCModule := transfer.NewIBCModule(app.TransferKeeper)
 
-	// Create evidence Keeper for to register the IBC light client misbehaviour evidence route
+	// Create evidence Keeper for to register the IBC light client misbehavior evidence route
 	evidenceKeeper := evidencekeeper.NewKeeper(
 		appCodec, keys[evidencetypes.StoreKey], &app.StakingKeeper, app.SlashingKeeper,
 	)

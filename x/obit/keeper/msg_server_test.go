@@ -6,11 +6,12 @@ import (
 	"github.com/obada-foundation/fullcore/x/obit/types"
 )
 
-func (suite *KeeperTestSuite) TestMintNFT() {
-	creator := suite.addrs[0]
+// TestMintNFT tests that a user can mint an NFT
+func (s *KeeperTestSuite) TestMintNFT() {
+	creator := s.addrs[0]
 
-	err := suite.obitKeeper.SaveClass(suite.ctx, class)
-	suite.Require().NoError(err)
+	err := s.obitKeeper.SaveClass(s.ctx, class)
+	s.Require().NoError(err)
 
 	msg := types.MsgMintNFT{
 		Creator: creator.String(),
@@ -18,38 +19,39 @@ func (suite *KeeperTestSuite) TestMintNFT() {
 		Usn:     "2z41UH7n",
 	}
 
-	resp, err := suite.msgServer.MintNFT(suite.ctx, &msg)
-	suite.Require().NoError(err)
+	resp, err := s.msgServer.MintNFT(s.ctx, &msg)
+	s.Require().NoError(err)
 
-	suite.Assert().Equal(msg.Id, resp.Id)
+	s.Assert().Equal(msg.Id, resp.Id)
 
 	// Test that we cannot mint it a second time
-	resp, err = suite.msgServer.MintNFT(suite.ctx, &msg)
-	suite.Require().ErrorIs(err, nft.ErrNFTExists)
+	_, err = s.msgServer.MintNFT(s.ctx, &msg)
+	s.Require().ErrorIs(err, nft.ErrNFTExists)
 
-	state := suite.nftKeeper.ExportGenesis(suite.ctx)
-	suite.Require().Len(state.Entries, 1)
+	state := s.nftKeeper.ExportGenesis(s.ctx)
+	s.Require().Len(state.Entries, 1)
 
-	nft, err := suite.obitKeeper.GetNFT(suite.ctx, &types.QueryGetNFTRequest{
+	NFT, err := s.obitKeeper.GetNFT(s.ctx, &types.QueryGetNFTRequest{
 		Id: msg.Id,
 	})
-	suite.Require().NoError(err)
+	s.Require().NoError(err)
 
-	suite.Equal(msg.Id, nft.Id)
-	suite.Equal(types.OBTClass, nft.ClassId)
+	s.Equal(msg.Id, NFT.Id)
+	s.Equal(types.OBTClass, NFT.ClassId)
 
-	nfts, err := suite.obitKeeper.GetNFTByAddress(suite.ctx, &types.QueryGetNFTByAddressRequest{
+	nfts, err := s.obitKeeper.GetNFTByAddress(s.ctx, &types.QueryGetNFTByAddressRequest{
 		Address: msg.Creator,
 	})
-	suite.Require().NoError(err)
-	suite.Require().Len(nfts.NFT, 1)
+	s.Require().NoError(err)
+	s.Require().Len(nfts.NFT, 1)
 }
 
-func (suite *KeeperTestSuite) TestTransferNFT() {
-	creator := suite.addrs[0]
+// TestTransferNFT tests that a user can transfer an NFT
+func (s *KeeperTestSuite) TestTransferNFT() {
+	creator := s.addrs[0]
 
-	err := suite.obitKeeper.SaveClass(suite.ctx, class)
-	suite.Require().NoError(err)
+	err := s.obitKeeper.SaveClass(s.ctx, class)
+	s.Require().NoError(err)
 
 	msg := types.MsgMintNFT{
 		Creator: creator.String(),
@@ -57,34 +59,34 @@ func (suite *KeeperTestSuite) TestTransferNFT() {
 		Usn:     "2z41UH7n",
 	}
 
-	_, err = suite.msgServer.MintNFT(suite.ctx, &msg)
-	suite.Require().NoError(err)
+	_, err = s.msgServer.MintNFT(s.ctx, &msg)
+	s.Require().NoError(err)
 
-	_, err = suite.msgServer.TransferNFT(suite.ctx, &types.MsgTransferNFT{
+	_, err = s.msgServer.TransferNFT(s.ctx, &types.MsgTransferNFT{
 		Id:       msg.Id,
 		Sender:   creator.String(),
 		Receiver: creator.String(),
 	})
-	suite.Require().ErrorIs(sdkerrors.ErrInvalidAddress, err)
+	s.Require().ErrorIs(sdkerrors.ErrInvalidAddress, err)
 
-	newOwner := suite.addrs[1].String()
+	newOwner := s.addrs[1].String()
 
-	_, err = suite.msgServer.TransferNFT(suite.ctx, &types.MsgTransferNFT{
+	_, err = s.msgServer.TransferNFT(s.ctx, &types.MsgTransferNFT{
 		Id:       msg.Id,
 		Sender:   creator.String(),
 		Receiver: newOwner,
 	})
-	suite.Require().NoError(err)
+	s.Require().NoError(err)
 
-	nfts, err := suite.obitKeeper.GetNFTByAddress(suite.ctx, &types.QueryGetNFTByAddressRequest{
+	nfts, err := s.obitKeeper.GetNFTByAddress(s.ctx, &types.QueryGetNFTByAddressRequest{
 		Address: msg.Creator,
 	})
-	suite.Require().NoError(err)
-	suite.Require().Len(nfts.NFT, 0)
+	s.Require().NoError(err)
+	s.Require().Len(nfts.NFT, 0)
 
-	nfts, err = suite.obitKeeper.GetNFTByAddress(suite.ctx, &types.QueryGetNFTByAddressRequest{
+	nfts, err = s.obitKeeper.GetNFTByAddress(s.ctx, &types.QueryGetNFTByAddressRequest{
 		Address: newOwner,
 	})
-	suite.Require().NoError(err)
-	suite.Require().Len(nfts.NFT, 1)
+	s.Require().NoError(err)
+	s.Require().Len(nfts.NFT, 1)
 }

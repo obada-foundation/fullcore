@@ -16,8 +16,10 @@ var (
 )
 
 const (
+	// nolint:unused // for the future refactoring
 	flagPacketTimeoutTimestamp = "packet-timeout-timestamp"
-	listSeparator              = ","
+	// nolint:unused // for the future refactoring
+	listSeparator = ","
 )
 
 // GetTxCmd returns the transaction commands for this module

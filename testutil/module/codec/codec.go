@@ -20,15 +20,16 @@ type TestEncodingConfig struct {
 	Amino             *codec.LegacyAmino
 }
 
+// MakeTestEncodingConfig creates an EncodingConfig for testing.
 func MakeTestEncodingConfig(modules ...module.AppModuleBasic) TestEncodingConfig {
 	cdc := codec.NewLegacyAmino()
 	interfaceRegistry := types.NewInterfaceRegistry()
-	codec := codec.NewProtoCodec(interfaceRegistry)
+	pc := codec.NewProtoCodec(interfaceRegistry)
 
 	encCfg := TestEncodingConfig{
 		InterfaceRegistry: interfaceRegistry,
-		Codec:             codec,
-		TxConfig:          tx.NewTxConfig(codec, tx.DefaultSignModes),
+		Codec:             pc,
+		TxConfig:          tx.NewTxConfig(pc, tx.DefaultSignModes),
 		Amino:             cdc,
 	}
 

@@ -22,8 +22,11 @@ import (
 )
 
 type (
+	// Network is a wrapper around testutil/network.Network with additional methods.
 	Network = network.Network
-	Config  = network.Config
+
+	// Config is a wrapper around testutil/network.Config with additional methods.
+	Config = network.Config
 )
 
 // New creates instance with fully configured cosmos network.

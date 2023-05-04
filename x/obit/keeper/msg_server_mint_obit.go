@@ -4,9 +4,10 @@ import (
 	"context"
 	"fmt"
 
+	"cosmossdk.io/errors"
 	codectypes "github.com/cosmos/cosmos-sdk/codec/types"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
+	errortypes "github.com/cosmos/cosmos-sdk/types/errors"
 	"github.com/cosmos/cosmos-sdk/x/nft"
 	"github.com/obada-foundation/fullcore/x/obit/types"
 )
@@ -16,7 +17,7 @@ func (k msgServer) UpdateNFT(goCtx context.Context, msg *types.MsgUpdateNFT) (*t
 
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
-	nft, ok := k.nftKeeper.GetNFT(ctx, types.OBTClass, msg.Id)
+	NFT, ok := k.nftKeeper.GetNFT(ctx, types.OBTClass, msg.Id)
 	if !ok {
 		return resp, fmt.Errorf("NFT %s doesn't exists", msg.Id)
 	}
@@ -31,12 +32,12 @@ func (k msgServer) UpdateNFT(goCtx context.Context, msg *types.MsgUpdateNFT) (*t
 		return resp, err
 	}
 
-	nft.Data = data
-	if err := k.nftKeeper.Update(ctx, nft); err != nil {
+	NFT.Data = data
+	if err := k.nftKeeper.Update(ctx, NFT); err != nil {
 		return resp, err
 	}
 
-	resp.NFT = (*types.NFT)(&nft)
+	resp.NFT = (*types.NFT)(&NFT)
 
 	return resp, nil
 }
@@ -47,7 +48,7 @@ func (k msgServer) TransferNFT(goCtx context.Context, msg *types.MsgTransferNFT)
 	ctx := sdk.UnwrapSDKContext(goCtx)
 
 	if msg.Sender == msg.Receiver {
-		return resp, sdkerrors.Wrap(sdkerrors.ErrInvalidAddress, "sender and receiver cannot be the same")
+		return resp, errors.Wrap(errortypes.ErrInvalidAddress, "sender and receiver cannot be the same")
 	}
 
 	if err := k.nftKeeper.Transfer(ctx, types.OBTClass, msg.Id, sdk.AccAddress(msg.Receiver)); err != nil {

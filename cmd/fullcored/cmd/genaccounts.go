@@ -48,24 +48,24 @@ contain valid denominations. Accounts may optionally be supplied with vesting pa
 			addr, err := sdk.AccAddressFromBech32(args[0])
 			if err != nil {
 				inBuf := bufio.NewReader(cmd.InOrStdin())
-				keyringBackend, err := cmd.Flags().GetString(flags.FlagKeyringBackend)
-				if err != nil {
-					return err
+				keyringBackend, er := cmd.Flags().GetString(flags.FlagKeyringBackend)
+				if er != nil {
+					return er
 				}
 
 				if keyringBackend != "" && clientCtx.Keyring == nil {
-					var err error
-					kr, err = keyring.New(sdk.KeyringServiceName(), keyringBackend, clientCtx.HomeDir, inBuf, clientCtx.Codec)
-					if err != nil {
-						return err
+					var ern error
+					kr, ern = keyring.New(sdk.KeyringServiceName(), keyringBackend, clientCtx.HomeDir, inBuf, clientCtx.Codec)
+					if ern != nil {
+						return ern
 					}
 				} else {
 					kr = clientCtx.Keyring
 				}
 
-				k, err := kr.Key(args[0])
-				if err != nil {
-					return fmt.Errorf("failed to get address from Keyring: %w", err)
+				k, er := kr.Key(args[0])
+				if er != nil {
+					return fmt.Errorf("failed to get address from Keyring: %w", er)
 				}
 
 				addr, err = k.GetAddress()
@@ -125,8 +125,8 @@ contain valid denominations. Accounts may optionally be supplied with vesting pa
 				genAccount = baseAccount
 			}
 
-			if err := genAccount.Validate(); err != nil {
-				return fmt.Errorf("failed to validate new genesis account: %w", err)
+			if er := genAccount.Validate(); er != nil {
+				return fmt.Errorf("failed to validate new genesis account: %w", er)
 			}
 
 			genFile := config.GenesisFile()

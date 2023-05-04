@@ -12,6 +12,7 @@ import (
 
 var _ = strconv.Itoa(0)
 
+// CmdMintNFT defines the command to mint a new NFT
 func CmdMintNFT() *cobra.Command {
 	cmd := &cobra.Command{
 		Use:   "mint-nft [uri] [uriHash] [usn]",

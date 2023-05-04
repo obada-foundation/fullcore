@@ -24,6 +24,7 @@ var (
 )
 
 const (
+	// nolint:gosec // for the future refactoring
 	opWeightMsgMintObit = "op_weight_msg_create_chain"
 	// TODO: Determine the simulation weight value
 	defaultWeightMsgMintObit int = 100
