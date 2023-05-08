@@ -25,6 +25,7 @@ jobs:
     - name: Run Super Linter
       uses: github/super-linter/slim@v4
       env:
+        FILTER_REGEX_EXCLUDE: "(.git|vendor/)"
         IGNORE_GITIGNORED_FILES: true
         DEFAULT_BRANCH: main
         GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
