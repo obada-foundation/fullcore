@@ -87,3 +87,28 @@ func (k msgServer) MintNFT(goCtx context.Context, msg *types.MsgMintNFT) (*types
 		Id: msg.Id,
 	}, nil
 }
+
+// UpdateUriHash updates the URI hash of an NFT
+func (k msgServer) UpdateUriHash(goCtx context.Context, msg *types.MsgUpdateUriHash) (*types.MsgUpdateUriHashResponse, error) {
+	resp := &types.MsgUpdateUriHashResponse{}
+
+	ctx := sdk.UnwrapSDKContext(goCtx)
+
+	NFT, ok := k.nftKeeper.GetNFT(ctx, types.OBTClass, msg.Id)
+	if !ok {
+		return resp, fmt.Errorf("NFT %s doesn't exists", msg.Id)
+	}
+
+	ownerAddress := k.nftKeeper.GetOwner(ctx, types.OBTClass, msg.Id)
+	if !ownerAddress.Equals(sdk.AccAddress(msg.Editor)) {
+		return resp, fmt.Errorf("permission denied")
+	}
+
+	NFT.UriHash = msg.UriHash
+
+	if err := k.nftKeeper.Update(ctx, NFT); err != nil {
+		return resp, err
+	}
+
+	return resp, nil
+}

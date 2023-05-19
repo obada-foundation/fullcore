@@ -11,6 +11,9 @@ service Msg {
   // UpdateNFT updates NFT properties (definition will come in future)
   rpc UpdateNFT(MsgUpdateNFT) returns (MsgUpdateNFTResponse);
 
+  // UpdateUriHash updates URI hash for existing NFT
+  rpc UpdateUriHash(MsgUpdateUriHash) returns (MsgUpdateUriHashResponse);
+
   // MintNFT mint a new OBADA NFT (Obit)
   rpc MintNFT(MsgMintNFT) returns (MsgMintNFTResponse);
 
@@ -60,3 +63,18 @@ message MsgUpdateNFT {
 
 // MsgUpdateNFTResponse
 message MsgUpdateNFTResponse { NFT NFT = 1; }
+
+// MsgUpdateUriChecksum
+message MsgUpdateUriHash {
+  // editor is the address of the editor of nft metadata
+  string editor = 1;
+
+  // id stores DID
+  string id = 2;
+
+  // uri_hash did document metadata checksum
+  string uri_hash = 3;
+}
+
+// MsgUpdateUriHashResponse
+message MsgUpdateUriHashResponse {}

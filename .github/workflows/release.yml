@@ -115,7 +115,7 @@ jobs:
   release-docker:
     name: "Docker image"
     needs: [ super-lint, release-binary ]
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-22.04
     env:
       IMAGE_NAME: ${{ github.repository }}
 

@@ -30,6 +30,10 @@ func NewHandler(k keeper.Keeper) sdk.Handler {
 			res, err := msgServer.TransferNFT(sdk.WrapSDKContext(ctx), msg)
 			return sdk.WrapServiceResult(ctx, res, err)
 
+		case *types.MsgUpdateUriHash:
+			res, err := msgServer.UpdateUriHash(sdk.WrapSDKContext(ctx), msg)
+			return sdk.WrapServiceResult(ctx, res, err)
+
 			// this line is used by starport scaffolding # 1
 		default:
 			errMsg := fmt.Sprintf("unrecognized %s message type: %T", types.ModuleName, msg)
