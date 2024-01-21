@@ -1,0 +1,13 @@
+syntax = "proto3";
+package obadafoundation.obit.v1;
+
+import "gogoproto/gogo.proto";
+import "obadafoundation/obit/v1/class.proto";
+
+option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
+
+// GenesisState defines the obit module's genesis state.
+message GenesisState {
+  // class defines the class of the nft type.
+  repeated Class classes = 1;
+}

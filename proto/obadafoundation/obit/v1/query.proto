@@ -1,0 +1,33 @@
+syntax = "proto3";
+package obadafoundation.obit.v1;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "cosmos/base/query/v1beta1/pagination.proto";
+import "obadafoundation/obit/v1/nft.proto";
+
+option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // QueryGetAllNFTByAddressRequest returns a list of NFTs ownerd by given
+  // address
+  rpc GetNFTByAddress(QueryGetNFTByAddressRequest)
+      returns (QueryGetNFTByAddressResponse) {
+    option (google.api.http).get =
+        "/obada-foundation/fullcore/nft/{address}/all";
+  }
+
+  // GetNft returns single NFT by DID
+  rpc GetNFT(QueryGetNFTRequest) returns (NFT) {
+    option (google.api.http).get = "/obada-foundation/fullcore/nft/{id}";
+  }
+}
+
+message QueryGetNFTRequest { string id = 1; }
+
+message QueryGetNFTByAddressRequest { string address = 1; }
+
+message QueryGetNFTByAddressResponse {
+  repeated NFT NFT = 1 [ (gogoproto.nullable) = false ];
+}
