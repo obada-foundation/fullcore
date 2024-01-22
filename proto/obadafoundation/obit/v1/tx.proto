@@ -104,7 +104,7 @@ message MsgBatchTransferNFT {
   string receiver = 2;
 
   // Collection of NFTs to be minted
-  repeated string id = 3 [ (gogoproto.nullable) = false ];
+  repeated string ids = 3 [ (gogoproto.nullable) = false ];
 }
 
 // MsgBatchTransferNFTResponse defines the Msg response type.

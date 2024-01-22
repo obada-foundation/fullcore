@@ -69,7 +69,7 @@ func (ms msgServer) TransferNFT(goCtx context.Context, msg *types.MsgTransferNFT
 	return resp, nil
 }
 
-// BatchTransferNFT batch transfers NFTs
+// BatchMintNFT minting the batch of NFTs
 func (ms msgServer) BatchMintNFT(ctx context.Context, msg *types.MsgBatchMintNFT) (*types.MsgBatchMintNFTResponse, error) {
 	batchNfts := make([]nft.NFT, 0, len(msg.GetNft()))
 
@@ -98,6 +98,21 @@ func (ms msgServer) BatchMintNFT(ctx context.Context, msg *types.MsgBatchMintNFT
 	}
 
 	return &types.MsgBatchMintNFTResponse{}, nil
+}
+
+// BatchTransferNFT
+func (ms msgServer) BatchTransferNFT(ctx context.Context, msg *types.MsgBatchTransferNFT) (*types.MsgBatchTransferNFTResponse, error) {
+	resp := &types.MsgBatchTransferNFTResponse{}
+
+	if msg.Sender == msg.Receiver {
+		return resp, errors.Wrap(errortypes.ErrInvalidAddress, "sender and receiver cannot be the same")
+	}
+
+	if err := ms.k.nftKeeper.BatchTransfer(ctx, types.OBTClass, msg.GetIds(), sdk.AccAddress(msg.Receiver)); err != nil {
+		return resp, err
+	}
+
+	return resp, nil
 }
 
 // MintNFT mints an NFT
