@@ -2,77 +2,81 @@ package keeper_test
 
 import (
 	"testing"
+	"time"
 
+	"cosmossdk.io/core/header"
+	storetypes "cosmossdk.io/store/types"
+	"cosmossdk.io/x/nft"
+	nftkeeper "cosmossdk.io/x/nft/keeper"
+	"cosmossdk.io/x/nft/module"
+	nfttestutil "cosmossdk.io/x/nft/testutil"
+	"github.com/cosmos/cosmos-sdk/codec/address"
+	"github.com/cosmos/cosmos-sdk/runtime"
+	"github.com/cosmos/cosmos-sdk/testutil"
+	simtestutil "github.com/cosmos/cosmos-sdk/testutil/sims"
 	sdk "github.com/cosmos/cosmos-sdk/types"
-	"github.com/cosmos/cosmos-sdk/x/nft"
-	nftkeeper "github.com/cosmos/cosmos-sdk/x/nft/keeper"
+	moduletestutil "github.com/cosmos/cosmos-sdk/types/module/testutil"
 	"github.com/golang/mock/gomock"
-	testutilctx "github.com/obada-foundation/fullcore/testutil/context"
-	testutilkeepers "github.com/obada-foundation/fullcore/testutil/keeper/nft"
-	testutilcodec "github.com/obada-foundation/fullcore/testutil/module/codec"
-	simtestutil "github.com/obada-foundation/fullcore/testutil/sims"
-	module "github.com/obada-foundation/fullcore/x/obit"
-	"github.com/obada-foundation/fullcore/x/obit/keeper"
-	"github.com/obada-foundation/fullcore/x/obit/types"
 	"github.com/stretchr/testify/suite"
-	tmproto "github.com/tendermint/tendermint/proto/tendermint/types"
-	tmtime "github.com/tendermint/tendermint/types/time"
+
+	"github.com/obada-foundation/fullcore/x/obit/keeper"
+	obittypes "github.com/obada-foundation/fullcore/x/obit/types"
 )
 
-var class = types.Class{
-	Id:     "OBT",
-	Name:   "test name",
-	Symbol: "TST",
-	Uri:    "https://obada.io",
-}
+var (
+	class = obittypes.Class{
+		Id:     "OBT",
+		Name:   "test name",
+		Symbol: "TST",
+		Uri:    "https://obada.io",
+	}
+
+	testDID = "did:obada:c7cb2755b93036e2271b487b416a183799733294273ba3c8e2cdab2fc530b005"
+)
 
 // KeeperTestSuite is the keeper test suite
 type KeeperTestSuite struct {
 	suite.Suite
+
 	addrs []sdk.AccAddress
 	ctx   sdk.Context
 
-	msgServer  types.MsgServer
+	msgServer   obittypes.MsgServer
+	queryServer obittypes.QueryServer
+
 	obitKeeper keeper.Keeper
 	nftKeeper  nftkeeper.Keeper
 
-	encCfg testutilcodec.TestEncodingConfig
+	encCfg moduletestutil.TestEncodingConfig
 }
 
 // SetupTest creates a test suite to test the obit module
 func (s *KeeperTestSuite) SetupTest() {
+	s.encCfg = moduletestutil.MakeTestEncodingConfig(module.AppModuleBasic{})
+	nftKey := storetypes.NewKVStoreKey(nft.StoreKey)
+	key := storetypes.NewKVStoreKey(obittypes.StoreKey)
 	s.addrs = simtestutil.CreateIncrementalAccounts(3)
-	key := sdk.NewKVStoreKey(types.StoreKey)
-	memKey := sdk.NewKVStoreKey(types.MemStoreKey)
 
-	s.encCfg = testutilcodec.MakeTestEncodingConfig(module.AppModuleBasic{})
-	nftKey := sdk.NewKVStoreKey(nft.StoreKey)
+	storeService := runtime.NewKVStoreService(key)
+	testCtx := testutil.DefaultContextWithDB(s.T(), nftKey, storetypes.NewTransientStoreKey("transient_test"))
+	ctx := testCtx.Ctx.WithHeaderInfo(header.Info{Time: time.Now().Round(0).UTC()})
 
-	ctx := testutilctx.DefaultContextWithDB(
-		s.T(),
-		nftKey,
-		sdk.NewTransientStoreKey("transient_test"),
-	).Ctx.WithBlockHeader(tmproto.Header{Time: tmtime.Now()})
+	nftStoreService := runtime.NewKVStoreService(nftKey)
 
 	// gomock initializations
 	ctrl := gomock.NewController(s.T())
-	accountKeeper := testutilkeepers.NewMockAccountKeeper(ctrl)
-	bankKeeper := testutilkeepers.NewMockBankKeeper(ctrl)
-
+	accountKeeper := nfttestutil.NewMockAccountKeeper(ctrl)
+	bankKeeper := nfttestutil.NewMockBankKeeper(ctrl)
 	accountKeeper.EXPECT().GetModuleAddress("nft").Return(s.addrs[0]).AnyTimes()
+	accountKeeper.EXPECT().AddressCodec().Return(address.NewBech32Codec("obada")).AnyTimes()
 
-	nftKeeper := nftkeeper.NewKeeper(
-		nftKey,
-		s.encCfg.Codec,
-		accountKeeper,
-		bankKeeper,
-	)
+	nftKeeper := nftkeeper.NewKeeper(nftStoreService, s.encCfg.Codec, accountKeeper, bankKeeper)
+	obitKeeper := keeper.NewKeeper(s.encCfg.Codec, storeService, nftKeeper)
 
-	obitKeeper := keeper.NewKeeper(s.encCfg.Codec, key, memKey, nftKeeper)
-
-	s.obitKeeper = *obitKeeper
+	s.obitKeeper = obitKeeper
 	s.nftKeeper = nftKeeper
-	s.msgServer = keeper.NewMsgServerImpl(*obitKeeper)
+	s.msgServer = keeper.NewMsgServerImpl(obitKeeper)
+	s.queryServer = keeper.NewQueryServerImpl(obitKeeper)
 	s.ctx = ctx
 }
 

@@ -1,8 +1,8 @@
 package keeper_test
 
 import (
+	"cosmossdk.io/x/nft"
 	sdkerrors "github.com/cosmos/cosmos-sdk/types/errors"
-	"github.com/cosmos/cosmos-sdk/x/nft"
 	"github.com/obada-foundation/fullcore/x/obit/types"
 )
 
@@ -15,7 +15,7 @@ func (s *KeeperTestSuite) TestMintNFT() {
 
 	msg := types.MsgMintNFT{
 		Creator: creator.String(),
-		Id:      "did:obada:c7cb2755b93036e2271b487b416a183799733294273ba3c8e2cdab2fc530b005",
+		Id:      testDID,
 		Usn:     "2z41UH7n",
 	}
 
@@ -31,19 +31,21 @@ func (s *KeeperTestSuite) TestMintNFT() {
 	state := s.nftKeeper.ExportGenesis(s.ctx)
 	s.Require().Len(state.Entries, 1)
 
-	NFT, err := s.obitKeeper.GetNFT(s.ctx, &types.QueryGetNFTRequest{
+	nftResp, err := s.queryServer.GetNFT(s.ctx, &types.QueryGetNFTRequest{
 		Id: msg.Id,
 	})
 	s.Require().NoError(err)
 
+	NFT := nftResp.GetNft()
+
 	s.Equal(msg.Id, NFT.Id)
 	s.Equal(types.OBTClass, NFT.ClassId)
 
-	nfts, err := s.obitKeeper.GetNFTByAddress(s.ctx, &types.QueryGetNFTByAddressRequest{
+	nfts, err := s.queryServer.GetNFTByAddress(s.ctx, &types.QueryGetNFTByAddressRequest{
 		Address: msg.Creator,
 	})
 	s.Require().NoError(err)
-	s.Require().Len(nfts.NFT, 1)
+	s.Require().Len(nfts.GetNft(), 1)
 }
 
 // TestTransferNFT tests that a user can transfer an NFT
@@ -78,15 +80,15 @@ func (s *KeeperTestSuite) TestTransferNFT() {
 	})
 	s.Require().NoError(err)
 
-	nfts, err := s.obitKeeper.GetNFTByAddress(s.ctx, &types.QueryGetNFTByAddressRequest{
+	nfts, err := s.queryServer.GetNFTByAddress(s.ctx, &types.QueryGetNFTByAddressRequest{
 		Address: msg.Creator,
 	})
 	s.Require().NoError(err)
-	s.Require().Len(nfts.NFT, 0)
+	s.Require().Len(nfts.GetNft(), 0)
 
-	nfts, err = s.obitKeeper.GetNFTByAddress(s.ctx, &types.QueryGetNFTByAddressRequest{
+	nfts, err = s.queryServer.GetNFTByAddress(s.ctx, &types.QueryGetNFTByAddressRequest{
 		Address: newOwner,
 	})
 	s.Require().NoError(err)
-	s.Require().Len(nfts.NFT, 1)
+	s.Require().Len(nfts.GetNft(), 1)
 }

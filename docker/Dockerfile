@@ -1,6 +1,10 @@
-FROM golang:1.18-alpine AS builder
+FROM golang:1.21-alpine AS builder
 
-RUN apk update && apk add --no-cache curl make git libc-dev bash gcc linux-headers findutils
+RUN <<EOF
+apk update
+apk add --no-cache curl make git libc-dev bash gcc linux-headers findutils
+EOF
+
 WORKDIR /go/src/github.com/obada-foundation/fullcore
 
 COPY . .

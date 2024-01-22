@@ -1,0 +1,49 @@
+syntax = "proto3";
+package obadafoundation.obit.v1;
+
+import "gogoproto/gogo.proto";
+import "google/api/annotations.proto";
+import "obadafoundation/obit/v1/nft.proto";
+
+option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
+
+// Query defines the gRPC querier service.
+service Query {
+  // QueryGetAllNFTByAddressRequest returns a list of NFTs ownerd by given
+  // address
+  rpc GetNFTByAddress(QueryGetNFTByAddressRequest)
+      returns (QueryGetNFTByAddressResponse) {
+    option (google.api.http).get =
+        "/obada-foundation/fullcore/nft/{address}/all";
+  }
+
+  // GetNft returns single NFT by DID
+  rpc GetNFT(QueryGetNFTRequest) returns (QueryGetNFTResponse) {
+    option (google.api.http).get = "/obada-foundation/fullcore/nft/{id}";
+  }
+}
+
+// QueryGetNFTRequest is the request type for the Query.GetNFT method.
+message QueryGetNFTRequest {
+  // NFT ID (DID)
+  string id = 1;
+}
+
+// QueryGetNFTResponse is the response type for the Query.GetNFT method.
+message QueryGetNFTResponse {
+  // NFT with the given ID
+  NFT nft = 1 [ (gogoproto.nullable) = false ];
+}
+
+// QueryGetNFTByAddressRequest is the request type for the Query.GetNFTByAddress
+message QueryGetNFTByAddressRequest {
+  // Bech32 address
+  string address = 1;
+}
+
+// QueryGetNFTByAddressResponse is the response type for the
+// Query.GetNFTByAddress
+message QueryGetNFTByAddressResponse {
+  // List of NFTs owned by the given address
+  repeated NFT nft = 1 [ (gogoproto.nullable) = false ];
+}

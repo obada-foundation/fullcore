@@ -17,7 +17,9 @@ func (s *KeeperTestSuite) TestInitGenesis() {
 		},
 	}
 
-	s.obitKeeper.InitGenesis(s.ctx, genesisState)
+	err := s.obitKeeper.InitGenesis(s.ctx, &genesisState)
+	s.NoError(err)
+
 	got := s.obitKeeper.ExportGenesis(s.ctx)
 
 	s.NotNil(got)

@@ -1,0 +1,30 @@
+syntax = "proto3";
+package obadafoundation.obit.v1;
+
+import "google/protobuf/any.proto";
+
+option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
+
+// NFT is the struct that contains all the metadata of an NFT
+message NFT {
+  // NFT namespace
+  string class_id = 1;
+
+  // NFT ID (DID)
+  string id = 2;
+
+  // NFT URI
+  string uri = 3;
+
+  // NFT URI hash
+  string uri_hash = 4;
+
+  // NFT data
+  google.protobuf.Any data = 10;
+}
+
+// NFTData is the struct that contains all the metadata of an NFT
+message NFTData {
+  // Universal Serial Number
+  string usn = 1;
+}

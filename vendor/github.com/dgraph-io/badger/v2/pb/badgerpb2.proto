@@ -42,7 +42,9 @@ message ManifestChangeSet {
   repeated ManifestChange changes = 1;
 }
 
-enum EncryptionAlgo { aes = 0; }
+enum EncryptionAlgo {
+  aes = 0;
+}
 
 message ManifestChange {
   uint64 Id = 1; // Table ID.
