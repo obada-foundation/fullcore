@@ -26,6 +26,7 @@ WORKDIR /home/obada
 COPY --from=builder --chown=obada /go/src/github.com/obada-foundation/fullcore/build/fullcored /home/obada
 
 COPY --chown=obada ./docker/entrypoint.sh /home/obada/
+COPY --chown=obada docker/config/app.toml /home/obada/.fullcored/config/app.toml
 
 SHELL ["/bin/bash", "-euo", "pipefail", "-c"]
 

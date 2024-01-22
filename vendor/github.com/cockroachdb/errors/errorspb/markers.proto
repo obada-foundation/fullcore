@@ -10,5 +10,5 @@ import "gogoproto/gogo.proto";
 // error handling for details.
 message MarkPayload {
   string msg = 1;
-  repeated ErrorTypeMark types = 2  [(gogoproto.nullable) = false];
+  repeated ErrorTypeMark types = 2 [ (gogoproto.nullable) = false ];
 }

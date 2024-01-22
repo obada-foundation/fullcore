@@ -3,7 +3,7 @@ FROM obada/fullcore:develop
 ARG TESTNET_VERSION=2
 
 RUN <<EOF
-fullcored init testnode --chain-id obada-testnet
+fullcored init testnode --chain-id obada-testnet --default-denom rohi
 wget https://raw.githubusercontent.com/obada-foundation/testnet/main/testnets/testnet-$TESTNET_VERSION/genesis.json -O $HOME/.fullcored/config/genesis.json 
 fullcored keys --keyring-backend test --keyring-dir ~/.fullcored/keys add testnode 
 ADDRESS=$(fullcored keys --keyring-backend test --keyring-dir /home/obada/.fullcored/keys show testnode --address) 
