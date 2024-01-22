@@ -5,7 +5,10 @@ syntax = "proto3";
 package plugin;
 option go_package = "plugin";
 
-message Empty {}
+message Empty {
+}
 
 // The GRPCController is responsible for telling the plugin server to shutdown.
-service GRPCController { rpc Shutdown(Empty) returns (Empty); }
+service GRPCController {
+    rpc Shutdown(Empty) returns (Empty);
+}

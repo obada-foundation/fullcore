@@ -6,11 +6,11 @@ package plugin;
 option go_package = "plugin";
 
 message ConnInfo {
-  uint32 service_id = 1;
-  string network = 2;
-  string address = 3;
+    uint32 service_id = 1;
+    string network = 2;
+    string address = 3;
 }
 
 service GRPCBroker {
-  rpc StartStream(stream ConnInfo) returns (stream ConnInfo);
+    rpc StartStream(stream ConnInfo) returns (stream ConnInfo);
 }
