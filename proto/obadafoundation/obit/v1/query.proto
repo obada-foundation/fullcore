@@ -5,6 +5,7 @@ import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
 import "obadafoundation/obit/v1/nft.proto";
 import "cosmos_proto/cosmos.proto";
+import "cosmos/query/v1/query.proto";
 
 option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
 
@@ -14,12 +15,16 @@ service Query {
   // address
   rpc GetNFTByAddress(QueryGetNFTByAddressRequest)
       returns (QueryGetNFTByAddressResponse) {
+
+    option (cosmos.query.v1.module_query_safe) = true;
     option (google.api.http).get =
         "/obada-foundation/fullcore/nft/{address}/all";
   }
 
   // GetNft returns single NFT by DID
   rpc GetNFT(QueryGetNFTRequest) returns (QueryGetNFTResponse) {
+
+    option (cosmos.query.v1.module_query_safe) = true;
     option (google.api.http).get = "/obada-foundation/fullcore/nft/{id}";
   }
 }
