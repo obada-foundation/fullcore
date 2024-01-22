@@ -15,4 +15,7 @@ const (
 
 	// MemStoreKey defines the in-memory store key
 	MemStoreKey = "mem_obit"
+
+	// OBTClass defines the namespace for OBADA NFTs
+	OBTClass = "OBT"
 )

@@ -17,21 +17,63 @@ service Msg {
   // MintNFT mint a new OBADA NFT (Obit)
   rpc MintNFT(MsgMintNFT) returns (MsgMintNFTResponse);
 
+  // BatchMintNFT mint many NFTs
+  rpc BatchMintNFT(MsgBatchMintNFT) returns (MsgBatchMintNFTResponse);
+
   // TransferNFT send NFT to the new owner address
   rpc TransferNFT(MsgTransferNFT) returns (MsgTransferNFTResponse);
 }
 
 // MsgMintNFT handles obit information
 message MsgMintNFT {
+  // Bech32 address of creator
   string creator = 1;
+
+  // DID is the unique identification of nft
   string id = 2;
+
+  // Reference to the document
   string uri = 3;
+
+  // uri_hash did document metadata checksum
   string uri_hash = 4;
+
+  // usn is the universal serial number of asset
   string usn = 5;
 }
 
 // MsgMintNFTResponse success minting response
-message MsgMintNFTResponse { string id = 1; }
+message MsgMintNFTResponse {
+  // DID
+  string id = 1;
+}
+
+// MsgBatchMintNFT
+message MsgBatchMintNFT {
+  // Bech32 address of creator
+  string creator = 1;
+
+  // Collection of NFTs to be minted
+  repeated MsgBatchNFT nft = 2 [ (gogoproto.nullable) = false ];
+}
+
+// MsgMintNFT handles obit information
+message MsgBatchNFT {
+  // DID is the unique identification of nft
+  string id = 1;
+
+  // Reference to the document
+  string uri = 2;
+
+  // DID document metadata checksum
+  string uri_hash = 3;
+
+  // usn is the universal serial number of asset
+  string usn = 4;
+}
+
+// MsgBulkMintNFTResponse success bulk minting response
+message MsgBatchMintNFTResponse {}
 
 // MsgTransferNFT represents a message to send a nft from one account to another
 // account.
@@ -58,11 +100,14 @@ message MsgUpdateNFT {
   string editor = 2;
 
   // NFTData represent NFT metadata
-  NFTData NFTData = 3;
+  NFTData nft_data = 3;
 }
 
 // MsgUpdateNFTResponse
-message MsgUpdateNFTResponse { NFT NFT = 1; }
+message MsgUpdateNFTResponse {
+  // OBADA NFT
+  NFT nft = 1;
+}
 
 // MsgUpdateUriChecksum
 message MsgUpdateUriHash {

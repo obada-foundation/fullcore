@@ -31,16 +31,18 @@ import (
 	"github.com/cosmos/cosmos-sdk/x/genutil"
 	genutiltypes "github.com/cosmos/cosmos-sdk/x/genutil/types"
 	stakingkeeper "github.com/cosmos/cosmos-sdk/x/staking/keeper"
+	obitkeeper "github.com/obada-foundation/fullcore/x/obit/keeper"
 
-	_ "cosmossdk.io/api/cosmos/tx/config/v1"          // import for side-effects
-	_ "cosmossdk.io/x/nft/module"                     // import for side-effects
-	_ "github.com/cosmos/cosmos-sdk/x/auth"           // import for side-effects
-	_ "github.com/cosmos/cosmos-sdk/x/auth/tx/config" // import for side-effects
-	_ "github.com/cosmos/cosmos-sdk/x/bank"           // import for side-effects
-	_ "github.com/cosmos/cosmos-sdk/x/consensus"      // import for side-effects
-	_ "github.com/cosmos/cosmos-sdk/x/distribution"   // import for side-effects
-	_ "github.com/cosmos/cosmos-sdk/x/mint"           // import for side-effects
-	_ "github.com/cosmos/cosmos-sdk/x/staking"        // import for side-effects
+	_ "cosmossdk.io/api/cosmos/tx/config/v1"               // import for side-effects
+	_ "cosmossdk.io/x/nft/module"                          // import for side-effects
+	_ "github.com/cosmos/cosmos-sdk/x/auth"                // import for side-effects
+	_ "github.com/cosmos/cosmos-sdk/x/auth/tx/config"      // import for side-effects
+	_ "github.com/cosmos/cosmos-sdk/x/bank"                // import for side-effects
+	_ "github.com/cosmos/cosmos-sdk/x/consensus"           // import for side-effects
+	_ "github.com/cosmos/cosmos-sdk/x/distribution"        // import for side-effects
+	_ "github.com/cosmos/cosmos-sdk/x/mint"                // import for side-effects
+	_ "github.com/cosmos/cosmos-sdk/x/staking"             // import for side-effects
+	_ "github.com/obada-foundation/fullcore/x/obit/module" // import for side-effects
 )
 
 // DefaultNodeHome default home directories for the application daemon
@@ -71,6 +73,7 @@ type NodeApp struct {
 	DistrKeeper           distrkeeper.Keeper
 	ConsensusParamsKeeper consensuskeeper.Keeper
 	NFTKeeper             nftkeeper.Keeper
+	ObitKeeper            obitkeeper.Keeper
 
 	// simulation manager
 	sm *module.SimulationManager
@@ -131,6 +134,7 @@ func NewNodeApp(
 		&app.DistrKeeper,
 		&app.ConsensusParamsKeeper,
 		&app.NFTKeeper,
+		&app.ObitKeeper,
 	); err != nil {
 		return nil, err
 	}

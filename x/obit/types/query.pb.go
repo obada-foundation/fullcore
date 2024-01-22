@@ -6,7 +6,6 @@ package types
 import (
 	context "context"
 	fmt "fmt"
-	_ "github.com/cosmos/cosmos-sdk/types/query"
 	_ "github.com/cosmos/gogoproto/gogoproto"
 	grpc1 "github.com/cosmos/gogoproto/grpc"
 	proto "github.com/cosmos/gogoproto/proto"
@@ -30,7 +29,9 @@ var _ = math.Inf
 // proto package needs to be updated.
 const _ = proto.GoGoProtoPackageIsVersion3 // please upgrade the proto package
 
+// QueryGetNFTRequest is the request type for the Query.GetNFT method.
 type QueryGetNFTRequest struct {
+	// NFT ID (DID)
 	Id string `protobuf:"bytes,1,opt,name=id,proto3" json:"id,omitempty"`
 }
 
@@ -74,7 +75,55 @@ func (m *QueryGetNFTRequest) GetId() string {
 	return ""
 }
 
+// QueryGetNFTResponse is the response type for the Query.GetNFT method.
+type QueryGetNFTResponse struct {
+	// NFT with the given ID
+	Nft NFT `protobuf:"bytes,1,opt,name=nft,proto3" json:"nft"`
+}
+
+func (m *QueryGetNFTResponse) Reset()         { *m = QueryGetNFTResponse{} }
+func (m *QueryGetNFTResponse) String() string { return proto.CompactTextString(m) }
+func (*QueryGetNFTResponse) ProtoMessage()    {}
+func (*QueryGetNFTResponse) Descriptor() ([]byte, []int) {
+	return fileDescriptor_66271424c3412545, []int{1}
+}
+func (m *QueryGetNFTResponse) XXX_Unmarshal(b []byte) error {
+	return m.Unmarshal(b)
+}
+func (m *QueryGetNFTResponse) XXX_Marshal(b []byte, deterministic bool) ([]byte, error) {
+	if deterministic {
+		return xxx_messageInfo_QueryGetNFTResponse.Marshal(b, m, deterministic)
+	} else {
+		b = b[:cap(b)]
+		n, err := m.MarshalToSizedBuffer(b)
+		if err != nil {
+			return nil, err
+		}
+		return b[:n], nil
+	}
+}
+func (m *QueryGetNFTResponse) XXX_Merge(src proto.Message) {
+	xxx_messageInfo_QueryGetNFTResponse.Merge(m, src)
+}
+func (m *QueryGetNFTResponse) XXX_Size() int {
+	return m.Size()
+}
+func (m *QueryGetNFTResponse) XXX_DiscardUnknown() {
+	xxx_messageInfo_QueryGetNFTResponse.DiscardUnknown(m)
+}
+
+var xxx_messageInfo_QueryGetNFTResponse proto.InternalMessageInfo
+
+func (m *QueryGetNFTResponse) GetNft() NFT {
+	if m != nil {
+		return m.Nft
+	}
+	return NFT{}
+}
+
+// QueryGetNFTByAddressRequest is the request type for the Query.GetNFTByAddress
 type QueryGetNFTByAddressRequest struct {
+	// Bech32 address
 	Address string `protobuf:"bytes,1,opt,name=address,proto3" json:"address,omitempty"`
 }
 
@@ -82,7 +131,7 @@ func (m *QueryGetNFTByAddressRequest) Reset()         { *m = QueryGetNFTByAddres
 func (m *QueryGetNFTByAddressRequest) String() string { return proto.CompactTextString(m) }
 func (*QueryGetNFTByAddressRequest) ProtoMessage()    {}
 func (*QueryGetNFTByAddressRequest) Descriptor() ([]byte, []int) {
-	return fileDescriptor_66271424c3412545, []int{1}
+	return fileDescriptor_66271424c3412545, []int{2}
 }
 func (m *QueryGetNFTByAddressRequest) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -118,15 +167,18 @@ func (m *QueryGetNFTByAddressRequest) GetAddress() string {
 	return ""
 }
 
+// QueryGetNFTByAddressResponse is the response type for the
+// Query.GetNFTByAddress
 type QueryGetNFTByAddressResponse struct {
-	NFT []NFT `protobuf:"bytes,1,rep,name=NFT,proto3" json:"NFT"`
+	// List of NFTs owned by the given address
+	Nft []NFT `protobuf:"bytes,1,rep,name=nft,proto3" json:"nft"`
 }
 
 func (m *QueryGetNFTByAddressResponse) Reset()         { *m = QueryGetNFTByAddressResponse{} }
 func (m *QueryGetNFTByAddressResponse) String() string { return proto.CompactTextString(m) }
 func (*QueryGetNFTByAddressResponse) ProtoMessage()    {}
 func (*QueryGetNFTByAddressResponse) Descriptor() ([]byte, []int) {
-	return fileDescriptor_66271424c3412545, []int{2}
+	return fileDescriptor_66271424c3412545, []int{3}
 }
 func (m *QueryGetNFTByAddressResponse) XXX_Unmarshal(b []byte) error {
 	return m.Unmarshal(b)
@@ -155,15 +207,16 @@ func (m *QueryGetNFTByAddressResponse) XXX_DiscardUnknown() {
 
 var xxx_messageInfo_QueryGetNFTByAddressResponse proto.InternalMessageInfo
 
-func (m *QueryGetNFTByAddressResponse) GetNFT() []NFT {
+func (m *QueryGetNFTByAddressResponse) GetNft() []NFT {
 	if m != nil {
-		return m.NFT
+		return m.Nft
 	}
 	return nil
 }
 
 func init() {
 	proto.RegisterType((*QueryGetNFTRequest)(nil), "obadafoundation.obit.v1.QueryGetNFTRequest")
+	proto.RegisterType((*QueryGetNFTResponse)(nil), "obadafoundation.obit.v1.QueryGetNFTResponse")
 	proto.RegisterType((*QueryGetNFTByAddressRequest)(nil), "obadafoundation.obit.v1.QueryGetNFTByAddressRequest")
 	proto.RegisterType((*QueryGetNFTByAddressResponse)(nil), "obadafoundation.obit.v1.QueryGetNFTByAddressResponse")
 }
@@ -173,33 +226,31 @@ func init() {
 }
 
 var fileDescriptor_66271424c3412545 = []byte{
-	// 402 bytes of a gzipped FileDescriptorProto
-	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0x94, 0x92, 0x4f, 0x8b, 0xda, 0x40,
-	0x18, 0xc6, 0x33, 0xb1, 0xb5, 0x74, 0x0a, 0x2d, 0x0c, 0x85, 0x8a, 0x95, 0xd4, 0xc6, 0x16, 0xa4,
-	0xb6, 0x19, 0x62, 0x2d, 0x3d, 0xd7, 0x83, 0x3d, 0x14, 0x84, 0x8a, 0xa7, 0xde, 0x26, 0x66, 0x4c,
-	0x07, 0x62, 0xde, 0x98, 0x99, 0x48, 0xa5, 0x08, 0xcb, 0x7e, 0x82, 0x85, 0xfd, 0x2a, 0xfb, 0x05,
-	0xf6, 0xe6, 0x51, 0xd8, 0xcb, 0x9e, 0x96, 0x45, 0xf7, 0x83, 0x2c, 0xc9, 0x28, 0x88, 0xac, 0xee,
-	0xee, 0x2d, 0x7f, 0x7e, 0xcf, 0xf3, 0x3e, 0xef, 0xc3, 0x8b, 0x6b, 0xe0, 0x31, 0x9f, 0x0d, 0x21,
-	0x8d, 0x7c, 0xa6, 0x04, 0x44, 0x14, 0x3c, 0xa1, 0xe8, 0xc4, 0xa5, 0xe3, 0x94, 0x27, 0x53, 0x27,
-	0x4e, 0x40, 0x01, 0x79, 0xb3, 0x03, 0x39, 0x19, 0xe4, 0x4c, 0xdc, 0xf2, 0xeb, 0x00, 0x02, 0xc8,
-	0x19, 0x9a, 0x3d, 0x69, 0xbc, 0x5c, 0x09, 0x00, 0x82, 0x90, 0x53, 0x16, 0x0b, 0xca, 0xa2, 0x08,
-	0x54, 0x2e, 0x92, 0xeb, 0xbf, 0x9f, 0x06, 0x20, 0x47, 0x20, 0xa9, 0xc7, 0x24, 0xd7, 0x53, 0xe8,
-	0xc4, 0xf5, 0xb8, 0x62, 0x2e, 0x8d, 0x59, 0x20, 0x22, 0x3d, 0x41, 0xb3, 0xef, 0xf7, 0xa5, 0x8b,
-	0x86, 0x4a, 0x23, 0xf6, 0x07, 0x4c, 0x7e, 0x67, 0x26, 0x3f, 0xb9, 0xea, 0x76, 0xfa, 0x3d, 0x3e,
-	0x4e, 0xb9, 0x54, 0xe4, 0x25, 0x36, 0x85, 0x5f, 0x42, 0x55, 0x54, 0x7f, 0xde, 0x33, 0x85, 0x6f,
-	0x7f, 0xc7, 0x6f, 0xb7, 0xa8, 0xf6, 0xf4, 0x87, 0xef, 0x27, 0x5c, 0xca, 0x0d, 0x5e, 0xc2, 0xcf,
-	0x98, 0xfe, 0xb2, 0xd6, 0x6c, 0x5e, 0xed, 0x3e, 0xae, 0xdc, 0x2d, 0x94, 0x31, 0x44, 0x92, 0x93,
-	0x16, 0x2e, 0x74, 0x3b, 0xfd, 0x12, 0xaa, 0x16, 0xea, 0x2f, 0x9a, 0x15, 0x67, 0x4f, 0x51, 0x4e,
-	0xa6, 0x7d, 0x32, 0xbf, 0x7a, 0x67, 0xf4, 0x32, 0xbc, 0x79, 0x6e, 0xe2, 0xa7, 0xb9, 0x2d, 0x39,
-	0x43, 0xf8, 0xd5, 0x8e, 0x37, 0x69, 0xed, 0xb5, 0x39, 0xb0, 0x43, 0xf9, 0xdb, 0x23, 0x55, 0x7a,
-	0x01, 0xbb, 0x75, 0x7c, 0x71, 0x73, 0x6a, 0x3a, 0xe4, 0x33, 0xcd, 0xe5, 0x5f, 0xb6, 0xca, 0x1e,
-	0xa6, 0x61, 0x38, 0x80, 0x84, 0x67, 0x6d, 0xd3, 0xff, 0xeb, 0x46, 0x66, 0x94, 0x85, 0x21, 0x39,
-	0x42, 0xb8, 0xa8, 0x1d, 0x49, 0xe3, 0x21, 0x73, 0x37, 0x21, 0x0f, 0x36, 0x64, 0x37, 0xf2, 0x2c,
-	0x1f, 0x49, 0xed, 0xbe, 0x2c, 0xc2, 0x9f, 0xb5, 0x7f, 0xcd, 0x97, 0x16, 0x5a, 0x2c, 0x2d, 0x74,
-	0xbd, 0xb4, 0xd0, 0xc9, 0xca, 0x32, 0x16, 0x2b, 0xcb, 0xb8, 0x5c, 0x59, 0xc6, 0x1f, 0x37, 0x10,
-	0xea, 0x6f, 0xea, 0x39, 0x03, 0x18, 0x1d, 0x30, 0xfa, 0xa7, 0x8f, 0x49, 0x4d, 0x63, 0x2e, 0xbd,
-	0x62, 0x7e, 0x4c, 0x5f, 0x6f, 0x03, 0x00, 0x00, 0xff, 0xff, 0x4b, 0x7a, 0x67, 0x57, 0x0f, 0x03,
-	0x00, 0x00,
+	// 384 bytes of a gzipped FileDescriptorProto
+	0x1f, 0x8b, 0x08, 0x00, 0x00, 0x00, 0x00, 0x00, 0x02, 0xff, 0xe2, 0x52, 0xce, 0x4f, 0x4a, 0x4c,
+	0x49, 0x4c, 0xcb, 0x2f, 0xcd, 0x4b, 0x49, 0x2c, 0xc9, 0xcc, 0xcf, 0xd3, 0xcf, 0x4f, 0xca, 0x2c,
+	0xd1, 0x2f, 0x33, 0xd4, 0x2f, 0x2c, 0x4d, 0x2d, 0xaa, 0xd4, 0x2b, 0x28, 0xca, 0x2f, 0xc9, 0x17,
+	0x12, 0x47, 0x53, 0xa4, 0x07, 0x52, 0xa4, 0x57, 0x66, 0x28, 0x25, 0x92, 0x9e, 0x9f, 0x9e, 0x0f,
+	0x56, 0xa3, 0x0f, 0x62, 0x41, 0x94, 0x4b, 0xc9, 0xa4, 0xe7, 0xe7, 0xa7, 0xe7, 0xa4, 0xea, 0x27,
+	0x16, 0x64, 0xea, 0x27, 0xe6, 0xe5, 0xe5, 0x97, 0x80, 0x35, 0x15, 0x43, 0x65, 0x15, 0x71, 0xd9,
+	0x98, 0x97, 0x56, 0x02, 0x51, 0xa2, 0xa4, 0xc2, 0x25, 0x14, 0x08, 0xb2, 0xde, 0x3d, 0xb5, 0xc4,
+	0xcf, 0x2d, 0x24, 0x28, 0xb5, 0xb0, 0x34, 0xb5, 0xb8, 0x44, 0x88, 0x8f, 0x8b, 0x29, 0x33, 0x45,
+	0x82, 0x51, 0x81, 0x51, 0x83, 0x33, 0x88, 0x29, 0x33, 0x45, 0xc9, 0x9b, 0x4b, 0x18, 0x45, 0x55,
+	0x71, 0x41, 0x7e, 0x5e, 0x71, 0xaa, 0x90, 0x09, 0x17, 0x73, 0x5e, 0x5a, 0x09, 0x58, 0x1d, 0xb7,
+	0x91, 0x8c, 0x1e, 0x0e, 0xa7, 0xeb, 0xf9, 0xb9, 0x85, 0x38, 0xb1, 0x9c, 0xb8, 0x27, 0xcf, 0x10,
+	0x04, 0x52, 0xae, 0x64, 0xce, 0x25, 0x8d, 0x64, 0x98, 0x53, 0xa5, 0x63, 0x4a, 0x4a, 0x51, 0x6a,
+	0x71, 0x31, 0xcc, 0x6e, 0x09, 0x2e, 0xf6, 0x44, 0x88, 0x08, 0xd4, 0x01, 0x30, 0xae, 0x52, 0x08,
+	0x97, 0x0c, 0x76, 0x8d, 0xe8, 0xce, 0x61, 0x26, 0xc1, 0x39, 0x46, 0x17, 0x99, 0xb8, 0x58, 0xc1,
+	0xc6, 0x0a, 0x6d, 0x61, 0xe4, 0xe2, 0x47, 0x33, 0x5b, 0xc8, 0x04, 0xa7, 0x31, 0x78, 0xfc, 0x20,
+	0x65, 0x4a, 0xa2, 0x2e, 0x88, 0x07, 0x94, 0x4c, 0x9a, 0x2e, 0x3f, 0x99, 0xcc, 0xa4, 0x27, 0xa4,
+	0xa3, 0x0f, 0xd6, 0xae, 0x8b, 0x14, 0x73, 0x69, 0xa5, 0x39, 0x39, 0xc9, 0xf9, 0x45, 0xa9, 0xa0,
+	0xa8, 0xd3, 0xaf, 0x86, 0x86, 0x48, 0xad, 0x7e, 0x62, 0x4e, 0x8e, 0xd0, 0x04, 0x46, 0x2e, 0x36,
+	0x88, 0x89, 0x42, 0xda, 0xc4, 0xd8, 0x0b, 0x73, 0xa4, 0x0e, 0x71, 0x8a, 0xa1, 0x6e, 0xd3, 0x06,
+	0xbb, 0x4d, 0x55, 0x48, 0x99, 0x90, 0xdb, 0x32, 0x53, 0x6a, 0x9d, 0xbc, 0x4f, 0x3c, 0x92, 0x63,
+	0xbc, 0xf0, 0x48, 0x8e, 0xf1, 0xc1, 0x23, 0x39, 0xc6, 0x09, 0x8f, 0xe5, 0x18, 0x2e, 0x3c, 0x96,
+	0x63, 0xb8, 0xf1, 0x58, 0x8e, 0x21, 0xca, 0x30, 0x3d, 0xb3, 0x24, 0xa3, 0x34, 0x49, 0x2f, 0x39,
+	0x3f, 0x17, 0x8f, 0x41, 0x15, 0x90, 0x94, 0x5a, 0x52, 0x59, 0x90, 0x5a, 0x9c, 0xc4, 0x06, 0x4e,
+	0xa9, 0xc6, 0x80, 0x00, 0x00, 0x00, 0xff, 0xff, 0x04, 0xe8, 0x53, 0x17, 0x40, 0x03, 0x00, 0x00,
 }
 
 // Reference imports to suppress errors if they are not otherwise used.
@@ -218,7 +269,7 @@ type QueryClient interface {
 	// address
 	GetNFTByAddress(ctx context.Context, in *QueryGetNFTByAddressRequest, opts ...grpc.CallOption) (*QueryGetNFTByAddressResponse, error)
 	// GetNft returns single NFT by DID
-	GetNFT(ctx context.Context, in *QueryGetNFTRequest, opts ...grpc.CallOption) (*NFT, error)
+	GetNFT(ctx context.Context, in *QueryGetNFTRequest, opts ...grpc.CallOption) (*QueryGetNFTResponse, error)
 }
 
 type queryClient struct {
@@ -238,8 +289,8 @@ func (c *queryClient) GetNFTByAddress(ctx context.Context, in *QueryGetNFTByAddr
 	return out, nil
 }
 
-func (c *queryClient) GetNFT(ctx context.Context, in *QueryGetNFTRequest, opts ...grpc.CallOption) (*NFT, error) {
-	out := new(NFT)
+func (c *queryClient) GetNFT(ctx context.Context, in *QueryGetNFTRequest, opts ...grpc.CallOption) (*QueryGetNFTResponse, error) {
+	out := new(QueryGetNFTResponse)
 	err := c.cc.Invoke(ctx, "/obadafoundation.obit.v1.Query/GetNFT", in, out, opts...)
 	if err != nil {
 		return nil, err
@@ -253,7 +304,7 @@ type QueryServer interface {
 	// address
 	GetNFTByAddress(context.Context, *QueryGetNFTByAddressRequest) (*QueryGetNFTByAddressResponse, error)
 	// GetNft returns single NFT by DID
-	GetNFT(context.Context, *QueryGetNFTRequest) (*NFT, error)
+	GetNFT(context.Context, *QueryGetNFTRequest) (*QueryGetNFTResponse, error)
 }
 
 // UnimplementedQueryServer can be embedded to have forward compatible implementations.
@@ -263,7 +314,7 @@ type UnimplementedQueryServer struct {
 func (*UnimplementedQueryServer) GetNFTByAddress(ctx context.Context, req *QueryGetNFTByAddressRequest) (*QueryGetNFTByAddressResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetNFTByAddress not implemented")
 }
-func (*UnimplementedQueryServer) GetNFT(ctx context.Context, req *QueryGetNFTRequest) (*NFT, error) {
+func (*UnimplementedQueryServer) GetNFT(ctx context.Context, req *QueryGetNFTRequest) (*QueryGetNFTResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method GetNFT not implemented")
 }
 
@@ -354,6 +405,39 @@ func (m *QueryGetNFTRequest) MarshalToSizedBuffer(dAtA []byte) (int, error) {
 	return len(dAtA) - i, nil
 }
 
+func (m *QueryGetNFTResponse) Marshal() (dAtA []byte, err error) {
+	size := m.Size()
+	dAtA = make([]byte, size)
+	n, err := m.MarshalToSizedBuffer(dAtA[:size])
+	if err != nil {
+		return nil, err
+	}
+	return dAtA[:n], nil
+}
+
+func (m *QueryGetNFTResponse) MarshalTo(dAtA []byte) (int, error) {
+	size := m.Size()
+	return m.MarshalToSizedBuffer(dAtA[:size])
+}
+
+func (m *QueryGetNFTResponse) MarshalToSizedBuffer(dAtA []byte) (int, error) {
+	i := len(dAtA)
+	_ = i
+	var l int
+	_ = l
+	{
+		size, err := m.Nft.MarshalToSizedBuffer(dAtA[:i])
+		if err != nil {
+			return 0, err
+		}
+		i -= size
+		i = encodeVarintQuery(dAtA, i, uint64(size))
+	}
+	i--
+	dAtA[i] = 0xa
+	return len(dAtA) - i, nil
+}
+
 func (m *QueryGetNFTByAddressRequest) Marshal() (dAtA []byte, err error) {
 	size := m.Size()
 	dAtA = make([]byte, size)
@@ -404,10 +488,10 @@ func (m *QueryGetNFTByAddressResponse) MarshalToSizedBuffer(dAtA []byte) (int, e
 	_ = i
 	var l int
 	_ = l
-	if len(m.NFT) > 0 {
-		for iNdEx := len(m.NFT) - 1; iNdEx >= 0; iNdEx-- {
+	if len(m.Nft) > 0 {
+		for iNdEx := len(m.Nft) - 1; iNdEx >= 0; iNdEx-- {
 			{
-				size, err := m.NFT[iNdEx].MarshalToSizedBuffer(dAtA[:i])
+				size, err := m.Nft[iNdEx].MarshalToSizedBuffer(dAtA[:i])
 				if err != nil {
 					return 0, err
 				}
@@ -445,6 +529,17 @@ func (m *QueryGetNFTRequest) Size() (n int) {
 	return n
 }
 
+func (m *QueryGetNFTResponse) Size() (n int) {
+	if m == nil {
+		return 0
+	}
+	var l int
+	_ = l
+	l = m.Nft.Size()
+	n += 1 + l + sovQuery(uint64(l))
+	return n
+}
+
 func (m *QueryGetNFTByAddressRequest) Size() (n int) {
 	if m == nil {
 		return 0
@@ -464,8 +559,8 @@ func (m *QueryGetNFTByAddressResponse) Size() (n int) {
 	}
 	var l int
 	_ = l
-	if len(m.NFT) > 0 {
-		for _, e := range m.NFT {
+	if len(m.Nft) > 0 {
+		for _, e := range m.Nft {
 			l = e.Size()
 			n += 1 + l + sovQuery(uint64(l))
 		}
@@ -539,6 +634,89 @@ func (m *QueryGetNFTRequest) Unmarshal(dAtA []byte) error {
 				return io.ErrUnexpectedEOF
 			}
 			m.Id = string(dAtA[iNdEx:postIndex])
+			iNdEx = postIndex
+		default:
+			iNdEx = preIndex
+			skippy, err := skipQuery(dAtA[iNdEx:])
+			if err != nil {
+				return err
+			}
+			if (skippy < 0) || (iNdEx+skippy) < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if (iNdEx + skippy) > l {
+				return io.ErrUnexpectedEOF
+			}
+			iNdEx += skippy
+		}
+	}
+
+	if iNdEx > l {
+		return io.ErrUnexpectedEOF
+	}
+	return nil
+}
+func (m *QueryGetNFTResponse) Unmarshal(dAtA []byte) error {
+	l := len(dAtA)
+	iNdEx := 0
+	for iNdEx < l {
+		preIndex := iNdEx
+		var wire uint64
+		for shift := uint(0); ; shift += 7 {
+			if shift >= 64 {
+				return ErrIntOverflowQuery
+			}
+			if iNdEx >= l {
+				return io.ErrUnexpectedEOF
+			}
+			b := dAtA[iNdEx]
+			iNdEx++
+			wire |= uint64(b&0x7F) << shift
+			if b < 0x80 {
+				break
+			}
+		}
+		fieldNum := int32(wire >> 3)
+		wireType := int(wire & 0x7)
+		if wireType == 4 {
+			return fmt.Errorf("proto: QueryGetNFTResponse: wiretype end group for non-group")
+		}
+		if fieldNum <= 0 {
+			return fmt.Errorf("proto: QueryGetNFTResponse: illegal tag %d (wire type %d)", fieldNum, wire)
+		}
+		switch fieldNum {
+		case 1:
+			if wireType != 2 {
+				return fmt.Errorf("proto: wrong wireType = %d for field Nft", wireType)
+			}
+			var msglen int
+			for shift := uint(0); ; shift += 7 {
+				if shift >= 64 {
+					return ErrIntOverflowQuery
+				}
+				if iNdEx >= l {
+					return io.ErrUnexpectedEOF
+				}
+				b := dAtA[iNdEx]
+				iNdEx++
+				msglen |= int(b&0x7F) << shift
+				if b < 0x80 {
+					break
+				}
+			}
+			if msglen < 0 {
+				return ErrInvalidLengthQuery
+			}
+			postIndex := iNdEx + msglen
+			if postIndex < 0 {
+				return ErrInvalidLengthQuery
+			}
+			if postIndex > l {
+				return io.ErrUnexpectedEOF
+			}
+			if err := m.Nft.Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+				return err
+			}
 			iNdEx = postIndex
 		default:
 			iNdEx = preIndex
@@ -674,7 +852,7 @@ func (m *QueryGetNFTByAddressResponse) Unmarshal(dAtA []byte) error {
 		switch fieldNum {
 		case 1:
 			if wireType != 2 {
-				return fmt.Errorf("proto: wrong wireType = %d for field NFT", wireType)
+				return fmt.Errorf("proto: wrong wireType = %d for field Nft", wireType)
 			}
 			var msglen int
 			for shift := uint(0); ; shift += 7 {
@@ -701,8 +879,8 @@ func (m *QueryGetNFTByAddressResponse) Unmarshal(dAtA []byte) error {
 			if postIndex > l {
 				return io.ErrUnexpectedEOF
 			}
-			m.NFT = append(m.NFT, NFT{})
-			if err := m.NFT[len(m.NFT)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
+			m.Nft = append(m.Nft, NFT{})
+			if err := m.Nft[len(m.Nft)-1].Unmarshal(dAtA[iNdEx:postIndex]); err != nil {
 				return err
 			}
 			iNdEx = postIndex

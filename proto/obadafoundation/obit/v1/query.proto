@@ -3,7 +3,6 @@ package obadafoundation.obit.v1;
 
 import "gogoproto/gogo.proto";
 import "google/api/annotations.proto";
-import "cosmos/base/query/v1beta1/pagination.proto";
 import "obadafoundation/obit/v1/nft.proto";
 
 option go_package = "github.com/obada-foundation/fullcore/x/obit/types";
@@ -19,15 +18,32 @@ service Query {
   }
 
   // GetNft returns single NFT by DID
-  rpc GetNFT(QueryGetNFTRequest) returns (NFT) {
+  rpc GetNFT(QueryGetNFTRequest) returns (QueryGetNFTResponse) {
     option (google.api.http).get = "/obada-foundation/fullcore/nft/{id}";
   }
 }
 
-message QueryGetNFTRequest { string id = 1; }
+// QueryGetNFTRequest is the request type for the Query.GetNFT method.
+message QueryGetNFTRequest {
+  // NFT ID (DID)
+  string id = 1;
+}
 
-message QueryGetNFTByAddressRequest { string address = 1; }
+// QueryGetNFTResponse is the response type for the Query.GetNFT method.
+message QueryGetNFTResponse {
+  // NFT with the given ID
+  NFT nft = 1 [ (gogoproto.nullable) = false ];
+}
 
+// QueryGetNFTByAddressRequest is the request type for the Query.GetNFTByAddress
+message QueryGetNFTByAddressRequest {
+  // Bech32 address
+  string address = 1;
+}
+
+// QueryGetNFTByAddressResponse is the response type for the
+// Query.GetNFTByAddress
 message QueryGetNFTByAddressResponse {
-  repeated NFT NFT = 1 [ (gogoproto.nullable) = false ];
+  // List of NFTs owned by the given address
+  repeated NFT nft = 1 [ (gogoproto.nullable) = false ];
 }

@@ -18,11 +18,16 @@ CONTAINER_TESTNET_IMAGE = $(CONTAINER_IMAGE)-testnet
 CONTAINER_TAG_IMAGE = $(PROJECT):$(CI_COMMIT_TAG)
 COMMIT_HASH = $(CI_COMMIT_SHA)
 SHELL := /bin/sh
-protoVer = v0.7
-protoImageName = tendermintdev/sdk-proto-gen:$(protoVer)
+protoVer = 0.14.0
+protoImageName = ghcr.io/cosmos/proto-builder:$(protoVer)
+protoImage=docker run --rm -v $(CURDIR):/workspace --workdir /workspace $(protoImageName)
 containerProtoGen = cosmos-sdk-proto-gen-$(protoVer)
 containerProtoFmt = cosmos-sdk-proto-fmt-$(protoVer)
 .DEFAULT_GOAL := help
+
+##################
+###   Docker   ###
+##################
 
 docker/build:
 	docker build -t $(CONTAINER_IMAGE) -f docker/Dockerfile .
@@ -34,6 +39,10 @@ docker/publish:
 
 docker: docker/build docker/publish
 
+##################
+###     CI     ###
+##################
+
 ci/coverage:
 	go test $(cd src && go list ./... | grep -v /vendor/) -v -coverprofile .testCoverage.txt
 
@@ -43,17 +52,36 @@ ci/test:
 ci/lint:
 	golangci-lint --config .golangci.yml run --print-issued-lines --out-format=github-actions ./...
 
-proto: proto/format proto/gen
+##################
+###  Protobuf  ###
+##################
+
+proto: proto/format proto/lint proto/gen proto/swagger-gen
+
+proto/deps:
+	go install cosmossdk.io/orm/cmd/protoc-gen-go-cosmos-orm@latest
+	go install cosmossdk.io/orm/cmd/protoc-gen-go-cosmos-orm-proto@latest
+
+proto/swagger-gen:
+	@echo "Generating Protobuf Swagger"
+	@$(protoImage) sh ./scripts/protocgen-docs.sh
+
+proto/gen: proto/deps
+	@echo "Generating protobuf files..."
+	@$(protoImage) sh ./scripts/protocgen.sh
+	@go mod tidy
 
 proto/format:
-	@echo "Formatting Protobuf files"
-	@if docker ps -a --format '{{.Names}}' | grep -Eq "^${containerProtoFmt}$$"; then docker start -a $(containerProtoFmt); else docker run --name $(containerProtoFmt) -v $(CURDIR):/workspace --workdir /workspace tendermintdev/docker-build-proto \
-		find .  -name "*.proto" -not -path "./third_party/*" -exec clang-format -i {} \; ; fi
+	@$(protoImage) find ./ -name "*.proto" -exec clang-format -i {} \;
 
-proto/gen:
-	@echo "Generating Protobuf files"
-	@if docker ps -a --format '{{.Names}}' | grep -Eq "^${containerProtoGen}$$"; then docker start -a $(containerProtoGen); else docker run --name $(containerProtoGen) -v $(CURDIR):/workspace --workdir /workspace $(protoImageName) \
-		sh ./scripts/protocgen.sh; fi
+proto/lint:
+	@$(protoImage) buf lint proto/ --error-format=json
+
+.PHONY: proto proto/gen proto/format proto/lint
+
+##################
+###   Others   ###
+##################
 
 src/run:
 	go run ./src/cmd/fullcored/main.go
@@ -64,9 +92,6 @@ src/vendor:
 
 mockgen:
 	./scripts/mockgen.sh
-
-swagger: proto-swagger-gen
-.PHONY: swagger
 
 clean:
 	rm -rf $(BUILD_DIR)

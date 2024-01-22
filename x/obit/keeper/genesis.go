@@ -1,25 +1,29 @@
 package keeper
 
 import (
-	"cosmossdk.io/x/nft"
+	"context"
+
 	sdk "github.com/cosmos/cosmos-sdk/types"
+
 	"github.com/obada-foundation/fullcore/x/obit/types"
 )
 
 // InitGenesis initializes the capability module's state from a provided genesis state.
-func (k Keeper) InitGenesis(ctx sdk.Context, genState types.GenesisState) {
+func (k Keeper) InitGenesis(ctx context.Context, genState *types.GenesisState) error {
 	for _, class := range genState.Classes {
 		if err := k.SaveClass(ctx, *class); err != nil {
-			panic(err)
+			return err
 		}
 	}
+
+	return nil
 }
 
 // ExportGenesis returns the capability module's exported genesis.
 func (k Keeper) ExportGenesis(ctx sdk.Context) *types.GenesisState {
 	genState := types.GenesisState{}
 
-	classes := k.nk.GetClasses(ctx)
+	classes := k.nftKeeper.GetClasses(ctx)
 
 	for _, nftClass := range classes {
 		genState.Classes = append(genState.Classes, &types.Class{
@@ -31,18 +35,4 @@ func (k Keeper) ExportGenesis(ctx sdk.Context) *types.GenesisState {
 	}
 
 	return &genState
-}
-
-// SaveClass saves a class to the store
-func (k Keeper) SaveClass(ctx sdk.Context, class types.Class) error {
-	if !k.nk.HasClass(ctx, class.Id) {
-		return k.nk.SaveClass(ctx, nft.Class{
-			Id:     class.Id,
-			Name:   class.Name,
-			Symbol: class.Symbol,
-			Uri:    class.Uri,
-		})
-	}
-
-	return nil
 }
