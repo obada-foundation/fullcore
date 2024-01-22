@@ -25,7 +25,7 @@ message EncodedErrorLeaf {
   string message = 1;
 
   // The error details.
-  EncodedErrorDetails details = 2 [ (gogoproto.nullable) = false ];
+  EncodedErrorDetails details = 2 [(gogoproto.nullable) = false];
 
   // multierror_causes is a list of errors that contain the causal tree
   // of this leaf. If this field is not empty, then this leaf encodes
@@ -49,7 +49,7 @@ message EncodedErrorDetails {
   // identifying a decode function.
   // See the `markers` error package and the
   // RFC on error handling for details.
-  ErrorTypeMark error_type_mark = 2 [ (gogoproto.nullable) = false ];
+  ErrorTypeMark error_type_mark = 2 [(gogoproto.nullable) = false];
 
   // The reportable payload (optional), which is as descriptive as
   // possible but may not contain PII.
@@ -81,7 +81,7 @@ enum MessageType {
 // of an error wrapper.
 message EncodedWrapper {
   // The cause error. Mandatory.
-  EncodedError cause = 1 [ (gogoproto.nullable) = false ];
+  EncodedError cause = 1 [(gogoproto.nullable) = false];
 
   // The wrapper message. This could either be a full error message
   // that can be printed independently, or a (potentially empty) prefix
@@ -95,7 +95,7 @@ message EncodedWrapper {
   string message = 2;
 
   // The error details.
-  EncodedErrorDetails details = 3 [ (gogoproto.nullable) = false ];
+  EncodedErrorDetails details = 3 [(gogoproto.nullable) = false];
 
   // message_type encodes the interpretation of `message`. Prior
   // versions will not set this field and it will be left as `PREFIX`.
@@ -125,7 +125,9 @@ message ErrorTypeMark {
 
 // StringsPayload is used to encode the payload of certain error
 // types.
-message StringsPayload { repeated string details = 1; }
+message StringsPayload {
+  repeated string details = 1;
+}
 
 // ErrnoPayload is used to encode the payload of syscall.Errno
 // errors.

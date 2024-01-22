@@ -9,7 +9,7 @@ import "gogoproto/gogo.proto";
 // See errors/contexttags/withcontext.go and the RFC on
 // error handling for details.
 message TagsPayload {
-  repeated TagPayload tags = 1 [ (gogoproto.nullable) = false ];
+   repeated TagPayload tags = 1  [(gogoproto.nullable) = false];
 }
 
 message TagPayload {
