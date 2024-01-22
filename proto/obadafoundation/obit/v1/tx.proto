@@ -22,6 +22,10 @@ service Msg {
 
   // TransferNFT send NFT to the new owner address
   rpc TransferNFT(MsgTransferNFT) returns (MsgTransferNFTResponse);
+
+  // BatchTransferNFT transfer a batch NFTs
+  rpc BatchTransferNFT(MsgBatchTransferNFT)
+      returns (MsgBatchTransferNFTResponse);
 }
 
 // MsgMintNFT handles obit information
@@ -90,6 +94,21 @@ message MsgTransferNFT {
 
 // MsgTransferNFTResponse defines the Msg/Send response type.
 message MsgTransferNFTResponse {}
+
+// MsgBatchTransferNFT
+message MsgBatchTransferNFT {
+  // sender is the address of the owner of nft
+  string sender = 1;
+
+  // receiver is the receiver address of nft
+  string receiver = 2;
+
+  // Collection of NFTs to be minted
+  repeated string id = 3 [ (gogoproto.nullable) = false ];
+}
+
+// MsgBatchTransferNFTResponse defines the Msg response type.
+message MsgBatchTransferNFTResponse {}
 
 // MsgUpdateNFT
 message MsgUpdateNFT {

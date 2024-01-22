@@ -51,4 +51,4 @@ modules:
       "@type": cosmos.nft.module.v1.Module
   - name: obit
     config:
-      "@type": obada-foundation.fullcore.obit.module.v1.Module
+      "@type": obadafoundation.obit.module.v1.Module

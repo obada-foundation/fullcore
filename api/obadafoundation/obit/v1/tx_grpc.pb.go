@@ -19,11 +19,12 @@ import (
 const _ = grpc.SupportPackageIsVersion7
 
 const (
-	Msg_UpdateNFT_FullMethodName     = "/obadafoundation.obit.v1.Msg/UpdateNFT"
-	Msg_UpdateUriHash_FullMethodName = "/obadafoundation.obit.v1.Msg/UpdateUriHash"
-	Msg_MintNFT_FullMethodName       = "/obadafoundation.obit.v1.Msg/MintNFT"
-	Msg_BatchMintNFT_FullMethodName  = "/obadafoundation.obit.v1.Msg/BatchMintNFT"
-	Msg_TransferNFT_FullMethodName   = "/obadafoundation.obit.v1.Msg/TransferNFT"
+	Msg_UpdateNFT_FullMethodName        = "/obadafoundation.obit.v1.Msg/UpdateNFT"
+	Msg_UpdateUriHash_FullMethodName    = "/obadafoundation.obit.v1.Msg/UpdateUriHash"
+	Msg_MintNFT_FullMethodName          = "/obadafoundation.obit.v1.Msg/MintNFT"
+	Msg_BatchMintNFT_FullMethodName     = "/obadafoundation.obit.v1.Msg/BatchMintNFT"
+	Msg_TransferNFT_FullMethodName      = "/obadafoundation.obit.v1.Msg/TransferNFT"
+	Msg_BatchTransferNFT_FullMethodName = "/obadafoundation.obit.v1.Msg/BatchTransferNFT"
 )
 
 // MsgClient is the client API for Msg service.
@@ -40,6 +41,8 @@ type MsgClient interface {
 	BatchMintNFT(ctx context.Context, in *MsgBatchMintNFT, opts ...grpc.CallOption) (*MsgBatchMintNFTResponse, error)
 	// TransferNFT send NFT to the new owner address
 	TransferNFT(ctx context.Context, in *MsgTransferNFT, opts ...grpc.CallOption) (*MsgTransferNFTResponse, error)
+	// BatchTransferNFT transfer a batch NFTs
+	BatchTransferNFT(ctx context.Context, in *MsgBatchTransferNFT, opts ...grpc.CallOption) (*MsgBatchTransferNFTResponse, error)
 }
 
 type msgClient struct {
@@ -95,6 +98,15 @@ func (c *msgClient) TransferNFT(ctx context.Context, in *MsgTransferNFT, opts ..
 	return out, nil
 }
 
+func (c *msgClient) BatchTransferNFT(ctx context.Context, in *MsgBatchTransferNFT, opts ...grpc.CallOption) (*MsgBatchTransferNFTResponse, error) {
+	out := new(MsgBatchTransferNFTResponse)
+	err := c.cc.Invoke(ctx, Msg_BatchTransferNFT_FullMethodName, in, out, opts...)
+	if err != nil {
+		return nil, err
+	}
+	return out, nil
+}
+
 // MsgServer is the server API for Msg service.
 // All implementations must embed UnimplementedMsgServer
 // for forward compatibility
@@ -109,6 +121,8 @@ type MsgServer interface {
 	BatchMintNFT(context.Context, *MsgBatchMintNFT) (*MsgBatchMintNFTResponse, error)
 	// TransferNFT send NFT to the new owner address
 	TransferNFT(context.Context, *MsgTransferNFT) (*MsgTransferNFTResponse, error)
+	// BatchTransferNFT transfer a batch NFTs
+	BatchTransferNFT(context.Context, *MsgBatchTransferNFT) (*MsgBatchTransferNFTResponse, error)
 	mustEmbedUnimplementedMsgServer()
 }
 
@@ -130,6 +144,9 @@ func (UnimplementedMsgServer) BatchMintNFT(context.Context, *MsgBatchMintNFT) (*
 }
 func (UnimplementedMsgServer) TransferNFT(context.Context, *MsgTransferNFT) (*MsgTransferNFTResponse, error) {
 	return nil, status.Errorf(codes.Unimplemented, "method TransferNFT not implemented")
+}
+func (UnimplementedMsgServer) BatchTransferNFT(context.Context, *MsgBatchTransferNFT) (*MsgBatchTransferNFTResponse, error) {
+	return nil, status.Errorf(codes.Unimplemented, "method BatchTransferNFT not implemented")
 }
 func (UnimplementedMsgServer) mustEmbedUnimplementedMsgServer() {}
 
@@ -234,6 +251,24 @@ func _Msg_TransferNFT_Handler(srv interface{}, ctx context.Context, dec func(int
 	return interceptor(ctx, in, info, handler)
 }
 
+func _Msg_BatchTransferNFT_Handler(srv interface{}, ctx context.Context, dec func(interface{}) error, interceptor grpc.UnaryServerInterceptor) (interface{}, error) {
+	in := new(MsgBatchTransferNFT)
+	if err := dec(in); err != nil {
+		return nil, err
+	}
+	if interceptor == nil {
+		return srv.(MsgServer).BatchTransferNFT(ctx, in)
+	}
+	info := &grpc.UnaryServerInfo{
+		Server:     srv,
+		FullMethod: Msg_BatchTransferNFT_FullMethodName,
+	}
+	handler := func(ctx context.Context, req interface{}) (interface{}, error) {
+		return srv.(MsgServer).BatchTransferNFT(ctx, req.(*MsgBatchTransferNFT))
+	}
+	return interceptor(ctx, in, info, handler)
+}
+
 // Msg_ServiceDesc is the grpc.ServiceDesc for Msg service.
 // It's only intended for direct use with grpc.RegisterService,
 // and not to be introspected or modified (even as a copy)
@@ -260,6 +295,10 @@ var Msg_ServiceDesc = grpc.ServiceDesc{
 		{
 			MethodName: "TransferNFT",
 			Handler:    _Msg_TransferNFT_Handler,
+		},
+		{
+			MethodName: "BatchTransferNFT",
+			Handler:    _Msg_BatchTransferNFT_Handler,
 		},
 	},
 	Streams:  []grpc.StreamDesc{},

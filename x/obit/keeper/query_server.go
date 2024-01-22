@@ -28,9 +28,13 @@ func (qs queryServer) GetNFT(ctx context.Context, req *types.QueryGetNFTRequest)
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
 	}
 
-	did, err := url.QueryUnescape(req.Id)
+	did, err := url.QueryUnescape(req.GetId())
 	if err != nil {
 		return nil, status.Error(codes.InvalidArgument, "invalid request")
+	}
+
+	if did == "" {
+		return nil, status.Error(codes.InvalidArgument, "DID is an empty string")
 	}
 
 	nft, ok := qs.k.nftKeeper.GetNFT(ctx, types.OBTClass, did)
