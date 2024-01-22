@@ -75,6 +75,5 @@ func MakeValSetChangeTx(pubkey crypto.PublicKey, power int64) []byte {
 		panic(err)
 	}
 	pubStr := base64.StdEncoding.EncodeToString(pk.Bytes())
-	pubTypeStr := pk.Type()
-	return []byte(fmt.Sprintf("%s%s!%s!%d", ValidatorPrefix, pubTypeStr, pubStr, power))
+	return []byte(fmt.Sprintf("%s%s!%d", ValidatorPrefix, pubStr, power))
 }

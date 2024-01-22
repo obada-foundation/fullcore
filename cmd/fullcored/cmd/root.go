@@ -134,6 +134,7 @@ func NewRootCmd() *cobra.Command {
 	return rootCmd
 }
 
+// ProvideClientContext returns a client context with the default values.
 func ProvideClientContext(
 	appCodec codec.Codec,
 	interfaceRegistry codectypes.InterfaceRegistry,
@@ -148,15 +149,17 @@ func ProvideClientContext(
 		WithInput(os.Stdin).
 		WithAccountRetriever(types.AccountRetriever{}).
 		WithHomeDir(app.DefaultNodeHome).
-		WithViper("MINI") // env variable prefix
+		WithViper("OBADA") // env variable prefix
 
 	// Read the config again to overwrite the default values with the values from the config file
+	viper.AutomaticEnv()
 	clientCtx, _ = config.ReadFromClientConfig(clientCtx)
 
 	return clientCtx
 }
 
-func ProvideKeyring(clientCtx client.Context, addressCodec address.Codec) (clientv2keyring.Keyring, error) {
+// ProvideKeyring returns a keyring with the default values.
+func ProvideKeyring(clientCtx client.Context, _ address.Codec) (clientv2keyring.Keyring, error) {
 	kb, err := client.NewKeyringFromBackend(clientCtx, clientCtx.Keyring.Backend())
 	if err != nil {
 		return nil, err

@@ -23,7 +23,6 @@ import (
 	"github.com/cometbft/cometbft/libs/protoio"
 	cryptoproto "github.com/cometbft/cometbft/proto/tendermint/crypto"
 	cmtproto "github.com/cometbft/cometbft/proto/tendermint/types"
-	cmttypes "github.com/cometbft/cometbft/types"
 	"github.com/cometbft/cometbft/version"
 )
 
@@ -204,16 +203,6 @@ func (app *Application) FinalizeBlock(_ context.Context, req *abci.RequestFinali
 		txs[i] = &abci.ExecTxResult{Code: kvstore.CodeTypeOK}
 	}
 
-	for _, ev := range req.Misbehavior {
-		app.logger.Info("Misbehavior. Slashing validator",
-			"validator_address", ev.GetValidator().Address,
-			"type", ev.GetType(),
-			"height", ev.GetHeight(),
-			"time", ev.GetTime(),
-			"total_voting_power", ev.GetTotalVotingPower(),
-		)
-	}
-
 	valUpdates, err := app.validatorUpdates(uint64(req.Height))
 	if err != nil {
 		panic(err)
@@ -367,7 +356,7 @@ func (app *Application) PrepareProposal(
 		}
 		extCommitHex := hex.EncodeToString(extCommitBytes)
 		extTx := []byte(fmt.Sprintf("%s%d|%s", extTxPrefix, sum, extCommitHex))
-		extTxLen := cmttypes.ComputeProtoSizeForTxs([]cmttypes.Tx{extTx})
+		extTxLen := int64(len(extTx))
 		app.logger.Info("preparing proposal with special transaction from vote extensions", "extTxLen", extTxLen)
 		if extTxLen > req.MaxTxBytes {
 			panic(fmt.Errorf("serious problem in the e2e app configuration; "+
@@ -389,11 +378,10 @@ func (app *Application) PrepareProposal(
 			app.logger.Error("detected tx that should not come from the mempool", "tx", tx)
 			continue
 		}
-		txLen := cmttypes.ComputeProtoSizeForTxs([]cmttypes.Tx{tx})
-		if totalBytes+txLen > req.MaxTxBytes {
+		if totalBytes+int64(len(tx)) > req.MaxTxBytes {
 			break
 		}
-		totalBytes += txLen
+		totalBytes += int64(len(tx))
 		// Coherence: No need to call parseTx, as the check is stateless and has been performed by CheckTx
 		txs = append(txs, tx)
 	}
