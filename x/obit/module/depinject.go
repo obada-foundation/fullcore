@@ -29,12 +29,10 @@ func init() {
 type ModuleInputs struct {
 	depinject.In
 
+	Config       *modulev1.Module
 	Cdc          codec.Codec
 	StoreService store.KVStoreService
-
-	NftKeeper types.NftKeeper
-
-	Config *modulev1.Module
+	NftKeeper    types.NftKeeper
 }
 
 type ModuleOutputs struct {
