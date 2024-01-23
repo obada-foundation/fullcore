@@ -46,4 +46,6 @@ message OpenAPIOptions {
 }
 
 // OpenAPIConfig represents a set of OpenAPI options
-message OpenAPIConfig { OpenAPIOptions openapi_options = 1; }
+message OpenAPIConfig {
+  OpenAPIOptions openapi_options = 1;
+}
