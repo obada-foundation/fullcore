@@ -71,7 +71,7 @@ func (ms msgServer) TransferNFT(goCtx context.Context, msg *types.MsgTransferNFT
 
 // BatchMintNFT minting the batch of NFTs
 func (ms msgServer) BatchMintNFT(ctx context.Context, msg *types.MsgBatchMintNFT) (*types.MsgBatchMintNFTResponse, error) {
-	batchNfts := make([]nft.NFT, 0, len(msg.GetNft()))
+	NFTbatch := make([]nft.NFT, 0, len(msg.GetNft()))
 
 	for _, n := range msg.GetNft() {
 		data, err := codectypes.NewAnyWithValue(&types.NFTData{
@@ -89,11 +89,11 @@ func (ms msgServer) BatchMintNFT(ctx context.Context, msg *types.MsgBatchMintNFT
 			Data:    data,
 		}
 
-		batchNfts = append(batchNfts, nftToken)
+		NFTbatch = append(NFTbatch, nftToken)
 
 	}
 
-	if err := ms.k.nftKeeper.BatchMint(ctx, batchNfts, sdk.AccAddress(msg.GetCreator())); err != nil {
+	if err := ms.k.nftKeeper.BatchMint(ctx, NFTbatch, sdk.AccAddress(msg.GetCreator())); err != nil {
 		return nil, err
 	}
 
