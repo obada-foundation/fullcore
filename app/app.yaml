@@ -22,6 +22,7 @@ modules:
         - account: fee_collector
         - account: distribution
         - account: nft
+        - account: obit
         - account: bonded_tokens_pool
           permissions: [burner, staking]
         - account: not_bonded_tokens_pool
