@@ -20,6 +20,7 @@ fullcored genesis gentx testnode 500000000000000000rohi \
 
 fullcored genesis collect-gentxs
 fullcored genesis validate-genesis
+sed -i 's/127.0.0.1:26657/0.0.0.0:26657/g' $HOME/.fullcored/config/config.toml
 EOF
 
 EXPOSE 26656 26657 26658
